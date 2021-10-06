@@ -1,0 +1,334 @@
+{
+    "projects": {
+        "web-games": {
+            "minesweeper": {
+                "name": "Minesweeper",
+                "time": "",
+                "status": "",
+                "difficulty": "",
+                "description": "",
+                "content": {
+
+                },
+                "link": "",
+                "imgs": [
+                    "",
+                    ""
+                ]
+            },
+            "tetris": {
+                "name": "Tetris",
+                "time": "",
+                "status": "",
+                "difficulty": "",
+                "description": "",
+                "content": {
+
+                },
+                "link": "",
+                "imgs": [
+                    "",
+                    ""
+                ]
+            },
+            "pong": {
+                "name": "Pong",
+                "time": "",
+                "status": "",
+                "difficulty": "",
+                "description": "",
+                "content": {
+
+                },
+                "link": "",
+                "imgs": [
+                    "",
+                    ""
+                ]
+            }
+        },
+        "web-dev": {
+            "portfolio": {
+                "name": "Portfolio V1",
+                "time": "",
+                "status": "",
+                "difficulty": "",
+                "description": "",
+                "content": {
+
+                },
+                "link": "",
+                "imgs": [
+                    "",
+                    ""
+                ]
+            },
+            "portfolio-v2": {
+                "name": "Portfolio V2",
+                "time": "",
+                "status": "Complete (continually updated)",
+                "difficulty": "Moderate",
+                "description": "",
+                "content": {
+
+                },
+                "link": "",
+                "imgs": [
+                    "",
+                    ""
+                ]
+            },
+            "torc-character-designer": {
+                "name": "TORC Character Designer",
+                "time": "350+ hours",
+                "status": "In progress (stable)",
+                "difficulty": "Complexed",
+                "description": "This is one of my favorite projects. It is an external character creator and outfit designer for Star Wars The Old Republic. I really love this game and the community, and wanted to do something everyone could use and enjoy. It is very complexed, and I had to learn alot of new topics and skills while working on it. Im also very proud of it since it is the first tool of its kind made by anyone, ever, and that required me to solve alot of problems no one else has done  before.",
+                "reasons": [
+                    "I wanted to make something truly unique that had not been done before",
+                    [
+                        "This is the only Star Wars The Old Republic external character designer"
+                    ],
+                    "I also wanted to make something people would not only want to use, but also something that would inspire people, and help them realise what they can do.",
+                    "I had read comments and posts on a variety of platforms from people requesting/asking about a character viewer/creator, the earliest dating back to around 2014",
+                    "I also wanted to expedite the process from re-creating your character outside of the game (for 3D modeling, printing, or just for fun).",
+                    [
+                        "The process could take upwards of one to two hour for one character",
+                        "With my program, it takes ~20 minutes"
+                    ]
+                ],
+                "takeaways": [
+                    "How to read hexadecimal headers",
+                    "How to read custom file formats",
+                    "Basics of PHP",
+                    "Advanced JavaScript",
+                    "How to better manage the layout of my code",
+                    "How to better structure and organize my time",
+                    "How to break down problems into achievable sections",
+                    "How to effectively troubleshoot issues and debug",
+                    "Sometimes the best solution is to take a break and work on different part/something else for a while",
+                    "How to use the THREE.js library",
+                    "Basics of 3D design/modeling",
+                    [
+                        "HLSL",
+                        "GLSL",
+                        "The graphics pipeline (how 3D models are shaded and rendered)",
+                        "How models work",
+                        "How textures work",
+                        "How lighting works",
+                        "How shadows work"
+                    ]
+                ],
+                "releases": [
+                    {
+                        "name": "Release one",
+                        "date": "March 14, 2021",
+                        "time": "270+ hours",
+                        "changes": [
+                            "Users can download a <i>.zip</i> with all the nessesary info to re-create their character in blender",
+                            "Has all character creator options that the game has",
+                            [
+                                "Customization sliders",
+                                "Gender",
+                                "Classes",
+                                "Species"
+                            ],
+                            "Allows changing of light-color gradient",
+                            "Users can search by keywords to get a list of every related item, which they can then select from to display one",
+                            "Users can add a global dye to their outfit",
+                            "Users can share their creations using the sharing url button at the bottom"
+                        ]
+                    },
+                    {
+                        "name": "Release two",
+                        "date": "March 25, 2021",
+                        "time": "300+ hours",
+                        "bug-fixes": [
+                            "Fixed many broken items (only a few left still needing to be fixed)",
+                            "Fixed a few edge cases where things like hoods would render on Togrutas and Twi'leks",
+                            "Fixed an issue where exporting the zip had no file extension on Firefox",
+                            "Fixed long loading times"
+                        ],
+                        "changes": [
+                            "Now has dark side corruption",
+                            "<img src=\"./src/img/Release2__corruption.png\" alt=\"\" height=\"200px\" class=\"proj-img-resize-eye\">",
+                            "Added Eye Cube Maps (the glossy reflection on the character's eyes)",
+                            "<img src=\"./src/img/EyeCubeMap.png\" alt=\"\" class=\"proj-img-resize-eye\">",
+                            "Changed the lighting to be closer to the preview window. (this is the default for now, but more on that later)",
+                            "Added a Unify Colors option for each armor slot (this makes the slot in question become the same color as the chest slot)",
+                            "Added ability to apply dyes for each slot",
+                            "Added tick marks to make it easier to tell where to click to move the slider to a specific value",
+                            "Re-arranged the order of a few customizations to match in-game numbering",
+                            "Updated many of the UI images to make them clearer",
+                            "Now have a randomize button, and it also randomizes the slider values on load.",
+                            "Tweaked a bunch of the rendering settings (camera position, lighting angle, lighting intensity, etc.)"
+                        ]
+                    }
+                ],
+                "content": {
+
+                },
+                "link": "https://torcommunity.com/tools/character-designer",
+                "imgs": [
+                    "./img/projs/Release_one.png",
+                    "./img/orgs/torc-icon-2016.png"
+                ]
+            },
+            "torc-npc-viewers": {
+                "name": "TORC NPC 3D Viewers",
+                "time": "",
+                "status": "",
+                "difficulty": "",
+                "description": "",
+                "content": {
+
+                },
+                "link": "",
+                "imgs": [
+                    "",
+                    ""
+                ]
+            }
+        },
+        "software-engineering": {
+            "slicers-gui": {
+                "name": "Slicers GUI",
+                "time": "250+ hours",
+                "status": "In progress (Beta)",
+                "difficulty": "Complexed",
+                "description": "",
+                "content": {
+
+                },
+                "link": "https://github.com/SWTOR-Slicers/Slicers-GUI",
+                "imgs": [
+                    "./img/projs/Slicers GUI.png",
+                    "./img/orgs/SwtorSlicers.png"
+                ]
+            }
+        },
+        "education": {
+            "web-dev-intro-camp": {
+                "name": "SGIS Intro to web dev camp",
+                "time": "",
+                "status": "",
+                "difficulty": "",
+                "description": "",
+                "content": {
+
+                },
+                "link": "",
+                "imgs": [
+                    "",
+                    ""
+                ]
+            }
+        },
+        "miscellaneous": {
+            "modbot": {
+                "name": "Discord Modbot",
+                "time": "",
+                "status": "",
+                "difficulty": "",
+                "description": "",
+                "content": {
+
+                },
+                "link": "",
+                "imgs": [
+                    "",
+                    ""
+                ]
+            },
+            "memedb": {
+                "name": "The MemeDB",
+                "time": "",
+                "status": "",
+                "difficulty": "",
+                "description": "",
+                "content": {
+
+                },
+                "link": "",
+                "imgs": [
+                    "",
+                    ""
+                ]
+            }
+        }
+    },
+    "featured": "slicers-gui",
+    "organizations": [
+        {
+            "name": "SWTOR Slicers",
+            "path": "./img/orgs/SwtorSlicers.png",
+            "about": "The SWTOR Slicers Collaboration is a group who enjoys taking Star Wars The Old Republic beyond the game. Whether this be through using models for fan films, or creating tools for the community (such as my <i>Character and Outfit Designer</i>), the community enjoys finding new and unique was to utilize the game.",
+            "description": "I became a collaborator (essentially I work on new tools and techniques for the community, and help people whenever they have questions) because of my work on the <i>Character and Outfit Designer</i>. This was because I added a secondary feature to my tool, the ability to download a <i>.zip</i> file with all of the nessesary information to recreate the character in Blender. This, combined with a script I wrote to automatically  locates all the models and textures, takes a process that used to take over 1 hour, and makes it take under 20 minutes. Since finishing that, I continue to help people, as well as work to make the process even easier.",
+            "projects": [
+                {
+                    "name": "Slicers GUI",
+                    "linkId": "slicers-gui"
+                },
+                {
+                    "name": "TORC Character Designer",
+                    "linkId": "torc-character-designer"
+                },
+                {
+                    "name": "Wiki",
+                    "linkId": "slicers-wiki"
+                }
+            ]
+        },
+        {
+            "name": "TORCommunity.com",
+            "path": "./img/orgs/torc-icon-2016.png",
+            "about": "TORCommunity.com is a fan site for Star Wars The Old Republic. It was started in 2008, and has many neat features, such as guides, walkthroughs, tips, tools, and multiple databases. The sites goal is to provide great resources, and improve the experience players have while playing the game.",
+            "description": "I got involved with TORCommunity after the owner and head dev of the site reached out to me while I was working on the <i>Character and Outfit Designer</i> and asked if I would be willing to put it up on TORCommunity. He had been looking for a tool just like it for the site for a while, and I was hoping to get it up on one of the fan sites as well. After finishing the app, and putting it up live on the site, he offered me the opportunity to continue working on the site, which I gladly took him up on. Since then, I have continued to work on the <i>Character and Outfit Designer</i>, as well as other parts of the site.",
+            "projects": [
+                {
+                    "name": "TORC Character Designer",
+                    "linkId": "torc-character-designer"
+                },
+                {
+                    "name": "TORC NPC Viewers",
+                    "linkId": "torc-npc-viewers"
+                }
+            ]
+        }
+    ],
+    "experience": {
+
+    },
+    "art": [
+        {
+            "name": "SWTOR Neon Sign",
+            "path": "./img/art pieces/SWTOR Neon Final Marked.png",
+            "description": "This piece is a 3D render of a neon sign inspired SWTOR (Star Wars The Old Republic) logo, made in blender. This was my first original piece."
+        },
+        {
+            "name": "Operative Neon Sign",
+            "path": "./img/art pieces/Operative Neon Marked.png",
+            "description": "This was my second attempt to make a neon sign using blender. It has a bit more detail then the previous one, and the pipes and corners are a bit cleaner."
+        },
+        {
+            "name": "Guardian Neon Sign",
+            "path": "./img/art pieces/Guardian Neon Marked.png",
+            "description": "This piece was my third and most recent attemp at making a neon sign in blender. I was satisfied with how the previous sign turned out, however I wanted to add more detail. I settled on modeling a bracket, screws, and clips to 'hold' the sign to the brick wall behind, which turned out really nice."
+        },
+        {
+            "name": "Let the Wookie Win",
+            "path": "./img/art pieces/Let the Wookie Win Final.png",
+            "description": "If you are a Star Wars fan you may recognize the name of this piece. It was inspired by a scene from Star Wars IV: A New Hope."
+        },
+        {
+            "name": "The Gathering Storm",
+            "path": "./img/art pieces/Eye of the Gathering Storm Final.png",
+            "description": "This is a piece inspired by artwork I saw online years ago. It is a sorcerer summoning a storm around himself."
+        },
+        {
+            "name": "Vaulthunter Neon",
+            "path": "./img/art pieces/Vault finished v2.png",
+            "description": "This piece is based on the vaulthunter's icon from borderlands 2. I tried making a more realistic brick wall, but the realism took away from the sign itself, so I reverted it back to the older material."
+        }
+    ]
+}
