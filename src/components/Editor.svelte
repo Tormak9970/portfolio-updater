@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts">
 	import EditorJs from '@editorjs/editorjs';
 	import Header from '@editorjs/header';
 	import Code from '@editorjs/code';
@@ -10,50 +10,56 @@
 	import Embed from '@editorjs/embed';
 
 	import DragDrop from 'editorjs-drag-drop';
+	
+	import { onMount } from 'svelte';
+	import { currentProj } from '../Store';
 
     export let settings:Settings;
-    export let entry:Project;
 
-	const editor = new EditorJs({
-		holder : 'editorjs',
-		tools: {
-			header: {
-				class: Header,
-				inlineToolbar : true
+	let editor:EditorJs;
+
+	onMount(() => {
+		editor = new EditorJs({
+			holder : 'editorjs',
+			tools: {
+				header: {
+					class: Header,
+					inlineToolbar : true
+				},
+				code: {
+					class: Code,
+					inlineToolbar : true
+				},
+				image: {
+					class: Image,
+					inlineToolbar : true
+				},
+				link: {
+					class: Link,
+					inlineToolbar : true
+				},
+				list: {
+					class: List,
+					inlineToolbar : true
+				},
+				delimiter: {
+					class: Delimiter,
+					inlineToolbar : true
+				},
+				paragraph: {
+					class: Paragraph,
+					inlineToolbar : true
+				},
+				embed: {
+					class: Embed,
+					inlineToolbar : true
+				},
 			},
-			code: {
-				class: Code,
-				inlineToolbar : true
+			onReady: () => {
+				new DragDrop(editor);
 			},
-			image: {
-				class: Image,
-				inlineToolbar : true
-			},
-			link: {
-				class: Link,
-				inlineToolbar : true
-			},
-			list: {
-				class: List,
-				inlineToolbar : true
-			},
-			delimiter: {
-				class: Delimiter,
-				inlineToolbar : true
-			},
-			paragraph: {
-				class: Paragraph,
-				inlineToolbar : true
-			},
-			embed: {
-				class: Embed,
-				inlineToolbar : true
-			},
-		},
-		onReady: () => {
-			new DragDrop(editor);
-		},
-        data: entry.content
+			data: $currentProj.content
+		});
 	});
 
 	function save() {

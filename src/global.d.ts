@@ -16,3 +16,12 @@
         link?:string,
         imgs:string[]
     }
+
+
+    interface Config {
+        projects:Object,
+        featured:string,
+        organizations:Object[],
+        experience:Object,
+        art:Object[]
+    }

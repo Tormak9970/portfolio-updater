@@ -10,13 +10,14 @@ import Editor from "./components/Editor.svelte";
 
 	onMount(async () => {
 		settings = await fetch('./settings.json').then(response => { return response.json(); });
+		console.log(settings);
 
 		$componentRender = (settings.configDir != "" && settings.openProj != "") ? 0 : (settings.configDir != "") ? 1 : 2;
 	});
 </script>
 
 <main>
-	<svelte:component this={components[$componentRender]} settings={settings} />
+	<svelte:component this={components[$componentRender]}/>
 </main>
 
 <style lang="scss">
