@@ -12,7 +12,6 @@
     }
 
     function onReaderLoad(event){
-        console.log(event.target.result);
         $config = JSON.parse(event.target.result);
         $componentRender = 1;
     }

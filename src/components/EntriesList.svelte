@@ -1,11 +1,18 @@
 <script lang="ts">
-	import { componentRender, config } from "../Store";
+	import { config } from "../Store";
+	import Entry from "./Entry.svelte";
 
-    
+    function typeConfirmer(entr:[string, unknown]): [string, Project] { return [entr[0], entr[1] as Project]; }
 </script>
 
 <div id="entries">
-    
+    <div class="wrapper">
+		{#each Object.entries($config.projects) as projCat}
+			{#each Object.entries(projCat[1]).map(typeConfirmer) as proj}
+				<Entry project={proj[1]} category={projCat[0]}/>
+			{/each}
+		{/each}
+	</div>
 </div>
 
 <style lang="scss">
@@ -18,7 +25,7 @@
 
 	#entries {
 		width: 100%;
-		height: 100%;
+		height: 80%;
 
 		display: flex;
 		flex-direction: column;
@@ -26,5 +33,13 @@
 		align-items: center;
 
 		color: $font-color;
+
+		overflow: hidden;
+
+		.wrapper {
+			height: auto;
+
+			overflow: auto;
+		}
 	}
 </style>

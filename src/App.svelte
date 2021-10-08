@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-import Editor from "./components/Editor.svelte";
+	import Editor from "./components/Editor.svelte";
 	import EntriesList from "./components/EntriesList.svelte";
 	import Setup from "./components/Setup.svelte";
 	import { componentRender } from "./Store";
@@ -10,7 +10,6 @@ import Editor from "./components/Editor.svelte";
 
 	onMount(async () => {
 		settings = await fetch('./settings.json').then(response => { return response.json(); });
-		console.log(settings);
 
 		$componentRender = (settings.configDir != "" && settings.openProj != "") ? 0 : (settings.configDir != "") ? 1 : 2;
 	});
