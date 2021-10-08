@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { componentRender, config } from "../Store";
+	import { componentRender, config } from "../store";
 
     const reader = new FileReader();
     reader.onload = onReaderLoad;

@@ -1,22 +1,29 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import AppBar from "./AppBar.svelte";
 	import Editor from "./components/Editor.svelte";
 	import EntriesList from "./components/EntriesList.svelte";
 	import Setup from "./components/Setup.svelte";
-	import { componentRender } from "./Store";
+	import { componentRender, resourcePath, readFileSync } from "./store";
+	
+	import path from 'path';
 
 	let settings:Settings;
 	const components = [ Editor, EntriesList, Setup ];
 
 	onMount(async () => {
-		settings = await fetch('./settings.json').then(response => { return response.json(); });
+		const fileData = readFileSync(path.join(resourcePath, 'settings.json'));
+		settings = fileData.toJSON() as unknown as Settings;
 
 		$componentRender = (settings.configDir != "" && settings.openProj != "") ? 0 : (settings.configDir != "") ? 1 : 2;
 	});
 </script>
 
 <main>
-	<svelte:component this={components[$componentRender]}/>
+	<AppBar winName="Portfolio Updator"/>
+	<div class="content">
+		<svelte:component this={components[$componentRender]}/>
+	</div>
 </main>
 
 <style lang="scss">
@@ -33,9 +40,18 @@
 
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
 		align-items: center;
 
-		color: $font-color;
+		.content {
+			width: 100%;
+			height: calc(100% - 30px);
+
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+
+			color: $font-color;
+		}
 	}
 </style>

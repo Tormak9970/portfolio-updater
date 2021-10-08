@@ -8,11 +8,9 @@
 	import Delimiter from '@editorjs/delimiter';
 	import Paragraph from '@editorjs/paragraph';
 	import Embed from '@editorjs/embed';
-
-	import DragDrop from 'editorjs-drag-drop';
 	
 	import { onMount } from 'svelte';
-	import { currentProj } from '../Store';
+	import { currentProj } from '../store';
 
 	let editor:EditorJs;
 
@@ -52,9 +50,6 @@
 					class: Embed,
 					inlineToolbar : true
 				},
-			},
-			onReady: () => {
-				new DragDrop(editor);
 			},
 			data: $currentProj.content
 		});
