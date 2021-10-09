@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { config } from "../store";
+	import { config } from "../Store";
 	import Entry from "./Entry.svelte";
 
     function typeConfirmer(entr:[string, unknown]): [string, Project] { return [entr[0], entr[1] as Project]; }

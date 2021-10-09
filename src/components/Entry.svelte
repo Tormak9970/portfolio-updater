@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { componentRender, currentProj } from "../store";
+    import { componentRender, currentProj } from "../Store";
 
 
 	export let project:Project;
