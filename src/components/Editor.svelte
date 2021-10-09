@@ -65,8 +65,13 @@
 		const updatedConfig = $config;
 
 		updatedConfig.projects[$currentProj.category][$currentProj.key].content = content;
-		console.log(updatedConfig);
-		console.log(content);
+
+		const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(updatedConfig));
+		const dynDwnld = document.getElementById('dynDwnld');
+		dynDwnld.setAttribute("href", dataStr);
+		dynDwnld.setAttribute("download", "config.json");
+		dynDwnld.click();
+		$config = updatedConfig;
 		saved = true;
 	}
 
@@ -92,6 +97,10 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- svelte-ignore a11y-invalid-attribute -->
+	<!-- svelte-ignore a11y-missing-content -->
+	<a href="#" id="dynDwnld" style="display: none;"></a>
 </div>
 
 <!-- svelte-ignore css-unused-selector -->
