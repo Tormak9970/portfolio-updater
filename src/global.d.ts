@@ -30,3 +30,10 @@
         category:string,
         key:string
     }
+
+    interface UploadResponseFormat {
+        success:number,
+        file:{
+            url:string
+        }
+    }

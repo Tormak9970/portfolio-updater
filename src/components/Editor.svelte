@@ -20,38 +20,34 @@
 		editor = new EditorJs({
 			holder : 'editorjs',
 			tools: {
-				header: {
-					class: Header,
-					inlineToolbar : true
-				},
-				code: {
-					class: Code,
-					inlineToolbar : true
-				},
+				header: { class: Header, inlineToolbar : true },
+				code: { class: Code, inlineToolbar : true },
 				image: {
+					config: {
+						uploader: {
+							/**
+							 * Upload file to the server and return an uploaded image data
+							 * @param {File} file - file selected from the device or pasted by drag-n-drop
+							 * @return {Promise.<{success, file: {url}}>}
+							 */
+							uploadByFile(file:File){
+								return {
+									success: 1,
+									file: {
+										url: `./img/projs/${file.name}`
+									}
+								}
+							}
+						}
+					},
 					class: Image,
 					inlineToolbar : true
 				},
-				link: {
-					class: Link,
-					inlineToolbar : true
-				},
-				list: {
-					class: List,
-					inlineToolbar : true
-				},
-				delimiter: {
-					class: Delimiter,
-					inlineToolbar : true
-				},
-				paragraph: {
-					class: Paragraph,
-					inlineToolbar : true
-				},
-				embed: {
-					class: Embed,
-					inlineToolbar : true
-				},
+				link: { class: Link, inlineToolbar : true },
+				list: { class: List, inlineToolbar : true },
+				delimiter: { class: Delimiter, inlineToolbar : true },
+				paragraph: { class: Paragraph, inlineToolbar : true },
+				embed: { class: Embed, inlineToolbar : true },
 			},
 			onChange: () => { if (saved) saved = false; },
 			data: $currentProj.project.content
