@@ -8,13 +8,13 @@
 	import Delimiter from '@editorjs/delimiter';
 	import Paragraph from '@editorjs/paragraph';
 	import Embed from '@editorjs/embed';
-
-	import DragDrop from 'editorjs-drag-drop';
 	
 	import { onMount } from 'svelte';
-	import { currentProj } from '../Store';
+	import { renderIdx, config, currentProj } from '../store';
 
 	let editor:EditorJs;
+	let saved = true;
+	let showSave = false;
 
 	onMount(() => {
 		editor = new EditorJs({
@@ -53,35 +53,57 @@
 					inlineToolbar : true
 				},
 			},
-			onReady: () => {
-				new DragDrop(editor);
-			},
-			data: $currentProj.content
+			onChange: () => { if (saved) saved = false; },
+			data: $currentProj.project.content
 		});
 	});
 
-	function save() {
-		editor.save().then((outputData) => {
-			console.log(outputData);
-		});
+	async function getEditorContent() { return await editor.save().then((outputData) => { return outputData; }); }
+
+	async function save(): Promise<void> {
+		const content = await getEditorContent();
+		const updatedConfig = $config;
+
+		updatedConfig.projects[$currentProj.category][$currentProj.key].content = content;
+		console.log(updatedConfig);
+		console.log(content);
+		saved = true;
 	}
 
+	function quitHandler() { $renderIdx = 1; }
 </script>
 
 <div id="editor">
-	<h1>Project Entry Editor</h1>
+	<div class="back-arrow" on:click|stopPropagation="{() => { if (!saved) showSave = true; else quitHandler(); }}">
+		<i class="fas fa-arrow-left"></i>
+	</div>
+	<h1>Editing: {$currentProj.project.name}</h1>
 	<div id="editorjs"></div>
 	<button id="save" on:click="{save}">Save Content</button>
+	<div class="save-modal{showSave ? '' : ' hide-modal'}">
+		<div class="modal">
+			<div class="modal-msg">
+				<p>You have not saved the current changes. Do you want to save before exiting?</p>
+			</div>
+			<div class="modal-btns">
+				<button id="saveBtn" class="modal-btn" on:click|stopPropagation="{save}">Save</button>
+				<button id="quitBtn" class="modal-btn" on:click|stopPropagation="{quitHandler}">Quit</button>
+				<button class="modal-btn" on:click|stopPropagation="{() => { showSave = false; }}">Cancel</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- svelte-ignore css-unused-selector -->
 <style lang="scss">
 	$grey-primary: #252525;
+	$grey-primary__hover: rgb(51, 51, 51);
 	$grey-secondary: #383838;
 	$grey-secondary__hover: rgb(71, 71, 71);
 	$font-color: rgb(231, 231, 231);
 	$bud-green: #82b74bff;
     $bud-green__hover: rgb(138, 194, 78);
+	$warning-red: #e24a4a;
 
 	#editor {
 		width: 100%;
@@ -92,6 +114,23 @@
 		align-items: center;
 
 		color: $font-color;
+
+		position: relative;
+
+		.back-arrow {
+			position: absolute;
+			top: 14px;
+			left: 14px;
+
+			.fa-arrow-left {
+				color: $font-color;
+				cursor: pointer;
+
+				&:hover {
+					color: $bud-green;
+				}
+			}
+		}
 
 		#editorjs {
 			width: 650px;
@@ -146,7 +185,7 @@
 				background: $grey-secondary__hover;
 			}
 			:global(.ce-settings__button--confirm) {
-				background-color: #e24a4a !important;
+				background-color: $warning-red !important;
 			}
 			:global(.ce-settings__default-zone) {
 				color: $font-color;
@@ -186,5 +225,85 @@
 				outline: 1px solid $bud-green;
 			}
 		}
+
+		.save-modal {
+			z-index: 10;
+			position: absolute;
+
+			top: 0;
+			left: 0;
+
+			width: 100%;
+			height: 100%;
+
+			background-color: rgba(0, 0, 0, 0.7);
+
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+
+			.modal {
+				width: 300px;
+
+				background-color: $grey-secondary;
+				border-radius: 8px;
+				border: 1px solid black;
+
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: flex-start;
+
+				.modal-msg {
+					margin: 10px;
+					width: calc(100% - 20px);
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					justify-content: center;
+					text-align: center;
+					font-size: 18px;
+
+					p {
+						margin: 0px;
+					}
+				}
+
+				.modal-btns {
+					margin: 10px;
+
+					width: 100%;
+
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					justify-content: space-around;
+
+					.modal-btn {
+						height: 24px;
+						min-width: 40px;
+
+						cursor: pointer;
+						color: $font-color;
+						background-color: $grey-primary;
+
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
+						align-items: center;
+
+						border-radius: 2px;
+						border: 1px solid black;
+
+						&:hover { background-color: $grey-primary__hover; }
+					}
+					#saveBtn:hover { background-color: $bud-green__hover;}
+					#quitBtn:hover { background-color: $warning-red;}
+				}
+			}
+		}
+
+		.hide-modal { display: none; }
 	}
 </style>

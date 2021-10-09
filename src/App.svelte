@@ -3,7 +3,7 @@
 	import Editor from "./components/Editor.svelte";
 	import EntriesList from "./components/EntriesList.svelte";
 	import Setup from "./components/Setup.svelte";
-	import { componentRender } from "./Store";
+	import { renderIdx } from "./store";
 
 	let settings:Settings;
 	const components = [ Editor, EntriesList, Setup ];
@@ -11,12 +11,12 @@
 	onMount(async () => {
 		settings = await fetch('./settings.json').then(response => { return response.json(); });
 
-		$componentRender = (settings.configDir != "" && settings.openProj != "") ? 0 : (settings.configDir != "") ? 1 : 2;
+		$renderIdx = (settings.configDir != "" && settings.openProj != "") ? 0 : (settings.configDir != "") ? 1 : 2;
 	});
 </script>
 
 <main>
-	<svelte:component this={components[$componentRender]}/>
+	<svelte:component this={components[$renderIdx]}/>
 </main>
 
 <style lang="scss">

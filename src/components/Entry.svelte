@@ -1,13 +1,14 @@
 <script lang="ts">
-    import { componentRender, currentProj } from "../Store";
+    import { renderIdx, currentProj } from "../store";
 
 
 	export let project:Project;
+	export let key:string;
     export let category:string;
 
     function setProject(e: Event) {
-        $currentProj = project;
-        $componentRender = 0;
+        $currentProj = { project: project, category: category, key: key }
+        $renderIdx = 0;
     }
 </script>
 

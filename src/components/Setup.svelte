@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { componentRender, config } from "../Store";
+	import { renderIdx, config } from "../store";
 
     const reader = new FileReader();
     reader.onload = onReaderLoad;
@@ -13,7 +13,7 @@
 
     function onReaderLoad(event){
         $config = JSON.parse(event.target.result);
-        $componentRender = 1;
+        $renderIdx = 1;
     }
 </script>
 

@@ -17,11 +17,16 @@
         imgs:string[]
     }
 
-
     interface Config {
         projects:Object,
         featured:string,
         organizations:Object[],
         experience:Object,
         art:Object[]
+    }
+
+    interface ProjectCache {
+        project:Project,
+        category:string,
+        key:string
     }
