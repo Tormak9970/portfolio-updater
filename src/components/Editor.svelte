@@ -63,7 +63,7 @@
 		updatedConfig.projects[$currentProj.category][$currentProj.key].content = content;
 		updatedConfig.projects[$currentProj.category][$currentProj.key].description = content.blocks[1].data.text;
 
-		const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(updatedConfig));
+		const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(updatedConfig, null, '\t'));
 		const dynDwnld = document.getElementById('dynDwnld');
 		dynDwnld.setAttribute("href", dataStr);
 		dynDwnld.setAttribute("download", "config.json");
