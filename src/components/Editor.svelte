@@ -61,6 +61,7 @@
 		const updatedConfig = $config;
 
 		updatedConfig.projects[$currentProj.category][$currentProj.key].content = content;
+		updatedConfig.projects[$currentProj.category][$currentProj.key].description = content.blocks[1].data.text;
 
 		const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(updatedConfig));
 		const dynDwnld = document.getElementById('dynDwnld');
@@ -204,6 +205,46 @@
 			}
 			:global(.link-tool__input) {
 				background-image: url("data:image/svg+xml,%3Csvg width='13' height='14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.567 13.629c.728.464 1.581.65 2.41.558l-.873.873A3.722 3.722 0 1 1 4.84 9.794L6.694 7.94a3.722 3.722 0 0 1 5.256-.008L10.484 9.4a5.209 5.209 0 0 1-.017.016 1.625 1.625 0 0 0-2.29.009l-1.854 1.854a1.626 1.626 0 0 0 2.244 2.35zm2.766-7.358a3.722 3.722 0 0 0-2.41-.558l.873-.873a3.722 3.722 0 1 1 5.264 5.266l-1.854 1.854a3.722 3.722 0 0 1-5.256.008L9.416 10.5a5.2 5.2 0 0 1 .017-.016 1.625 1.625 0 0 0 2.29-.009l1.854-1.854a1.626 1.626 0 0 0-2.244-2.35z' fill='rgba(231, 231, 231)' transform='translate(-3.667 -2.7)'/%3E%3C/svg%3E%0A");
+			}
+			:global(.ce-inline-toolbar) {
+				color: $font-color !important;
+				background-color: $grey-secondary;
+				background: $grey-secondary;
+				box-shadow: -3px 2px 8px 2px black;
+				border: 1px solid $grey-primary;
+			}
+			:global(.ce-inline-toolbar__buttons > button > svg) {
+				fill: $font-color !important;
+			}
+			:global(.ce-inline-toolbar__buttons > button:hover) {
+				background-color: $grey-secondary__hover;
+				background: $grey-secondary__hover;
+			}
+			:global(.ce-inline-toolbar__dropdown:hover) {
+				background-color: $grey-secondary__hover;
+				background: $grey-secondary__hover;
+			}
+			:global(.ce-conversion-toolbar) {
+				color: $font-color !important;
+				background-color: $grey-secondary;
+				background: $grey-secondary;
+				box-shadow: -3px 2px 8px 2px black;
+				border: 1px solid $grey-primary;
+			}
+			:global(.ce-conversion-tool:hover) {
+				background-color: $grey-secondary__hover;
+				background: $grey-secondary__hover;
+			}
+			:global(.ce-conversion-tool > .ce-conversion-tool__icon > svg) {
+				fill: $font-color !important;
+			}
+			:global(.ce-conversion-tool__icon) {
+				background-color: $grey-secondary;
+				background: $grey-secondary;
+				border: 1px solid $grey-primary;
+			}
+			:global(.ce-conversion-toolbar__label) {
+				color: $font-color !important;
 			}
 		}
 
