@@ -1,14 +1,12 @@
-<script lang="ts">
+<script>
 	import { config } from "../store";
 	import Entry from "./Entry.svelte";
-
-    function typeConfirmer(entr:[string, unknown]): [string, Project] { return [entr[0], entr[1] as Project]; }
 </script>
 
 <div id="entries">
     <div class="wrapper">
 		{#each Object.entries($config.projects) as projCat}
-			{#each Object.entries(projCat[1]).map(typeConfirmer) as proj}
+			{#each Object.entries(projCat[1]) as proj}
 				<Entry project={proj[1]} category={projCat[0]} key={proj[0]}/>
 			{/each}
 		{/each}

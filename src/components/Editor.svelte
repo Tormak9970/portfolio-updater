@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import EditorJs from '@editorjs/editorjs';
 	import Header from '@editorjs/header';
 	import Code from '@editorjs/code';
@@ -12,7 +12,7 @@
 	import { onMount } from 'svelte';
 	import { renderIdx, config, currentProj } from '../store';
 
-	let editor:EditorJs;
+	let editor;
 	let saved = true;
 	let showSave = false;
 
@@ -30,7 +30,7 @@
 							 * @param {File} file - file selected from the device or pasted by drag-n-drop
 							 * @return {Promise.<{success, file: {url}}>}
 							 */
-							uploadByFile(file:File){
+							uploadByFile(file){
 								return {
 									success: 1,
 									file: {
@@ -56,7 +56,7 @@
 
 	async function getEditorContent() { return await editor.save().then((outputData) => { return outputData; }); }
 
-	async function save(): Promise<void> {
+	async function save() {
 		const content = await getEditorContent();
 		const updatedConfig = $config;
 

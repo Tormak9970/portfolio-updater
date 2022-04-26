@@ -1,12 +1,12 @@
-<script lang="ts">
+<script>
     import { renderIdx, currentProj } from "../store";
 
 
-	export let project:Project;
-	export let key:string;
-    export let category:string;
+	export let project;
+	export let key;
+    export let category;
 
-    function setProject(e: Event) {
+    function setProject(e) {
         $currentProj = { project: project, category: category, key: key }
         $renderIdx = 0;
     }

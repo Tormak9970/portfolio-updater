@@ -1,11 +1,11 @@
-<script lang="ts">
+<script>
 	import { onMount } from "svelte";
 	import Editor from "./components/Editor.svelte";
 	import EntriesList from "./components/EntriesList.svelte";
 	import Setup from "./components/Setup.svelte";
 	import { renderIdx } from "./store";
 
-	let settings:Settings;
+	let settings;
 	const components = [ Editor, EntriesList, Setup ];
 
 	onMount(async () => {

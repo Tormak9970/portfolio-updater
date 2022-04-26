@@ -1,12 +1,12 @@
-<script lang="ts">
+<script>
 	import { renderIdx, config } from "../store";
 
     const reader = new FileReader();
     reader.onload = onReaderLoad;
 
-    async function handleClick(e: Event) {
-        const elem:HTMLInputElement = <HTMLInputElement>e.currentTarget;
-        const file:File = elem.files[0];
+    async function handleClick(e) {
+        const elem = e.currentTarget;
+        const file = elem.files[0];
 
         reader.readAsText(file);
     }
