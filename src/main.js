@@ -13,12 +13,12 @@ process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 
 const settingsPath = path.resolve(devBuild ? './public/settings.json' : "./resources/app/public/settings.json");
 let settingsCache = {
-  "articlesFile": "",
-  "openArticle": {}
+  "configDir": "",
+  "openProj": {}
 }
 
 app.on("ready", () => {
-  app.setAppUserModelId('dev.tormak.swtor-launcher-replacement');
+  app.setAppUserModelId('dev.tormak.portfolio-site-editor');
   initMain();
   
   app.on('activate', function () {
@@ -45,7 +45,7 @@ function initMain() {
       enableRemoteModule: false,
       preload: path.join(__dirname, "preload.js"),
     },
-    icon: path.join(__dirname, "../public/img/SlicersLogo.ico"),
+    icon: path.join(__dirname, "../public/logo.ico"),
   });
 
   mainWindow.on('ready-to-show', () => mainWindow.show());
@@ -55,7 +55,7 @@ function initMain() {
   mainWindow.loadFile(path.join(__dirname, "../public/index.html"));
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   const settingsData = fs.readFileSync(settingsPath);
   const settings = JSON.parse(settingsData);
@@ -107,7 +107,9 @@ function initMainListeners(window) {
       window.webContents.send("articles", [null, (settingsCache.openArticle.name) ? JSON.stringify(settingsCache.openArticle) : null]);
     }
   });
-  ipcMain.on("writeArticles", (event, data) => { if (fs.existsSync(settingsCache.articlesFile)) fs.writeFileSync(settingsCache.articlesFile, data); });
+  ipcMain.on("writeProjects", (event, data) => {
+    if (fs.existsSync(settingsCache.articlesFile)) fs.writeFileSync(settingsCache.articlesFile, data);
+  });
   ipcMain.handle("getSettingsPath", async (event, data) => { return settingsPath; });
   ipcMain.handle("uploadUrl", async (event, data) => {
     const url = data;

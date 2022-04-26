@@ -4,6 +4,7 @@
 	import EntriesList from "./components/EntriesList.svelte";
 	import Setup from "./components/Setup.svelte";
 	import { renderIdx } from "./store";
+	import WindowTitleBar from "./utils/WindowTitleBar.svelte";
 
 	let settings;
 	const components = [ Editor, EntriesList, Setup ];
@@ -16,6 +17,7 @@
 </script>
 
 <main>
+	<WindowTitleBar />
 	<svelte:component this={components[$renderIdx]}/>
 </main>
 
