@@ -17,7 +17,7 @@
 </script>
 
 <main>
-	<WindowTitleBar />
+	<WindowTitleBar title={"Portfolio Site Editor"}/>
 	<svelte:component this={components[$renderIdx]}/>
 </main>
 

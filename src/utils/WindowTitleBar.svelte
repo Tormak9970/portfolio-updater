@@ -35,7 +35,7 @@
 <div id="windowBar">
     <div class="window-header">
         <!-- svelte-ignore a11y-missing-attribute -->
-        <img src="./img/SlicersLogo.ico" height="15" class="window-img"/>
+        <img src="./logo.ico" height="15" class="window-img"/>
         <div class="window-name">{title}</div>
         <div class="window-btns-wrapper">
             <div class="title-btn{minimize ? ' title-btn-disabled' : ''}" on:click="{minWin}">
