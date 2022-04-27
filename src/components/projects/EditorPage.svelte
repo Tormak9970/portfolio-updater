@@ -1,6 +1,7 @@
 <script>
-	import { config } from "../store";
+	import { config } from "../../store";
 	import Entry from "./Entry.svelte";
+	import Editor from "./Editor.svelte";
 </script>
 
 <div id="entries">
@@ -11,22 +12,27 @@
 			{/each}
 		{/each}
 	</div>
+	<Editor />
 </div>
 
 <style lang="scss">
+	$font-color: rgb(231, 231, 231);
 	$grey-primary: #252525;
+    $grey-primary__hover: #3a3a3a;
+    $grey-primary__hover-2: #303030;
 	$grey-secondary: #383838;
 	$grey-secondary__hover: rgb(71, 71, 71);
-	$font-color: rgb(231, 231, 231);
+    $grey-black: #1a1a1a;
 	$bud-green: #82b74bff;
     $bud-green__hover: rgb(138, 194, 78);
+    $warning-red: #e24a4a;
 
 	#entries {
 		width: 100%;
-		height: 80%;
+		height: calc(100% - 30px);
 
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		justify-content: center;
 		align-items: center;
 
@@ -38,6 +44,8 @@
 			height: auto;
 
 			overflow: auto;
+
+			overflow: scroll;
 		}
 	}
 </style>

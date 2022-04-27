@@ -8,7 +8,7 @@ contextBridge.exposeInMainWorld(
     "api", {
         send: (channel, data) => {
           // whitelist channels
-          let validChannels = ["window", "showDialog", "updateSettings", "getArticles", "writeArticles"];
+          let validChannels = ["window", "showDialog", "updateSettings", "getConfig", "writeConfig"];
           if (validChannels.includes(channel)) ipcRenderer.send(channel, data);
         },
         invoke: (channel, data) => {
@@ -23,7 +23,7 @@ contextBridge.exposeInMainWorld(
         },
         receive: (channel, func) => {
           // whitelist channels
-          let validChannels = ["fromMain", "articles"];
+          let validChannels = ["fromMain", "config"];
           if (validChannels.includes(channel)) ipcRenderer.on(channel, (event, ...args) => func(...args));
         }
     }

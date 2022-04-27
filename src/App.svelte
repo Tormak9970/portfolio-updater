@@ -1,19 +1,48 @@
 <script>
 	import { onMount } from "svelte";
-	import Editor from "./components/Editor.svelte";
-	import EntriesList from "./components/EntriesList.svelte";
+	import Experience from "./components/experience/Experience.svelte";
+	import EditorPage from "./components/projects/EditorPage.svelte";
+	import Organizations from "./components/organizations/Organizations.svelte";
+	import Art from "./components/art/Art.svelte";
 	import Setup from "./components/Setup.svelte";
-	import { renderIdx } from "./store";
+	import { config, renderIdx, state } from "./store";
 	import WindowTitleBar from "./utils/WindowTitleBar.svelte";
 
 	let settings;
-	const components = [ Editor, EntriesList, Setup ];
+	const components = [ Setup, Experience, EditorPage, Organizations, Art ];
 
 	onMount(async () => {
-		settings = await fetch('./settings.json').then(response => { return response.json(); });
+		const settingsPath = await window.api.invoke("getSettingsPath");
+		settings = await fetch(settingsPath).then(response => { return response.json(); });
 
-		$renderIdx = (settings.configDir != "" && settings.openProj != "") ? 0 : (settings.configDir != "") ? 1 : 2;
+		window.api.send("getConfig", settings.articlesFile);
 	});
+
+	window.api.receive("config", (data) => {
+		if (data[0]) {
+			$config = JSON.parse(data[0]);
+			$state = JSON.parse(data[2]);
+
+			if (data[1]) {
+				switch (data[1]) {
+					case "Experience":
+						$renderIdx = 1;
+						break;
+					case "Projects":
+						$renderIdx = 2;
+						break;
+					case "Organizations":
+						$renderIdx = 3;
+						break;
+					case "Art":
+						$renderIdx = 4;
+						break;
+				}
+			}
+		} else {
+			$renderIdx = 0;
+		}
+	})
 </script>
 
 <main>
@@ -35,7 +64,7 @@
 
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		justify-content: flex-start;
 		align-items: center;
 
 		color: $font-color;

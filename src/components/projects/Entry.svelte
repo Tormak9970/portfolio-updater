@@ -1,13 +1,12 @@
 <script>
-    import { renderIdx, currentProj } from "../store";
-
+    import { renderIdx } from "../../store";
 
 	export let project;
 	export let key;
     export let category;
 
     function setProject(e) {
-        $currentProj = { project: project, category: category, key: key }
+        // $currentProj = { project: project, category: category, key: key }
         $renderIdx = 0;
     }
 </script>

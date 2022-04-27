@@ -13,8 +13,28 @@ process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 
 const settingsPath = path.resolve(devBuild ? './public/settings.json' : "./resources/app/public/settings.json");
 let settingsCache = {
-  "configDir": "",
-  "openProj": {}
+  "configPath": "",
+  "selCat": "",
+  "state": {
+    "experience": {
+      "oExp": "",
+      "data": {}
+    },
+    "projects": {
+      "oProj": "",
+      "cat": "",
+      "key": "",
+      "data": {}
+    },
+    "organizations": {
+      "oOrg": "",
+      "data": {}
+    },
+    "art": {
+      "oArt": "",
+      "data": {}
+    }
+  }
 }
 
 app.on("ready", () => {
@@ -82,14 +102,14 @@ function initMainListeners(window) {
     dialog.showOpenDialog(window, { properties: ['openFile'] }).then(async (dir) => {
       if (!dir.canceled) {
         switch (data) {
-          case "articles":
+          case "config":
             if (fs.statSync(dir.filePaths[0]).isFile()) {
               const contents = fs.readFileSync(dir.filePaths[0]);
-              const articles = JSON.parse(contents);
+              const config = JSON.parse(contents);
           
-              await updateSettings("articlesFile", dir.filePaths[0]);
+              await updateSettings("configPath", dir.filePaths[0]);
 
-              window.webContents.send("articles", [JSON.stringify(articles), (settingsCache.openArticle.name) ? JSON.stringify(settingsCache.openArticle) : null]);
+              window.webContents.send("config", [JSON.stringify(config), settingsCache.selCat, JSON.stringify(settingsCache.state)]);
             }
             break;
         }
@@ -97,19 +117,17 @@ function initMainListeners(window) {
     });
   });
   ipcMain.on("updateSettings", async (event, data) => { await updateSettings(data.prop, data.value); });
-  ipcMain.on("getArticles", (event, data) => {
+  ipcMain.on("getConfig", (event, data) => {
     if (fs.existsSync(data)) {
       const contents = fs.readFileSync(data);
-      const articles = JSON.parse(contents);
+      const config = JSON.parse(contents);
 
-      window.webContents.send("articles", [JSON.stringify(articles), (settingsCache.openArticle.name) ? JSON.stringify(settingsCache.openArticle) : null]);
+      window.webContents.send("config", [JSON.stringify(config), settingsCache.selCat, JSON.stringify(settingsCache.state)]);
     } else {
-      window.webContents.send("articles", [null, (settingsCache.openArticle.name) ? JSON.stringify(settingsCache.openArticle) : null]);
+      window.webContents.send("config", [null, settingsCache.selCat, null]);
     }
   });
-  ipcMain.on("writeProjects", (event, data) => {
-    if (fs.existsSync(settingsCache.articlesFile)) fs.writeFileSync(settingsCache.articlesFile, data);
-  });
+  ipcMain.on("writeConfig", (event, data) => { if (fs.existsSync(settingsCache.configPath)) fs.writeFileSync(settingsCache.configPath, data); });
   ipcMain.handle("getSettingsPath", async (event, data) => { return settingsPath; });
   ipcMain.handle("uploadUrl", async (event, data) => {
     const url = data;

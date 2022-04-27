@@ -1,4 +1,6 @@
 <script>
+    import HeaderButton from "./HeaderButton.svelte";
+
     export let title;
     export let minimize;
 
@@ -35,7 +37,13 @@
 <div id="windowBar">
     <div class="window-header">
         <!-- svelte-ignore a11y-missing-attribute -->
-        <img src="./logo.ico" height="15" class="window-img"/>
+        <div class="buttons-cont">
+            <img src="./logo.ico" height="15" class="window-img"/>
+            <HeaderButton category={"Experience"}/>
+            <HeaderButton category={"Projects"}/>
+            <HeaderButton category={"Organizations"}/>
+            <HeaderButton category={"Art"}/>
+        </div>
         <div class="window-name">{title}</div>
         <div class="window-btns-wrapper">
             <div class="title-btn{minimize ? ' title-btn-disabled' : ''}" on:click="{minWin}">
@@ -57,24 +65,16 @@
 </div>
 
 <style lang="scss">
-    @font-face {
-        font-family: Eurofont;
-        src: url("./fonts/Hayward-SmBd.eot");
-        src: url("./fonts/Hayward-SmBd.eot?#iefix") format("embedded-opentype"), url("./fonts/Hayward-SmBd.woff2") format("woff2"), url("./fonts/Hayward-SmBd.woff") format("woff"), url("./fonts/Hayward-SmBd.ttf") format("truetype");
-        font-weight: normal;
-    }
-
     $font-color: rgb(231, 231, 231);
-    $grey-dark: #1a1a1a;
-    $grey-dark-hover: #353535;
+    $grey-black: #1a1a1a;
+    $grey-dark-hover: #3a3a3a;
     $warning-red: #e24a4a;
     
     #windowBar {
         width: 100%;
         height: 30px;
-        background-color: $grey-dark;
+        background-color: $grey-black;
         color: $font-color;
-        font-family: 'Eurofont';
         font-size: 12px;
         font-weight: lighter;
         -webkit-app-region: drag;
@@ -85,18 +85,24 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: space-between;
 
-            .window-img {
-                padding: 0px 7.5px
+            .buttons-cont {
+                display: flex;
+
+                align-items: center;
+
+                height: 100%;
+
+                .window-img {
+                    padding: 0px 7.5px
+                }
             }
 
             .window-name { color: white; }
 
             .window-btns-wrapper {
                 height: 100%;
-                width: auto;
-                margin-left: auto;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
