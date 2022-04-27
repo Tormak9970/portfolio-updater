@@ -9,7 +9,7 @@
 	import ImageTool from '../../libs/imagePlugin';
 	
 	import { onMount } from 'svelte';
-	import { state, jSwitchProj, config } from '../../store.js';
+	import { state, jSwitchProj, config } from '../../store';
 
 	let editor;
 	let saved = true;

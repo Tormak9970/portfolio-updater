@@ -7,7 +7,6 @@
 
     function setProject(e) {
         // $currentProj = { project: project, category: category, key: key }
-        $renderIdx = 0;
     }
 </script>
 

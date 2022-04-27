@@ -23,8 +23,7 @@
 			$config = JSON.parse(data[0]);
 			$state = JSON.parse(data[2]);
 
-			if (data[1]) {
-				switch (data[1]) {
+			switch (data[1]) {
 					case "Experience":
 						$renderIdx = 1;
 						break;
@@ -38,7 +37,6 @@
 						$renderIdx = 4;
 						break;
 				}
-			}
 		} else {
 			$renderIdx = 0;
 		}

@@ -1,25 +1,8 @@
 <script>
-	import { renderIdx, config } from "../store";
-
-    const reader = new FileReader();
-    reader.onload = onReaderLoad;
-
-    async function handleClick(e) {
-        const elem = e.currentTarget;
-        const file = elem.files[0];
-
-        reader.readAsText(file);
-    }
-
-    function onReaderLoad(event){
-        $config = JSON.parse(event.target.result);
-        $renderIdx = 1;
-    }
 </script>
 
 <div id="setup">
-    <input type="file" id="configInput" on:change="{handleClick}">
-	<button id="configPath" on:click="{() => { document.getElementById("configInput").click(); }}">Select Config File</button>
+	<button id="configPath" on:click="{() => { window.api.send("showDialog", "config"); }}">Select Config File</button>
 </div>
 
 <style lang="scss">
