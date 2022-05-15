@@ -22,20 +22,15 @@
     </div>
 </div>
 
-<style lang="scss">
-	$grey-primary: #252525;
-	$grey-secondary: #383838;
-	$grey-secondary__hover: rgb(71, 71, 71);
-	$font-color: rgb(231, 231, 231);
-	$bud-green: #82b74bff;
-    $bud-green__hover: rgb(138, 194, 78);
+<style>
+	@import "../../theme.css";
 
 	.entry {
 		width: 500px;
 		height: 60px;
 
-        background-color: $grey-secondary;
-        color: $font-color;
+        background-color: var(--foreground);
+        color: var(--font-color);
 
 		display: flex;
 		flex-direction: row;
@@ -45,40 +40,32 @@
         border-radius: 8px;
 
         margin-bottom: 7px;
-
-        .info {
-            margin-left: 7px;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: start;
-
-            .field {
-                font-size: 20px;
-            }
-            .category {
-                font-size: 16px;
-            }
-        }
-        .btn-cont {
-            margin-right: 7px;
-
-            .btn {
-                height: 30px;
-                width: 60px;
-
-                cursor: pointer;
-                background-color: $bud-green;
-
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-
-                border-radius: 10px;
-
-                &:hover { background-color: $bud-green__hover; }
-            }
-        }
 	}
+
+    .entry > .info {
+        margin-left: 7px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+    }
+    .entry > .info > .field { font-size: 20px; }
+    .entry > .info > .category { font-size: 16px; }
+
+    .entry > .btn-cont { margin-right: 7px; }
+    .entry > .btn-cont > .btn {
+        height: 30px;
+        width: 60px;
+
+        cursor: pointer;
+        background-color:var(--highlight);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 10px;
+    }
+    .entry > .btn-cont > .btn:hover { background-color: var(--highlight-hover); }
 </style>

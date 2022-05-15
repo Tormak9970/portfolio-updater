@@ -5,13 +5,8 @@
 	<button id="configPath" on:click="{() => { window.api.send("showDialog", "config"); }}">Select Config File</button>
 </div>
 
-<style lang="scss">
-	$grey-primary: #252525;
-	$grey-secondary: #383838;
-	$grey-secondary__hover: rgb(71, 71, 71);
-	$font-color: rgb(231, 231, 231);
-	$bud-green: #82b74bff;
-    $bud-green__hover: rgb(138, 194, 78);
+<style>
+	@import "../theme.css";
 
 	#setup {
 		width: 100%;
@@ -22,23 +17,21 @@
 		justify-content: center;
 		align-items: center;
 
-		color: $font-color;
-
-        #configInput { display: none; }
-
-        #configPath {
-            font-family: 'Source Sans Pro', sans-serif;
-            font-size: 16px;
-            color: $font-color;
-            background-color: $grey-secondary;
-            padding: 4px;
-            border: 1px solid #000;
-            box-shadow: 0 0 4px rgb(0 0 0 / 50%);
-            border-radius: 3px;
-            cursor: pointer;
-
-            &:hover { background-color: $grey-secondary__hover; }
-            &:focus { outline: 1px solid $bud-green; }
-        }
+		color: var(--font-color);
 	}
+
+    #configPath {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size: 16px;
+        color: var(--font-color);
+        background-color: var(--foreground);
+        padding: 4px;
+        border: 1px solid #000;
+        box-shadow: 0 0 4px rgb(0 0 0 / 50%);
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    #configPath:hover { background-color: var(--hover); }
+    #configPath:focus { outline: 1px solid var(--highlight); }
 </style>

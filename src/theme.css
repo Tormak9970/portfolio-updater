@@ -1,0 +1,13 @@
+:root {
+    --font-color: rgb(231, 231, 231);
+    --background: #1a1a1a;
+    --foreground: #252525;
+    --hover: #303030;
+
+    --highlight: #82b74b;
+    --highlight-hover: #8ac24e;
+    --highlight-accent: #405d27;
+    --highlight-accent__2: #32481e;
+    --warning: #e24a4a;
+    --warning-hover: #e13525;
+}

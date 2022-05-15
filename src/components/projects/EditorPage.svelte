@@ -15,18 +15,8 @@
 	<Editor />
 </div>
 
-<style lang="scss">
-	$font-color: rgb(231, 231, 231);
-	$grey-primary: #252525;
-    $grey-primary__hover: #3a3a3a;
-    $grey-primary__hover-2: #303030;
-	$grey-secondary: #383838;
-	$grey-secondary__hover: rgb(71, 71, 71);
-    $grey-black: #1a1a1a;
-	$bud-green: #82b74bff;
-    $bud-green__hover: rgb(138, 194, 78);
-    $warning-red: #e24a4a;
-
+<style>
+	@import "../../theme.css";
 	#entries {
 		width: 100%;
 		height: calc(100% - 30px);
@@ -36,16 +26,16 @@
 		justify-content: center;
 		align-items: center;
 
-		color: $font-color;
+		color: var(--font-color);
 
 		overflow: hidden;
+	}
 
-		.wrapper {
-			height: auto;
+	#entries > .wrapper {
+		height: auto;
 
-			overflow: auto;
+		overflow: auto;
 
-			overflow: scroll;
-		}
+		overflow: scroll;
 	}
 </style>
