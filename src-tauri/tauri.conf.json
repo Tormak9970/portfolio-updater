@@ -40,7 +40,9 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": [
+        "../public/settings.json"
+      ],
       "shortDescription": "",
       "targets": "all",
       "windows": {
