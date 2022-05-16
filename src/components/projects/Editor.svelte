@@ -9,7 +9,8 @@
 	import ImageTool from '../../libs/imagePlugin';
 	
 	import { onMount } from 'svelte';
-	import { state, jSwitchProj, config } from '../../store';
+	import { state, jSwitchProj, config } from '../../stores';
+	import { uploadFile, uploadUrl, writeConfig } from '../../Utils';
 
 	let editor;
 	let saved = true;
@@ -29,10 +30,13 @@
 						uploader: {
 							uploadByFile: async (file) => {
 								await file;
-								const uploadRes = await window.api.invoke("uploadFile", file.path);
+								const uploadRes = await uploadFile(file.path);
 								return JSON.parse(uploadRes);
 							},
-							uploadByUrl: async (url) => { const uploadRes = await window.api.invoke("uploadUrl", url); return JSON.parse(uploadRes); }
+							uploadByUrl: async (url) => {
+								const uploadRes = await uploadUrl(url);
+								return JSON.parse(uploadRes);
+							}
 						}
 					}
 				},
@@ -84,7 +88,7 @@
 		cfg.projects[$state.projects.cat][$state.projects.key].content = content;
 		cfg.projects[$state.projects.cat][$state.projects.key].description = content.blocks[1].data.text;
 
-		window.api.send("writeConfig", JSON.stringify(cfg));
+		await writeConfig(JSON.stringify(cfg));
 
 		$config = cfg;
 		saved = true;
@@ -115,7 +119,7 @@
 
 <!-- svelte-ignore css-unused-selector -->
 <style>
-	@import "../../theme.css";
+	@import "/theme.css";
 
 	#editor {
 		width: calc(100% - 272px - 2em - 40px);

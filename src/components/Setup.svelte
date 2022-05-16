@@ -1,12 +1,48 @@
-<script>
+<script lang="ts">
+    import { dialog, fs } from "@tauri-apps/api";
+    import { config, renderIdx, selCat } from "../stores";
+    import { updateSettings } from "../Utils";
+
+    async function click() {
+        await dialog.open({ directory: true }).then(async (dir) => {
+            if (dir) {
+                const files = await fs.readDir(dir as string);
+                const configFile = files.find((file) => file.name == "config.json");
+                
+                if (configFile) {
+                    const contents = await fs.readTextFile(configFile.path);
+                    const cfg = JSON.parse(contents);
+
+                    await updateSettings({prop: "configPath", data: configFile.path});
+
+                    $config = cfg;
+
+                    switch ($selCat) {
+                        case "Experience":
+                            $renderIdx = 1;
+                            break;
+                        case "Projects":
+                            $renderIdx = 2;
+                            break;
+                        case "Organizations":
+                            $renderIdx = 3;
+                            break;
+                        case "Art":
+                            $renderIdx = 4;
+                            break;
+                    }
+                }
+            }
+        });
+    }
 </script>
 
 <div id="setup">
-	<button id="configPath" on:click="{() => { window.api.send("showDialog", "config"); }}">Select Config File</button>
+	<button id="configPath" on:click="{click}">Select Config File</button>
 </div>
 
 <style>
-	@import "../theme.css";
+	@import "/theme.css";
 
 	#setup {
 		width: 100%;

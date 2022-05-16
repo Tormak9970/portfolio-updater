@@ -1,5 +1,5 @@
 <script>
-	import { config } from "../../store";
+	import { config } from "../../stores";
 	import Entry from "./Entry.svelte";
 	import Editor from "./Editor.svelte";
 </script>
@@ -16,7 +16,7 @@
 </div>
 
 <style>
-	@import "../../theme.css";
+	@import "/theme.css";
 	#entries {
 		width: 100%;
 		height: calc(100% - 30px);

@@ -1,5 +1,5 @@
 <script>
-    import { renderIdx } from "../../store";
+    import { renderIdx } from "../../stores";
 
 	export let project;
 	export let key;
@@ -23,7 +23,7 @@
 </div>
 
 <style>
-	@import "../../theme.css";
+	@import "/theme.css";
 
 	.entry {
 		width: 500px;

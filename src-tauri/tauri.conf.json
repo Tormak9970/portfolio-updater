@@ -14,7 +14,15 @@
     "allowlist": {
       "dialog": { "all": true },
       "path": { "all": true },
-      "fs": { "all": true }
+      "fs": {
+        "all": true,
+        "scope": [
+          "$APP/**",
+          "$DESKTOP/**",
+          "$DOCUMENT/**",
+          "$RESOURCE/**"
+        ]
+      }
     },
     "bundle": {
       "active": true,
