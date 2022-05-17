@@ -8,7 +8,7 @@
     <div class="wrapper">
 		{#each Object.entries($config.projects) as projCat}
 			{#each Object.entries(projCat[1]) as proj}
-				<Entry project={proj[1]} category={projCat[0]} key={proj[0]}/>
+				<Entry data={proj[1]} category={projCat[0]} key={proj[0]}/>
 			{/each}
 		{/each}
 	</div>
@@ -19,7 +19,7 @@
 	@import "/theme.css";
 	#entries {
 		width: 100%;
-		height: calc(100% - 30px);
+		height: 100%;
 
 		display: flex;
 		flex-direction: row;

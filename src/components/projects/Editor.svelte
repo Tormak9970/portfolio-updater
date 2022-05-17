@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import EditorJs from '@editorjs/editorjs';
 	import Header from '@editorjs/header';
 	import Code from '@editorjs/code';
@@ -11,6 +11,7 @@
 	import { onMount } from 'svelte';
 	import { state, jSwitchProj, config } from '../../stores';
 	import { uploadFile, uploadUrl, writeConfig } from '../../Utils';
+import EditorInput from './EditorInput.svelte';
 
 	let editor;
 	let saved = true;
@@ -20,6 +21,7 @@
 	onMount(() => {
 		editor = new EditorJs({
 			holder : 'editorjs',
+			// @ts-ignore
 			logLevel: 'ERROR',
 			tools: {
 				header: { class: Header, inlineToolbar : true },
@@ -50,17 +52,20 @@
 					if (saved) saved = false;
 					const content = await getEditorContent();
 					wasProgramatic = true;
-					$state.projects.data = content;
+					// @ts-ignore
+					$state.projects.data.content = content;
 				} else {
 					wasProgramatic = false;
 				}
 			},
-			data: $state.projects.data
+			// @ts-ignore
+			data: $state.projects.data.content
 		});
 	});
 
 	$: {
-		renderNewContent($state.projects.data);
+		// @ts-ignore
+		renderNewContent($state.projects.data.content);
 	}
 
 	const renderNewContent = (data) => {
@@ -68,6 +73,7 @@
 			wasProgramatic = true;
 			$jSwitchProj = false;
 			if (data.time && data.blocks?.length > 0 && data.version) {
+				console.log("updating editor");
 				editor.render(data);
 			} else {
 				editor.clear();
@@ -81,11 +87,17 @@
 		return JSON.parse(contentStr.replaceAll(`<a href`, `<a target=\\"_blank\\" rel=\\"noreferrer noopener\\" href`));
 	}
 
+	async function handleTextInput(e:Event) {
+
+	}
+
 	async function save() {
 		const content = await getEditorContent();
 		const cfg = $config;
 
+		// @ts-ignore
 		cfg.projects[$state.projects.cat][$state.projects.key].content = content;
+		// @ts-ignore
 		cfg.projects[$state.projects.cat][$state.projects.key].description = content.blocks[1].data.text;
 
 		await writeConfig(JSON.stringify(cfg));
@@ -96,12 +108,21 @@
 </script>
 
 <div id="editor">
-	<div class:active = "{$state.projects.oProj != ""}" style="overflow: scroll; min-height: 100%;">
+	<div class:hide = "{$state.projects.oProj == ""}" style="overflow: scroll; min-height: 100%;">
 		<h1>Editing: {$state.projects.oProj}</h1>
+		<EditorInput fieldName={"Category"} cVal={$state.projects.cat} />
+		<EditorInput fieldName={"Name"} cVal={$state.projects.data.name} />
+		<EditorInput fieldName={"Time"} cVal={$state.projects.data.time} />
+		<EditorInput fieldName={"Status"} cVal={$state.projects.data.status} />
+		<EditorInput fieldName={"Difficulty"} cVal={$state.projects.data.difficulty} />
+		<EditorInput fieldName={"Link"} cVal={$state.projects.data.link} />
+		<!-- "isRelative": true
+		"project Image": "./img/projs/Minesweeper.png"
+		"Organization Image": "" (Personal) -->
 		<div id="editorjs"></div>
 		<button id="save" on:click="{save}">Save Content</button>
 	</div>
-	<div class:active = "{$state.projects.oProj == ""}">
+	<div class:hide = "{$state.projects.oProj != ""}">
 		<div class="welcome-msg">Select an Project to get started</div>
 	</div>
 	<div class="save-modal{showSave ? '' : ' hide-modal'}">
@@ -135,7 +156,7 @@
 		position: relative;
 	}
 
-	#editor > #save {
+	#save {
 		font-family: 'Source Sans Pro', sans-serif;
 		font-size: 16px;
 		color: var(--font-color);
@@ -145,8 +166,8 @@
 		box-shadow: 0 0 4px rgb(0 0 0 / 50%);
 		border-radius: 3px;
 	}
-	#editor > #save:hover { cursor: pointer; background-color: var(--hover); }
-	#editor > #save:focus { outline: 1px solid var(--highlight); }
+	#save:hover { cursor: pointer; background-color: var(--hover); }
+	#save:focus { outline: 1px solid var(--highlight); }
 
 	#editor > .save-modal {
 		z-index: 10;
@@ -218,7 +239,7 @@
 	#editor > .save-modal > .modal > .modal-btns > #saveBtn:hover { background-color: var(--highlight-hover);}
 
 	#editor > .hide-modal { display: none; }
-	#editor > .active { display: none; }
+	#editor > .hide { display: none; }
 
 	#editor > div {
 		width: 100%;
@@ -405,5 +426,6 @@
 	:global(.ce-conversion-toolbar__label) {
 		color: var(--font-color) !important;
 	}
+
 	#editor > div > .welcome-msg { color: var(--font-color); font-size: 30px; }
 </style>

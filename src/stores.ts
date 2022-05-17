@@ -13,7 +13,17 @@ export const state = writable({
         "oProj": "",
         "cat": "",
         "key": "",
-        "data": {}
+        "data": {
+            "name": "",
+            "time": "",
+            "status": "",
+            "difficulty": "",
+            "description": "",
+            "content": {},
+            "link": "",
+            "isRelative": false,
+            "imgs": []
+        }
     },
     "organizations": {
         "oOrg": "",

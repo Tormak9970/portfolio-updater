@@ -1,23 +1,29 @@
 <script>
-    import { renderIdx } from "../../stores";
+    import { jSwitchProj, state } from "../../stores";
 
-	export let project;
+	export let data;
 	export let key;
     export let category;
 
     function setProject(e) {
-        // $currentProj = { project: project, category: category, key: key }
+        $state.projects.oProj = data.name;
+        $state.projects.key = key;
+        $state.projects.cat = category;
+        $state.projects.data = data;
+
+        $state = $state;
+        $jSwitchProj = true;
     }
 </script>
 
-<div id="entry-{project.name}" class="entry">
+<div id="entry-{data.name}" class="entry">
     <div class="info">
-        <div class="field">{project.name}</div>
+        <div class="field">{data.name}</div>
         <div class="category">{category}</div>
     </div>
     <div class="btn-cont">
         <div class="btn" on:click="{setProject}">
-            <div>{project.content.time ? "Edit" : "Create"}</div>
+            <div>{data.content.time ? "Edit" : "Create"}</div>
         </div>
     </div>
 </div>
