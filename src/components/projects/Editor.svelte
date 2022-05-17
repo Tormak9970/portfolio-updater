@@ -9,9 +9,9 @@
 	import ImageTool from '../../libs/imagePlugin';
 	
 	import { onMount } from 'svelte';
-	import { state, jSwitchProj, config } from '../../stores';
+	import { state, jSwitchProj, config, changedCat, changedKey } from '../../stores';
 	import { uploadFile, uploadUrl, writeConfig } from '../../Utils';
-import EditorInput from './EditorInput.svelte';
+	import EditorInput from './EditorInput.svelte';
 
 	let editor;
 	let saved = true;
@@ -87,18 +87,36 @@ import EditorInput from './EditorInput.svelte';
 		return JSON.parse(contentStr.replaceAll(`<a href`, `<a target=\\"_blank\\" rel=\\"noreferrer noopener\\" href`));
 	}
 
-	async function handleTextInput(e:Event) {
-
-	}
-
 	async function save() {
 		const content = await getEditorContent();
 		const cfg = $config;
 
+		if ($changedCat) {
+			// @ts-ignore
+			cfg.projects[$changedCat][$state.projects.key] = cfg.projects[$state.projects.cat][$state.projects.key]
+
+			// @ts-ignore
+			delete cfg.projects[$state.projects.cat][$state.projects.key];
+
+			$state.projects.cat = $changedCat;
+			$changedCat = null;
+		}
+		
+		if ($changedKey) {
+			// @ts-ignore
+			cfg.projects[$state.projects.cat][$changedKey] = cfg.projects[$state.projects.cat][$state.projects.key]
+
+			// @ts-ignore
+			delete cfg.projects[$state.projects.cat][$state.projects.key];
+
+			$state.projects.key = $changedKey;
+			$changedKey = null;
+		}
+
+		$state.projects.data.content = content;
+		$state.projects.data.description = content.blocks[1].data.text;
 		// @ts-ignore
-		cfg.projects[$state.projects.cat][$state.projects.key].content = content;
-		// @ts-ignore
-		cfg.projects[$state.projects.cat][$state.projects.key].description = content.blocks[1].data.text;
+		cfg.projects[$state.projects.cat][$state.projects.key] = $state.projects.data;
 
 		await writeConfig(JSON.stringify(cfg));
 

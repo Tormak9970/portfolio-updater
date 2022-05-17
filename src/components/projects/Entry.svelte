@@ -33,6 +33,7 @@
 
 	.entry {
 		height: 60px;
+        min-width: 300px;
 
         background-color: var(--foreground);
         color: var(--font-color);
@@ -54,7 +55,7 @@
         flex-direction: column;
         justify-content: start;
     }
-    .entry > .info > .field { font-size: 20px; }
+    .entry > .info > .field { font-size: 20px; white-space: nowrap; }
     .entry > .info > .category { font-size: 16px; }
 
     .entry > .btn-cont { margin-right: 7px; }

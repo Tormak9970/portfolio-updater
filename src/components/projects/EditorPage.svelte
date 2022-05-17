@@ -33,6 +33,7 @@
 
 	#entries > .wrapper {
 		height: calc(100% - 40px);
+		min-width: 320px;
 
 		overflow: auto;
 

@@ -1,24 +1,27 @@
 <script lang="ts">
-	import { state, config } from '../../stores';
-	import { writeConfig } from '../../Utils';
+	import { state, changedCat, changedKey } from '../../stores';
 
     export let fieldName:string;
     export let cVal:string;
 
-    let placeholder = cVal;
-
 	async function handleInput(e:Event) {
-        if (fieldName == "Category") {
-
-        } else {
-
+        const value = (e.currentTarget as HTMLInputElement).value;
+        if (fieldName == "Category" && $state.projects.cat != value) {
+            $changedCat = value;
+        } else if (fieldName == "Name" && $state.projects.oProj != value) {
+            $state.projects.oProj = value;
+            $changedKey = value.replace(" ", "-").toLowerCase();
         }
+        
+        $state.projects.data[fieldName.toLowerCase()] = value;
+
+        $state = $state;
 	}
 </script>
 
 <div class="editor-input">
 	<div class="field-name">{fieldName}:</div>
-    <input type="text" placeholder="{placeholder}" on:change="{handleInput}">
+    <input type="text" placeholder="{cVal}" on:change="{handleInput}">
 </div>
 
 <!-- svelte-ignore css-unused-selector -->
