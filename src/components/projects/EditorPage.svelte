@@ -32,10 +32,12 @@
 	}
 
 	#entries > .wrapper {
-		height: auto;
+		height: calc(100% - 40px);
 
 		overflow: auto;
 
 		overflow: scroll;
+
+		margin-left: 20px;
 	}
 </style>

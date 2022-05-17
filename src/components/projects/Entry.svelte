@@ -26,7 +26,6 @@
 	@import "/theme.css";
 
 	.entry {
-		width: 500px;
 		height: 60px;
 
         background-color: var(--foreground);
