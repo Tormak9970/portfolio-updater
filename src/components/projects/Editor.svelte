@@ -1,5 +1,5 @@
 <script lang="ts">
-	import EditorJs from '@editorjs/editorjs';
+	import EditorJs, { OutputData } from '@editorjs/editorjs';
 	import Header from '@editorjs/header';
 	import Code from '@editorjs/code';
 	import List from '../../libs/nestedList';
@@ -10,15 +10,18 @@
 	
 	import { onMount } from 'svelte';
 	import { state, jSwitchProj, config, changedCat, changedKey } from '../../stores';
-	import { uploadFile, uploadUrl, writeConfig } from '../../Utils';
+	import { configPath, uploadFile, uploadUrl, writeConfig } from '../../Utils';
 	import EditorInput from './EditorInput.svelte';
+	import ImagePreview from './ImagePreview.svelte';
+	import { path, tauri } from '@tauri-apps/api';
 
-	let editor;
+	let editor: EditorJs;
 	let saved = true;
 	let showSave = false;
 	let wasProgramatic = false;
 
-	onMount(() => {
+	onMount(async () => {
+		const cnt = await convertToTauri($state.projects.data.content);
 		editor = new EditorJs({
 			holder : 'editorjs',
 			// @ts-ignore
@@ -59,30 +62,55 @@
 				}
 			},
 			// @ts-ignore
-			data: $state.projects.data.content
+			data: cnt
 		});
 	});
 
 	$: {
-		// @ts-ignore
 		renderNewContent($state.projects.data.content);
 	}
 
-	const renderNewContent = (data) => {
+	const renderNewContent = async (data) => {
 		if (editor && $jSwitchProj) {
 			wasProgramatic = true;
 			$jSwitchProj = false;
 			if (data.time && data.blocks?.length > 0 && data.version) {
 				console.log("updating editor");
-				editor.render(data);
+				const transformedDat = await convertToTauri(data);
+				console.log(transformedDat);
+				editor.render(transformedDat);
 			} else {
 				editor.clear();
 			}
 		}
 	};
 
+	async function convertToTauri(data) {
+		if (data) {
+			await Promise.all(data.blocks.map(async (block) => {
+				if (block.type == "image" && block.data.file.url.indexOf("./") == 0) {
+					block.data.file.webUrl = block.data.file.url;
+					block.data.file.url = tauri.convertFileSrc(await path.join(await path.dirname(configPath), block.data.file.url));
+				}
+				return block;
+			}));
+		}
+		return data;
+	}
+
+	function convertToWeb(data: OutputData) {
+		data.blocks = data.blocks.map((block) => {
+			if (block.type == "image") {
+				block.data.file.url = block.data.file.webUrl;
+				delete block.data.file.webUrl;
+			}
+			return block;
+		});
+		return data;
+	}
+
 	async function getEditorContent() {
-		const content = await editor.save().then((outputData) => { return outputData; });
+		const content = await editor.save().then((outputData) => { return convertToWeb(outputData); });
 		const contentStr = JSON.stringify(content);
 		return JSON.parse(contentStr.replaceAll(`<a href`, `<a target=\\"_blank\\" rel=\\"noreferrer noopener\\" href`));
 	}
@@ -128,15 +156,20 @@
 <div id="editor">
 	<div class:hide = "{$state.projects.oProj == ""}" style="overflow: scroll; min-height: 100%;">
 		<h1>Editing: {$state.projects.oProj}</h1>
-		<EditorInput fieldName={"Category"} cVal={$state.projects.cat} />
-		<EditorInput fieldName={"Name"} cVal={$state.projects.data.name} />
-		<EditorInput fieldName={"Time"} cVal={$state.projects.data.time} />
-		<EditorInput fieldName={"Status"} cVal={$state.projects.data.status} />
-		<EditorInput fieldName={"Difficulty"} cVal={$state.projects.data.difficulty} />
-		<EditorInput fieldName={"Link"} cVal={$state.projects.data.link} />
-		<!-- "isRelative": true
-		"project Image": "./img/projs/Minesweeper.png"
-		"Organization Image": "" (Personal) -->
+		<div class="info-cont">
+			<div class="sub">
+				<EditorInput fieldName={"Category"} cVal={$state.projects.cat} />
+				<EditorInput fieldName={"Name"} cVal={$state.projects.data.name} />
+				<EditorInput fieldName={"Time"} cVal={$state.projects.data.time} />
+				<EditorInput fieldName={"Status"} cVal={$state.projects.data.status} />
+				<EditorInput fieldName={"Difficulty"} cVal={$state.projects.data.difficulty} />
+				<EditorInput fieldName={"Link"} cVal={$state.projects.data.link} />
+			</div>
+			<div class="sub" style="display: flex; align-items:flex-start;">
+				<ImagePreview label={"Project"} idx={0} />
+				<ImagePreview label={"Organization"} idx={1} />
+			</div>
+		</div>
 		<div id="editorjs"></div>
 		<button id="save" on:click="{save}">Save Content</button>
 	</div>
@@ -186,6 +219,13 @@
 	}
 	#save:hover { cursor: pointer; background-color: var(--hover); }
 	#save:focus { outline: 1px solid var(--highlight); }
+
+	.info-cont {
+		width: 100%;
+
+		display: flex;
+		flex-direction: row;
+	}
 
 	#editor > .save-modal {
 		z-index: 10;
@@ -276,44 +316,24 @@
 		padding: 7px 50px;
 		background-color:  transparent;
 	}
-	:global(.codex-editor) {
-		width: 100%;
-	}
-	:global(.codex-editor__redactor) {
-		padding-bottom: 60px !important;
-	}
+	:global(.codex-editor) { width: 100%; }
+	:global(.codex-editor__redactor) { padding-bottom: 60px !important; }
 	:global(.ce-block__content) {
 		max-width: calc(100% - 20px);
 		background-color: transparent;
 	}
 
-	:global(.ce-block a) {
-		color: #58a6ff;
-	}
-	:global(::selection) {
-		background-color: #1982d582;
-	}
+	:global(.ce-block a) { color: #58a6ff; }
+	:global(::selection) { background-color: #1982d582; }
 
-	:global(.ce-toolbar__content) {
-		max-width: calc(100% - 20px);
-	}
+	:global(.ce-toolbar__content) { max-width: calc(100% - 20px); }
 
-	:global(.cdx-block) {
-		background-color: transparent;
-	}
-	:global(.cdx-button) {
-		background-color: var(--foreground);
-	}
+	:global(.cdx-block) { background-color: transparent; }
+	:global(.cdx-button) { background-color: var(--foreground); }
 	
-	:global(.cdx-settings-button) {
-		background-color: transparent;
-	}
-	:global(.cdx-settings-button:hover) {
-		background-color: var(--hover) !important;
-	}
-	:global(.cdx-settings-button--active) {
-		background-color: var(--hover) !important;
-	}
+	:global(.cdx-settings-button) { background-color: transparent; }
+	:global(.cdx-settings-button:hover) { background-color: var(--hover) !important; }
+	:global(.cdx-settings-button--active) { background-color: var(--hover) !important; }
 	
 	:global(.ce-toolbar__settings-btn) {
 		color: var(--font-color) !important;
@@ -349,9 +369,7 @@
 		background-color: var(--hover) !important;
 		background: var(--hover) !important;
 	}
-	:global(.codex-editor--narrow .ce-toolbox) {
-		background-color: transparent !important;
-	}
+	:global(.codex-editor--narrow .ce-toolbox) { background-color: transparent !important; }
 	:global(.ce-settings) {
 		color: var(--font-color) !important;
 		background-color: transparent !important;
@@ -402,16 +420,12 @@
 		box-shadow: -3px 2px 8px 2px black;
 		border: 1px solid var(--foreground);
 	}
-	:global(.ce-inline-toolbar__buttons > button > svg) {
-		fill: var(--font-color) !important;
-	}
+	:global(.ce-inline-toolbar__buttons > button > svg) { fill: var(--font-color) !important; }
 	:global(.ce-inline-toolbar__buttons > button:hover) {
 		background-color: var(--hover) !important;
 		background: var(--hover) !important;
 	}
-	:global(.ce-inline-toolbar__dropdown) {
-		margin: 0px;
-	}
+	:global(.ce-inline-toolbar__dropdown) { margin: 0px; }
 	:global(.ce-inline-toolbar__dropdown:hover) {
 		background-color: var(--hover) !important;
 		background: var(--hover) !important;
@@ -441,9 +455,7 @@
 		background: transparent !important;
 		border: 1px solid var(--foreground);
 	}
-	:global(.ce-conversion-toolbar__label) {
-		color: var(--font-color) !important;
-	}
+	:global(.ce-conversion-toolbar__label) { color: var(--font-color) !important; }
 
 	#editor > div > .welcome-msg { color: var(--font-color); font-size: 30px; }
 </style>

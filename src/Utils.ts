@@ -1,4 +1,4 @@
-import { fs, path } from "@tauri-apps/api";
+import { fs, path, tauri } from "@tauri-apps/api";
 
 const devBuild = true;
 export let settingsPath = "";
@@ -47,21 +47,23 @@ export async function uploadUrl(url: string) {
   const response = await fetch(url);
   const buffer = await response.arrayBuffer();
 
-  const imagesWebsiteDir = await path.join(await path.dirname(configPath), 'img', 'projs');
-  const finalPath = await path.join(imagesWebsiteDir, name);
+  const imagesWebsiteDir = await path.join('img', 'projs');
+  const preFinalPath = await path.join(imagesWebsiteDir, name);
+  const finalPath = await path.join(await path.dirname(configPath), preFinalPath);
 
   await fs.writeBinaryFile({
     path: finalPath,
     contents: new Uint8Array(buffer)
   });
 
-  return JSON.stringify({ success: 1, file: { url: finalPath } });
+  return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath), webUrl: preFinalPath } });
 }
 export async function uploadFile(filePath: string) {
   const imagesWebsiteDir = await path.join(await path.dirname(configPath), 'img', 'projs');
-  const finalPath = await path.join(imagesWebsiteDir, await path.basename(filePath));
+  const preFinalPath = await path.join(imagesWebsiteDir, await path.basename(filePath));
+  const finalPath = await path.join(await path.dirname(configPath), preFinalPath);
 
   await fs.copyFile(filePath, finalPath);
 
-  return JSON.stringify({ success: 1, file: { url: finalPath } });
+  return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath), webUrl: preFinalPath } });
 }

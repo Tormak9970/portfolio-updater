@@ -22,6 +22,16 @@
           "$DOCUMENT/**",
           "$RESOURCE/**"
         ]
+      },
+      "protocol": {
+        "all": true,
+        "asset": true,
+        "assetScope": [
+          "$APP/**",
+          "$DESKTOP/**",
+          "$DOCUMENT/**",
+          "$RESOURCE/**"
+        ]
       }
     },
     "bundle": {
@@ -60,7 +70,7 @@
       }
     },
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost"
     },
     "updater": {
       "active": false
@@ -68,10 +78,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 1000,
         "resizable": true,
         "title": "Portfolio Updator",
-        "width": 800
+        "width": 1500
       }
     ]
   }

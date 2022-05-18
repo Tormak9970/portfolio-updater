@@ -29,7 +29,6 @@
 	@import "/theme.css";
 
 	.editor-input {
-		width: calc(100% - 100px);
 		margin: 5px 50px;
 
 		display: flex;
