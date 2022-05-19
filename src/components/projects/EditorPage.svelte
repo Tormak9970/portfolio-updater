@@ -2,15 +2,19 @@
 	import { config } from "../../stores";
 	import Entry from "./Entry.svelte";
 	import Editor from "./Editor.svelte";
+	import Open from "./create-new/Open.svelte";
 </script>
 
 <div id="entries">
     <div class="wrapper">
-		{#each Object.entries($config.projects) as projCat}
-			{#each Object.entries(projCat[1]) as proj}
-				<Entry data={proj[1]} category={projCat[0]} key={proj[0]}/>
+		<Open />
+		<div class="wrap-inner">
+			{#each Object.entries($config.projects) as projCat}
+				{#each Object.entries(projCat[1]) as proj}
+					<Entry data={proj[1]} category={projCat[0]} key={proj[0]}/>
+				{/each}
 			{/each}
-		{/each}
+		</div>
 	</div>
 	<Editor />
 </div>
@@ -35,10 +39,15 @@
 		height: calc(100% - 40px);
 		min-width: 320px;
 
+		margin-left: 20px;
+	}
+
+	#entries > .wrapper > .wrap-inner {
+		height: calc(100% - 60px);
+		min-width: 100%;
+
 		overflow: auto;
 
 		overflow: scroll;
-
-		margin-left: 20px;
 	}
 </style>

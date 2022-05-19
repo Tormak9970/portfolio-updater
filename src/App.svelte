@@ -7,7 +7,8 @@
 	import Setup from "./components/Setup.svelte";
 	import { config, renderIdx, selCat, state } from "./stores";
 	import { fs } from "@tauri-apps/api";
-	import { getConfig, setSettingsPath, settingsPath, updateSettings } from "./Utils";
+	import { getConfig, setSettingsPath, settingsPath } from "./Utils";
+	import CreateNewModal from "./components/projects/create-new/CreateNewModal.svelte";
 
 	const components = [ Setup, Experience, EditorPage, Organizations, Art ];
 
@@ -45,6 +46,7 @@
 
 <main>
 	<svelte:component this={components[$renderIdx]}/>
+	<CreateNewModal />
 </main>
 
 <style>

@@ -38,3 +38,4 @@ export const state = writable({
 });
 export const changedCat = writable(null);
 export const changedKey = writable(null);
+export const showCreateNewModal = writable(false);
