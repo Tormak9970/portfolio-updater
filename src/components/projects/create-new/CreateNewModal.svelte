@@ -1,19 +1,51 @@
 <script lang="ts">
-    import { showCreateNewModal } from "../../../stores";
+    import { config, showCreateNewModal } from "../../../stores";
+    import CDropDown from "./CDropDown.svelte";
+    import CImageInput from "./CImageInput.svelte";
+    import CTextInput from "./CTextInput.svelte";
+
+    const dropCnfgCat = {
+        default:"web-dev",
+        // @ts-ignore
+        values: Object.keys($config.projects)
+    }
+    const dropCnfgOrg = {
+        default:"none",
+        values: []
+    }
 
     async function close(e:Event) {
         $showCreateNewModal = false;
     }
+
+    async function saveNew(e:Event) {
+
+    }
 </script>
 
 {#if $showCreateNewModal}
-    <div class="backdrop">
-        <div class="modal" on:click|stopPropagation="{close}">
+    <div class="backdrop" on:click="{close}">
+        <div class="modal" on:click|stopPropagation="{() => {}}">
             <div class="content">
-                
+                <h2>Create a New Project</h2>
+                <div class="input-wrapper">
+                    <!-- Catagory Dropdown -->
+                    <CDropDown fieldName="Catagory" config={dropCnfgCat}/>
+
+                    <!-- Organization Dropdown -->
+                    <CDropDown fieldName="Organization" config={dropCnfgOrg}/>
+
+                    <CTextInput fieldName="Name" cVal="something new" />
+                    <CTextInput fieldName="Time" cVal="# hours" />
+                    <CTextInput fieldName="Status" cVal="" />
+                    <CTextInput fieldName="Difficulty" cVal="" />
+                    <CTextInput fieldName="Link" cVal="" />
+
+                    <CImageInput fieldName="Project Image" cVal="" />
+                </div>
 
                 <div class="btns-cont">
-                    <div class="btn" on:click="{close}">Main Menu</div>
+                    <div class="btn" on:click="{saveNew}">Create</div>
                 </div>
             </div>
         </div>
