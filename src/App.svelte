@@ -5,7 +5,7 @@
 	import Organizations from "./components/organizations/Organizations.svelte";
 	import Art from "./components/art/Art.svelte";
 	import Setup from "./components/Setup.svelte";
-	import { config, renderIdx, selCat, state } from "./stores";
+	import { config, renderIdx, selCat, showCreateNewModal, state } from "./stores";
 	import { fs } from "@tauri-apps/api";
 	import { getConfig, setSettingsPath, settingsPath } from "./Utils";
 	import CreateNewModal from "./components/projects/create-new/CreateNewModal.svelte";
@@ -46,7 +46,10 @@
 
 <main>
 	<svelte:component this={components[$renderIdx]}/>
-	<CreateNewModal />
+	
+	{#if $showCreateNewModal}
+		<CreateNewModal />
+	{/if}
 </main>
 
 <style>

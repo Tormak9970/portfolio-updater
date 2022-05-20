@@ -1,56 +1,123 @@
 <script lang="ts">
+    import { afterUpdate, onMount } from "svelte";
+
     import { config, showCreateNewModal } from "../../../stores";
+    import { writeConfig } from "../../../Utils";
     import CDropDown from "./CDropDown.svelte";
     import CImageInput from "./CImageInput.svelte";
     import CTextInput from "./CTextInput.svelte";
 
-    const dropCnfgCat = {
+    let dropCnfgCat = {
         default:"web-dev",
         // @ts-ignore
-        values: Object.keys($config.projects)
+        values: $config.projects ? Object.keys($config.projects) : []
     }
-    const dropCnfgOrg = {
+
+    let dropCnfgOrg = {
         default:"none",
-        values: []
+        // @ts-ignore
+        values: $config.organizations ? Object.keys($config.organizations) : []
     }
+    dropCnfgOrg.values.unshift("none");
+    let dropCfgDiff = {
+        default: "Moderate",
+        values: [
+            "Simple",
+            "Moderate",
+            "Complex"
+        ]
+    }
+    let dropCfgStat = {
+        default: "In Progress",
+        values: [
+            "Not Live / Obsolete",
+            "In Progress",
+            "Complete"
+        ]
+    }
+
+    let category:string;
+    let org:string;
+    let name:string;
+    let time:string;
+    let status:string;
+    let difficulty:string;
+    let link:string;
+    let projImg:string;
 
     async function close(e:Event) {
         $showCreateNewModal = false;
     }
 
-    async function saveNew(e:Event) {
+    function validateFields(): boolean {
+        return name !== "" &&
+            time !== "" &&
+            link !== "" &&
+            projImg !== "";
+    }
 
+    async function saveNew(e:Event) {
+        if (validateFields()) {
+            const newProj = {
+                "name": name,
+				"time": time,
+				"status": status,
+				"difficulty": difficulty,
+				"description": "",
+				"content": {},
+				"link": link,
+				"isRelative": false,
+				"imgs": [
+					projImg,
+                    // @ts-ignore
+					org == "none" ? "" : $config.organizations[org].path
+				]
+            }
+
+            const cfg = $config;
+            const key = name.toLowerCase().replaceAll(" ", "-").replaceAll("'", "");
+
+            // @ts-ignore
+            cfg.projects[category][key] = newProj;
+
+            $config = cfg;
+            await writeConfig(JSON.stringify(cfg));
+
+            $showCreateNewModal = false;
+        }
     }
 </script>
 
-{#if $showCreateNewModal}
-    <div class="backdrop" on:click="{close}">
-        <div class="modal" on:click|stopPropagation="{() => {}}">
-            <div class="content">
-                <h2>Create a New Project</h2>
-                <div class="input-wrapper">
-                    <!-- Catagory Dropdown -->
-                    <CDropDown fieldName="Catagory" config={dropCnfgCat}/>
+<div class="backdrop" on:click="{close}">
+    <div class="modal" on:click|stopPropagation="{() => {}}">
+        <div class="content">
+            <h2>Create a New Project</h2>
+            <div class="input-wrapper">
+                <!-- Catagory Dropdown -->
+                <CDropDown fieldName="Catagory" config={dropCnfgCat} bind:value={category}/>
 
-                    <!-- Organization Dropdown -->
-                    <CDropDown fieldName="Organization" config={dropCnfgOrg}/>
+                <!-- Organization Dropdown -->
+                <CDropDown fieldName="Organization" config={dropCnfgOrg} bind:value={org}/>
 
-                    <CTextInput fieldName="Name" cVal="something new" />
-                    <CTextInput fieldName="Time" cVal="# hours" />
-                    <CTextInput fieldName="Status" cVal="" />
-                    <CTextInput fieldName="Difficulty" cVal="" />
-                    <CTextInput fieldName="Link" cVal="" />
+                <!-- Organization Dropdown -->
+                <CDropDown fieldName="Difficulty" config={dropCfgDiff} bind:value={difficulty}/>
 
-                    <CImageInput fieldName="Project Image" cVal="" />
-                </div>
+                <!-- Organization Dropdown -->
+                <CDropDown fieldName="Status" config={dropCfgStat} bind:value={status}/>
 
-                <div class="btns-cont">
-                    <div class="btn" on:click="{saveNew}">Create</div>
-                </div>
+                <CTextInput fieldName="Name" cVal="something new" bind:value={name}/>
+                <CTextInput fieldName="Time" cVal="# hours" bind:value={time}/>
+                <CTextInput fieldName="Link" cVal="" bind:value={link}/>
+
+                <CImageInput fieldName="Project Image" cVal="" bind:value={projImg}/>
+            </div>
+
+            <div class="btns-cont">
+                <div class="btn" on:click="{saveNew}">Create</div>
             </div>
         </div>
     </div>
-{/if}
+</div>
 
 <style>
     @import '../../themes.css';

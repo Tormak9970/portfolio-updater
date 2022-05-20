@@ -102,8 +102,8 @@
 
     .custom-select {
         position: relative;
-        font-size: 16px;
-        width: 100px;
+        font-size: 14px;
+        width: 170px;
     }
     .custom-select > select { display: none; }
     .select-selected { background-color: var(--foreground); }
@@ -111,7 +111,7 @@
         position: absolute;
         content: "";
         top: 38.88%;
-        right: 10%;
+        right: 5%;
         width: 0;
         height: 0;
         border: min(1.333vw, 6px) solid transparent;
