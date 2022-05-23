@@ -32,6 +32,9 @@
           "$DOCUMENT/**",
           "$RESOURCE/**"
         ]
+      },
+      "window": {
+        "all": true
       }
     },
     "bundle": {
@@ -78,10 +81,12 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 1000,
+        "height": 750,
         "resizable": true,
         "title": "Portfolio Updator",
-        "width": 1500
+        "width": 1500,
+        "decorations": false,
+        "center": true
       }
     ]
   }

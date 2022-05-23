@@ -9,6 +9,7 @@
 	import { fs } from "@tauri-apps/api";
 	import { getConfig, setSettingsPath, settingsPath } from "./Utils";
 	import CreateNewModal from "./components/projects/create-new/CreateNewModal.svelte";
+	import Titlebar from "./components/window/Titlebar.svelte";
 
 	const components = [ Setup, Experience, EditorPage, Organizations, Art ];
 
@@ -18,8 +19,7 @@
 		$selCat = settings.selCat;
 		$state = settings.state
 
-		const cfg = await getConfig(settings.configFile);
-        console.log(cfg)
+		const cfg = await getConfig(settings.configPath);
 
 		if (!cfg) {
 			$renderIdx = 0;
@@ -45,11 +45,14 @@
 </script>
 
 <main>
-	<svelte:component this={components[$renderIdx]}/>
+	<Titlebar />
+	<div class="content">
+		<svelte:component this={components[$renderIdx]}/>
 	
-	{#if $showCreateNewModal}
-		<CreateNewModal />
-	{/if}
+		{#if $showCreateNewModal}
+			<CreateNewModal />
+		{/if}
+	</div>
 </main>
 
 <style>
@@ -65,5 +68,15 @@
 		align-items: center;
 
 		color: var(--font-color);
+	}
+
+	.content {
+		width: 100%;
+		height: calc(100% - 30px);
+
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
 	}
 </style>
