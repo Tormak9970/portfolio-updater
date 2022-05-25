@@ -1,9 +1,7 @@
 <script>
-    import { showCreateNewModal } from "../../../stores";
+    import { showCrtProjModal } from "../../stores";
 
-    function showModal(e) {
-        $showCreateNewModal = true
-    }
+    function showModal(e) { $showCrtProjModal = true }
 </script>
 
 <div id="createNew" on:click="{showModal}">

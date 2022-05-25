@@ -1,11 +1,9 @@
 <script lang="ts">
-    import { afterUpdate, onMount } from "svelte";
-
-    import { config, showCreateNewModal } from "../../../stores";
-    import { writeConfig } from "../../../Utils";
-    import CDropDown from "./CDropDown.svelte";
-    import CImageInput from "./CImageInput.svelte";
-    import CTextInput from "./CTextInput.svelte";
+    import { config, showCrtProjModal } from "../../stores";
+    import { writeConfig } from "../../Utils";
+    import CDropDown from "../universal/CDropDown.svelte";
+    import CImageInput from "../universal/CImageInput.svelte";
+    import CTextInput from "../universal/CTextInput.svelte";
 
     let dropCnfgCat = {
         default:"web-dev",
@@ -46,7 +44,7 @@
     let projImg:string;
 
     async function close(e:Event) {
-        $showCreateNewModal = false;
+        $showCrtProjModal = false;
     }
 
     function validateFields(): boolean {
@@ -83,7 +81,7 @@
             $config = cfg;
             await writeConfig(JSON.stringify(cfg));
 
-            $showCreateNewModal = false;
+            $showCrtProjModal = false;
         }
     }
 </script>

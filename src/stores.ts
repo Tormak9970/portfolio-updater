@@ -3,9 +3,6 @@ import { writable } from "svelte/store";
 export const renderIdx = writable(0);
 export const config = writable(null);
 export const selCat = writable("Projects");
-
-// Projects stores
-export const jSwitchProj = writable(false);
 export const state = writable({
     "experience": {
         "oExp": "",
@@ -36,6 +33,9 @@ export const state = writable({
         "data": {}
     }
 });
+
+// Projects stores
+export const jSwitchProj = writable(false);
 export const changedCat = writable(null);
 export const changedKey = writable(null);
-export const showCreateNewModal = writable(false);
+export const showCrtProjModal = writable(false);

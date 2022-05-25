@@ -1,6 +1,6 @@
 <script lang="ts">
     import { dialog, fs } from "@tauri-apps/api";
-    import { config, renderIdx, selCat, showCreateNewModal } from "../stores";
+    import { config, renderIdx, selCat, showCrtProjModal } from "../stores";
     import { updateSettings } from "../Utils";
 
     async function click() {

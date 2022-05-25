@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import Experience from "./components/experience/Experience.svelte";
-	import EditorPage from "./components/projects/EditorPage.svelte";
+	import PIdx from "./components/projects/PIdx.svelte";
 	import Organizations from "./components/organizations/Organizations.svelte";
 	import Art from "./components/art/Art.svelte";
 	import Setup from "./components/Setup.svelte";
-	import { config, renderIdx, selCat, showCreateNewModal, state } from "./stores";
+	import { config, renderIdx, selCat, showCrtProjModal, state } from "./stores";
 	import { fs } from "@tauri-apps/api";
 	import { getConfig, setSettingsPath, settingsPath } from "./Utils";
-	import CreateNewModal from "./components/projects/create-new/CreateNewModal.svelte";
+	import CrtProjModal from "./components/projects/CrtProjModal.svelte";
 	import Titlebar from "./components/window/Titlebar.svelte";
 
-	const components = [ Setup, Experience, EditorPage, Organizations, Art ];
+	const components = [ Setup, Experience, PIdx, Organizations, Art ];
 
 	onMount(async () => {
 		await setSettingsPath();
@@ -49,8 +49,8 @@
 	<div class="content">
 		<svelte:component this={components[$renderIdx]}/>
 	
-		{#if $showCreateNewModal}
-			<CreateNewModal />
+		{#if $showCrtProjModal}
+			<CrtProjModal />
 		{/if}
 	</div>
 </main>

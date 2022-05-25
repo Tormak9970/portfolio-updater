@@ -1,22 +1,24 @@
-<script>
-	import { config } from "../../stores";
-	import Entry from "./Entry.svelte";
-	import Editor from "./Editor.svelte";
-	import Open from "./create-new/Open.svelte";
+<script lang="ts">
+	type Data = {
+		props:any
+	}
+
+	export let crtModal:any;
+	export let main:any;
+	export let entry:any;
+	export let data:Data[];
 </script>
 
 <div id="entries">
     <div class="wrapper">
-		<Open />
+		<svelte:component this={crtModal} />
 		<div class="wrap-inner">
-			{#each Object.entries($config.projects) as projCat}
-				{#each Object.entries(projCat[1]) as proj}
-					<Entry data={proj[1]} category={projCat[0]} key={proj[0]}/>
-				{/each}
+			{#each data as datEntr}
+				<svelte:component this={entry} {...datEntr.props}/>
 			{/each}
 		</div>
 	</div>
-	<Editor />
+	<svelte:component this={main} />
 </div>
 
 <style>
