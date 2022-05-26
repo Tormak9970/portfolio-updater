@@ -33,7 +33,14 @@ export const state = writable({
     },
     "organizations": {
         "oOrg": "",
-        "data": {}
+        "key": "",
+        "data": {
+            "name": "",
+			"img": "",
+			"about": "",
+			"description": "",
+			"projects": []
+        }
     },
     "art": {
         "oArt": "",
