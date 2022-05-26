@@ -1,9 +1,11 @@
 <script lang="ts">
+import OpenCrtModal from "./OpenCrtModal.svelte";
+
 	type Data = {
 		props:any
 	}
 
-	export let crtModal:any;
+	export let crtModal:string;
 	export let main:any;
 	export let entry:any;
 	export let data:Data[];
@@ -11,7 +13,7 @@
 
 <div id="entries">
     <div class="wrapper">
-		<svelte:component this={crtModal} />
+		<OpenCrtModal modal={crtModal}/>
 		<div class="wrap-inner">
 			{#each data as datEntr}
 				<svelte:component this={entry} {...datEntr.props}/>

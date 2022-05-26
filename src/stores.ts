@@ -44,3 +44,12 @@ export const changedKey = writable(null);
 export const jSwitchProj = writable(false);
 export const changedCat = writable(null);
 export const showCrtProjModal = writable(false);
+
+// Art stores
+export const showCrtArtModal = writable(false);
+
+// Experience stores
+export const showCrtExpModal = writable(false);
+
+// Organization stores
+export const showCrtOrgModal = writable(false);

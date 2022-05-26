@@ -1,12 +1,18 @@
 <script lang="ts">
-	import Experience from "./components/experience/Experience.svelte";
-	import PIdx from "./components/projects/PIdx.svelte";
-	import Organizations from "./components/organizations/Organizations.svelte";
-	import AIdx from "./components/art/AIdx.svelte";
-	import Setup from "./components/Setup.svelte";
-	import { renderIdx, showCrtProjModal } from "./stores";
-	import CrtProjModal from "./components/projects/CrtProjModal.svelte";
+	import { renderIdx, showCrtArtModal, showCrtExpModal, showCrtOrgModal, showCrtProjModal } from "./stores";
+
 	import Titlebar from "./components/window/Titlebar.svelte";
+	import Setup from "./components/Setup.svelte";
+
+	import PIdx from "./components/projects/PIdx.svelte";
+	import AIdx from "./components/art/AIdx.svelte";
+	import Experience from "./components/experience/Experience.svelte";
+	import Organizations from "./components/organizations/Organizations.svelte";
+
+	import CrtProjModal from "./components/projects/CrtProjModal.svelte";
+	import CrtArtModal from "./components/art/CrtArtModal.svelte";
+	import CrtExpModal from "./components/experience/CrtExpModal.svelte";
+	import CrtOrgModal from "./components/organizations/CrtOrgModal.svelte";
 
 	const components = [ Setup, Experience, PIdx, Organizations, AIdx ];
 </script>
@@ -18,6 +24,15 @@
 	
 		{#if $showCrtProjModal}
 			<CrtProjModal />
+		{/if}
+		{#if $showCrtArtModal}
+			<CrtArtModal />
+		{/if}
+		{#if $showCrtExpModal}
+			<CrtExpModal />
+		{/if}
+		{#if $showCrtOrgModal}
+			<CrtOrgModal />
 		{/if}
 	</div>
 </main>

@@ -3,8 +3,7 @@
 
 	import EditorPage from "../universal/EditorPage.svelte";
 	import Editor from "./Editor.svelte";
-import Entry from "./Entry.svelte";
-	import OpenCrtModal from "./OpenCrtModal.svelte";
+	import Entry from "./Entry.svelte";
 
 	const projects = [];
 
@@ -22,7 +21,7 @@ import Entry from "./Entry.svelte";
 </script>
 
 <div>
-    <EditorPage main={Editor} crtModal={OpenCrtModal} entry={Entry} data={projects}/>
+    <EditorPage main={Editor} crtModal={"proj"} entry={Entry} data={projects}/>
 </div>
 
 <style>

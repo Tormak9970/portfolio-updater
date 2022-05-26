@@ -48,6 +48,7 @@
 
 	.img-preview {
         width: 80%;
+        max-width: 700px;
 		margin: 5px;
 
 		display: flex;

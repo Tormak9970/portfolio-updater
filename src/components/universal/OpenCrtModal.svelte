@@ -1,7 +1,24 @@
-<script>
-    import { showCrtProjModal } from "../../stores";
+<script lang="ts">
+    import { showCrtArtModal, showCrtExpModal, showCrtOrgModal, showCrtProjModal } from "../../stores";
 
-    function showModal(e) { $showCrtProjModal = true }
+    export let modal:string;
+
+    function showModal(e) {
+        switch(modal) {
+            case "proj":
+                $showCrtProjModal = true;
+                break;
+            case "art":
+                $showCrtArtModal = true;
+                break;
+            case "exp":
+                $showCrtExpModal = true;
+                break;
+            case "org":
+                $showCrtOrgModal = true;
+                break;
+        }
+    }
 </script>
 
 <div id="createNew" on:click="{showModal}">
