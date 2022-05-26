@@ -1,9 +1,9 @@
 <script lang="ts">
     import { config, showCrtProjModal } from "../../stores";
     import { writeConfig } from "../../Utils";
-    import CDropDown from "../universal/CDropDown.svelte";
-    import CImageInput from "../universal/CImageInput.svelte";
-    import CTextInput from "../universal/CTextInput.svelte";
+    import CDropDown from "../universal/create/CDropDown.svelte";
+    import CImageInput from "../universal/create/CImageInput.svelte";
+    import CTextInput from "../universal/create/CTextInput.svelte";
 
     let dropCnfgCat = {
         default:"web-dev",
@@ -65,11 +65,8 @@
 				"content": {},
 				"link": link,
 				"isRelative": false,
-				"imgs": [
-					projImg,
-                    // @ts-ignore
-					org == "none" ? "" : $config.organizations[org].path
-				]
+				"img": projImg,
+                "org": org
             }
 
             const cfg = $config;

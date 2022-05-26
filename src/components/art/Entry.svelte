@@ -6,12 +6,13 @@
     import { configPath, updateSettings } from "../../Utils";
 
 	export let data;
+    export let key:string;
 
     let imgPath:string;
 
     async function setArt(e) {
         $state.art.oArt = data.name;
-        $state.art.key = data.key;
+        $state.art.key = key;
         $state.art.data = data;
 
         $state = $state;
@@ -19,7 +20,7 @@
     }
 
     onMount(async () => {
-        imgPath = await path.join(await path.dirname(configPath), data.path.substring(2));
+        imgPath = await path.join(await path.dirname(configPath), data.img.substring(2));
     });
 </script>
 

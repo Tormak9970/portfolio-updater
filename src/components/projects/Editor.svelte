@@ -11,14 +11,46 @@
 	import { onMount } from 'svelte';
 	import { state, jSwitchProj, config, changedCat, changedKey } from '../../stores';
 	import { configPath, updateSettings, uploadFile, uploadUrl, writeConfig } from '../../Utils';
-	import EditorInput from './EditorInput.svelte';
-	import ImagePreview from './ImagePreview.svelte';
+	import EditorInput from '../universal/edit/EditorInput.svelte';
 	import { path, tauri } from '@tauri-apps/api';
+	import EditorDropDown from '../universal/edit/EditorDropDown.svelte';
+import ImagePreview from '../universal/edit/ImagePreview.svelte';
 
 	let editor: EditorJs;
 	let saved = true;
 	let showSave = false;
 	let wasProgramatic = false;
+
+	let dropCnfgCat = {
+        default: $state.projects.cat,
+        // @ts-ignore
+        values: $config.projects ? Object.keys($config.projects) : []
+    }
+
+    let dropCnfgOrg = {
+        default: $state.projects.data.org,
+        // @ts-ignore
+        values: $config.organizations ? Object.keys($config.organizations) : []
+    }
+    dropCnfgOrg.values.unshift("none");
+
+    let dropCfgDiff = {
+        default: $state.projects.data.difficulty,
+        values: [
+            "Simple",
+            "Moderate",
+            "Complex"
+        ]
+    }
+
+    let dropCfgStat = {
+        default: $state.projects.data.status,
+        values: [
+            "Not Live / Obsolete",
+            "In Progress",
+            "Complete"
+        ]
+    }
 
 	onMount(async () => {
 		const cnt = await convertToTauri($state.projects.data.content);
@@ -69,6 +101,10 @@
 
 	$: {
 		renderNewContent($state.projects.data.content);
+		dropCnfgCat.default = $state.projects.cat;
+		dropCnfgOrg.default = $state.projects.data.org;
+		dropCfgDiff.default = $state.projects.data.difficulty;
+		dropCfgStat.default = $state.projects.data.status;
 	}
 
 	const renderNewContent = async (data) => {
@@ -153,6 +189,37 @@
 		$config = cfg;
 		saved = true;
 	}
+
+	async function inputHandler(e:Event, fieldName:string) {
+        const value = (e.currentTarget as HTMLInputElement).value;
+        if (fieldName == "Name" && $state.projects.oProj != value) {
+            $state.projects.oProj = value;
+            $changedKey = value.replace(" ", "-").toLowerCase();
+        }
+        
+        $state.projects.data[fieldName.toLowerCase()] = value;
+
+        $state = $state;
+        await updateSettings({prop: "state", data: $state});
+	}
+	async function dropDownHandler(value:string, fieldName:string) {
+		if (fieldName == "Category" && $state.projects.cat != value) {
+            $changedCat = value;
+        } else {
+			$state.projects.data[fieldName] = value;
+		}
+
+        $state = $state;
+        await updateSettings({prop: "state", data: $state});
+	}
+	async function imageHandler(e:Event, fieldName:string) {
+        const value = (e.currentTarget as HTMLInputElement).value;
+        
+        $state.projects.data.img = value;
+
+        $state = $state;
+        await updateSettings({prop: "state", data: $state});
+	}
 </script>
 
 <div id="editor">
@@ -160,16 +227,16 @@
 		<h1>Editing: {$state.projects.oProj}</h1>
 		<div class="info-cont">
 			<div class="sub">
-				<EditorInput fieldName={"Category"} cVal={$state.projects.cat} />
-				<EditorInput fieldName={"Name"} cVal={$state.projects.data.name} />
-				<EditorInput fieldName={"Time"} cVal={$state.projects.data.time} />
-				<EditorInput fieldName={"Status"} cVal={$state.projects.data.status} />
-				<EditorInput fieldName={"Difficulty"} cVal={$state.projects.data.difficulty} />
-				<EditorInput fieldName={"Link"} cVal={$state.projects.data.link} />
+				<EditorInput fieldName={"Name"} cVal={$state.projects.data.name} handler={inputHandler}/>
+				<EditorInput fieldName={"Time"} cVal={$state.projects.data.time} handler={inputHandler}/>
+				<EditorInput fieldName={"Link"} cVal={$state.projects.data.link} handler={inputHandler}/>
+				<EditorDropDown fieldName={"Category"} config={dropCnfgCat} handler={dropDownHandler}/>
+				<EditorDropDown fieldName={"Status"} config={dropCfgStat} handler={dropDownHandler}/>
+				<EditorDropDown fieldName={"Difficulty"} config={dropCfgDiff} handler={dropDownHandler}/>
+				<EditorDropDown fieldName={"Organization"} config={dropCnfgOrg} handler={dropDownHandler}/>
 			</div>
-			<div class="sub" style="display: flex; align-items:flex-start;">
-				<ImagePreview label={"Project"} idx={0} />
-				<ImagePreview label={"Organization"} idx={1} />
+			<div class="sub">
+				<ImagePreview fieldName={"Project"} cVal={$state.projects.data.img} handler={imageHandler}/>
 			</div>
 		</div>
 		<div id="editorjs"></div>

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { dialog, fs, path } from "@tauri-apps/api";
-    import { configPath } from "../../Utils";
+    import { configPath } from "../../../Utils";
 
     export let fieldName:string;
     export let cVal:string;
@@ -19,8 +19,8 @@
             const relPath = await path.join('./img', 'projs', await path.basename(file));
             const tarPath = await path.join(await path.dirname(configPath), relPath);
             await fs.copyFile(file, tarPath)
-            value = relPath;
-            input.value = relPath;
+            value = `./${relPath.replaceAll("\\", "/")}`;
+            input.value = `./${relPath.replaceAll("\\", "/")}`;
         });
     }
 </script>

@@ -1,9 +1,9 @@
 <script lang="ts">
     import { config, showCrtArtModal } from "../../stores";
     import { writeConfig } from "../../Utils";
-    import CImageInput from "../universal/CImageInput.svelte";
-import CTextArea from "../universal/CTextArea.svelte";
-    import CTextInput from "../universal/CTextInput.svelte";
+    import CImageInput from "../universal/create/CImageInput.svelte";
+    import CTextArea from "../universal/create/CTextArea.svelte";
+    import CTextInput from "../universal/create/CTextInput.svelte";
 
     let name:string;
     let img:string;
@@ -23,7 +23,7 @@ import CTextArea from "../universal/CTextArea.svelte";
         if (validateFields()) {
             const newPiece = {
                 "name": name,
-				"path": img,
+				"img": img,
 				"description": desc
             }
 
@@ -49,7 +49,7 @@ import CTextArea from "../universal/CTextArea.svelte";
                 <div class="sub">
                     <CTextInput fieldName="Name" cVal="something new" bind:value={name}/>
 
-                    <CImageInput fieldName="Art Piece" cVal="" bind:value={img}/>
+                    <CImageInput fieldName="Image" cVal="" bind:value={img}/>
                 </div>
 
                 <CTextArea cVal={""} bind:value={desc}/>

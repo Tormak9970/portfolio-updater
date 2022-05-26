@@ -1,29 +1,16 @@
 <script lang="ts">
-	import { state, changedCat, changedKey } from '../../stores';
-    import { updateSettings } from '../../Utils';
-
     export let fieldName:string;
     export let cVal:string;
+    export let handler:(e:Event, fieldName:string)=>Promise<void>;
 
-	async function handleInput(e:Event) {
-        const value = (e.currentTarget as HTMLInputElement).value;
-        if (fieldName == "Category" && $state.projects.cat != value) {
-            $changedCat = value;
-        } else if (fieldName == "Name" && $state.projects.oProj != value) {
-            $state.projects.oProj = value;
-            $changedKey = value.replace(" ", "-").toLowerCase();
-        }
-        
-        $state.projects.data[fieldName.toLowerCase()] = value;
-
-        $state = $state;
-        await updateSettings({prop: "state", data: $state});
-	}
+    async function wrapper(e:Event) {
+        await handler(e, fieldName);
+    }
 </script>
 
 <div class="editor-input">
 	<div class="field-name">{fieldName}:</div>
-    <input type="text" placeholder="{cVal}" on:change="{handleInput}">
+    <input type="text" placeholder="{cVal}" on:change="{wrapper}">
 </div>
 
 <!-- svelte-ignore css-unused-selector -->

@@ -21,7 +21,8 @@ export const state = writable({
             "content": {},
             "link": "",
             "isRelative": false,
-            "imgs": []
+            "img": "",
+            "org": ""
         }
     },
     "organizations": {
@@ -33,7 +34,7 @@ export const state = writable({
         "key": "",
         "data": {
             "name": "",
-            "path": "",
+            "img": "",
             "description": ""
         }
     }

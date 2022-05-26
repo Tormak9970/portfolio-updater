@@ -1,9 +1,41 @@
 <script lang="ts">
 	import { state, config, changedKey } from '../../stores';
 	import { updateSettings, writeConfig } from '../../Utils';
-    import DescInput from './DescInput.svelte';
-	import EditorInput from './EditorInput.svelte';
-	import ImagePreview from './ImagePreview.svelte';
+    import TextAreaInput from '../universal/edit/TextAreaInput.svelte';
+	import EditorInput from '../universal/edit/EditorInput.svelte';
+	import ImagePreview from '../universal/edit/ImagePreview.svelte';
+
+	async function nameHandler(e:Event, fieldName:string) {
+		const value = (e.currentTarget as HTMLInputElement).value;
+
+        if ($state.art.oArt != value) {
+            $state.art.oArt = value;
+            $changedKey = value.replace(" ", "-").toLowerCase();
+        }
+        
+        $state.art.data.name = value;
+
+        $state = $state;
+        await updateSettings({prop: "state", data: $state});
+	}
+
+	async function descHandler(e:Event, fieldName:string) {
+        const value = (e.currentTarget as HTMLInputElement).value;
+        
+        $state.art.data.description = value;
+
+        $state = $state;
+        await updateSettings({prop: "state", data: $state});
+	}
+
+	async function imageHandler(e:Event, fieldName:string) {
+		const value = (e.currentTarget as HTMLInputElement).value;
+        
+        $state.art.data.img = value;
+
+        $state = $state;
+        await updateSettings({prop: "state", data: $state});
+	}
 
 	async function save() {
 		const cfg = $config;
@@ -33,9 +65,9 @@
 	<div class:hide = "{$state.art.oArt == ""}" style="overflow: scroll; min-height: 100%;">
 		<h1>Editing: {$state.art.oArt}</h1>
 		<div class="info-cont">
-			<EditorInput fieldName={"Name"} cVal={$state.art.data.name} />
-            <ImagePreview label={"Art Piece Path"}/>
-            <DescInput cVal={$state.art.data.description}/>
+			<EditorInput fieldName={"Name"} cVal={$state.art.data.name} handler={nameHandler} />
+            <ImagePreview fieldName={"Image"} cVal={$state.art.data.img} handler={imageHandler}/>
+            <TextAreaInput fieldName={"Description"} cVal={$state.art.data.description} handler={descHandler}/>
 		</div>
 		<button id="save" on:click="{save}">Save Content</button>
 	</div>

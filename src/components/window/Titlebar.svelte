@@ -16,10 +16,10 @@
     let menuConfig = {
         default: $selCat,
         values: [
-            "Experience",
             "Projects",
-            "Organizations",
-            "Art"
+            "Art",
+            "Experience",
+            "Organizations"
         ]
     };
 
@@ -38,20 +38,7 @@
 		} else {
 			$config = cfg;
 
-			switch ($selCat) {
-				case "Experience":
-					$renderIdx = 1;
-					break;
-				case "Projects":
-					$renderIdx = 2;
-					break;
-				case "Organizations":
-					$renderIdx = 3;
-					break;
-				case "Art":
-					$renderIdx = 4;
-					break;
-			}
+			$renderIdx = menuConfig.values.indexOf($selCat) + 1;
 		}
 
         dropVal = $selCat;

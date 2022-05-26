@@ -6,15 +6,15 @@
 
 	import PIdx from "./components/projects/PIdx.svelte";
 	import AIdx from "./components/art/AIdx.svelte";
-	import Experience from "./components/experience/Experience.svelte";
-	import Organizations from "./components/organizations/Organizations.svelte";
+	import EIdx from "./components/experience/EIdx.svelte";
+	import OIdx from "./components/organizations/OIdx.svelte";
 
 	import CrtProjModal from "./components/projects/CrtProjModal.svelte";
 	import CrtArtModal from "./components/art/CrtArtModal.svelte";
 	import CrtExpModal from "./components/experience/CrtExpModal.svelte";
 	import CrtOrgModal from "./components/organizations/CrtOrgModal.svelte";
 
-	const components = [ Setup, Experience, PIdx, Organizations, AIdx ];
+	const components = [ Setup, PIdx, AIdx, EIdx, OIdx ];
 </script>
 
 <main>
