@@ -5,7 +5,7 @@
 	import EditorInput from '../universal/edit/EditorInput.svelte';
 	import ImagePreview from '../universal/edit/ImagePreview.svelte';
 
-	async function nameHandler(e:Event, fieldName:string) {
+	async function inputHandler(e:Event, fieldName:string) {
 		const value = (e.currentTarget as HTMLInputElement).value;
 
         if ($state.art.oArt != value) {
@@ -65,7 +65,7 @@
 	<div class:hide = "{$state.art.oArt == ""}" style="overflow: scroll; min-height: 100%;">
 		<h1>Editing: {$state.art.oArt}</h1>
 		<div class="info-cont">
-			<EditorInput fieldName={"Name"} cVal={$state.art.data.name} handler={nameHandler} />
+			<EditorInput fieldName={"Name"} cVal={$state.art.data.name} handler={inputHandler} />
             <ImagePreview fieldName={"Image"} cVal={$state.art.data.img} handler={imageHandler}/>
             <TextAreaInput fieldName={"Description"} cVal={$state.art.data.description} handler={descHandler}/>
 		</div>

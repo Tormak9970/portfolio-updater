@@ -6,7 +6,13 @@ export const selCat = writable("Projects");
 export const state = writable({
     "experience": {
         "oExp": "",
-        "data": {}
+        "key": "",
+        "data": {
+            "name": "",
+            "img": "",
+            "position": "",
+            "description": ""
+        }
     },
     "projects": {
         "oProj": "",

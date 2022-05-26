@@ -7,11 +7,11 @@
 
 	const pieces = [];
 
-	for (const artCat of Object.entries($config.art)) {
+	for (const artPiece of Object.entries($config.art)) {
 		pieces.push({
             props: {
-                data: artCat[1],
-				key: artCat[0]
+                data: artPiece[1],
+				key: artPiece[0]
             }
         });
 	}
