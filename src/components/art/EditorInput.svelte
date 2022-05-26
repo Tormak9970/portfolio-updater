@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { state, changedCat, changedKey } from '../../stores';
+	import { changedKey, state } from '../../stores';
     import { updateSettings } from '../../Utils';
 
     export let fieldName:string;
@@ -7,14 +7,13 @@
 
 	async function handleInput(e:Event) {
         const value = (e.currentTarget as HTMLInputElement).value;
-        if (fieldName == "Category" && $state.projects.cat != value) {
-            $changedCat = value;
-        } else if (fieldName == "Name" && $state.projects.oProj != value) {
-            $state.projects.oProj = value;
+
+        if (fieldName == "Name" && $state.art.oArt != value) {
+            $state.art.oArt = value;
             $changedKey = value.replace(" ", "-").toLowerCase();
         }
         
-        $state.projects.data[fieldName.toLowerCase()] = value;
+        $state.art.data[fieldName.toLowerCase()] = value;
 
         $state = $state;
         await updateSettings({prop: "state", data: $state});

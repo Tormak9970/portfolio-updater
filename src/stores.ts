@@ -30,12 +30,17 @@ export const state = writable({
     },
     "art": {
         "oArt": "",
-        "data": {}
+        "key": "",
+        "data": {
+            "name": "",
+            "path": "",
+            "description": ""
+        }
     }
 });
+export const changedKey = writable(null);
 
 // Projects stores
 export const jSwitchProj = writable(false);
 export const changedCat = writable(null);
-export const changedKey = writable(null);
 export const showCrtProjModal = writable(false);

@@ -1,47 +1,14 @@
 <script lang="ts">
-	import { onMount } from "svelte";
 	import Experience from "./components/experience/Experience.svelte";
 	import PIdx from "./components/projects/PIdx.svelte";
 	import Organizations from "./components/organizations/Organizations.svelte";
-	import Art from "./components/art/Art.svelte";
+	import AIdx from "./components/art/AIdx.svelte";
 	import Setup from "./components/Setup.svelte";
-	import { config, renderIdx, selCat, showCrtProjModal, state } from "./stores";
-	import { fs } from "@tauri-apps/api";
-	import { getConfig, setSettingsPath, settingsPath } from "./Utils";
+	import { renderIdx, showCrtProjModal } from "./stores";
 	import CrtProjModal from "./components/projects/CrtProjModal.svelte";
 	import Titlebar from "./components/window/Titlebar.svelte";
 
-	const components = [ Setup, Experience, PIdx, Organizations, Art ];
-
-	onMount(async () => {
-		await setSettingsPath();
-		let settings = JSON.parse(await fs.readTextFile(settingsPath));
-		$selCat = settings.selCat;
-		$state = settings.state
-
-		const cfg = await getConfig(settings.configPath);
-
-		if (!cfg) {
-			$renderIdx = 0;
-		} else {
-			$config = cfg;
-
-			switch ($selCat) {
-				case "Experience":
-					$renderIdx = 1;
-					break;
-				case "Projects":
-					$renderIdx = 2;
-					break;
-				case "Organizations":
-					$renderIdx = 3;
-					break;
-				case "Art":
-					$renderIdx = 4;
-					break;
-			}
-		}
-	});
+	const components = [ Setup, Experience, PIdx, Organizations, AIdx ];
 </script>
 
 <main>

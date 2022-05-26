@@ -7,12 +7,11 @@
     import { configPath, updateSettings } from '../../Utils';
 
     export let label:string;
-    export let idx:number;
 
 	async function handleInput(e:Event) {
         const value = (e.currentTarget as HTMLInputElement).value;
         
-        $state.projects.data.imgs[idx] = value;
+        $state.art.data.path = value;
 
         $state = $state;
         await updateSettings({prop: "state", data: $state});
@@ -21,26 +20,14 @@
     let imgPath = "";
 
     onMount(async () => {
-        if ($state.projects.data.imgs) {
-            if ($state.projects.data.imgs[idx] != "") {
-                imgPath = await path.join(await path.dirname(configPath), $state.projects.data.imgs[idx].substring(2));
-            } else {
-                imgPath = await path.join(await path.dirname(configPath), "img/orgs/Logo-black-round.png");
-            }
-        } else {
-            imgPath = await path.join(await path.dirname(configPath), "img/orgs/Logo-black-round.png");
+        if ($state.art.data.path) {
+            imgPath = await path.join(await path.dirname(configPath), $state.art.data.path.substring(2));
         }
     });
 
     afterUpdate(async () => {
-        if ($state.projects.data.imgs) {
-            if ($state.projects.data.imgs[idx] != "") {
-                imgPath = await path.join(await path.dirname(configPath), $state.projects.data.imgs[idx].substring(2));
-            } else {
-                imgPath = await path.join(await path.dirname(configPath), "img/orgs/Logo-black-round.png");
-            }
-        } else {
-            imgPath = await path.join(await path.dirname(configPath), "img/orgs/Logo-black-round.png");
+        if ($state.art.data.path) {
+            imgPath = await path.join(await path.dirname(configPath), $state.art.data.path.substring(2));
         }
     });
 </script>
@@ -48,10 +35,10 @@
 <div class="img-preview">
 	<div class="info">
         <div class="field-name">{label}:</div>
-        <input type="text" placeholder="{$state.projects.data.imgs ? $state.projects.data.imgs[idx] : null}" on:change="{handleInput}">
+        <input type="text" placeholder="{$state.art.data.path ? $state.art.data.path : null}" on:change="{handleInput}">
     </div>
     <div class="prev" style="margin-top: 7px;">
-        <img src="{tauri.convertFileSrc(imgPath)}" alt="" style="max-width: 80%;">
+        <img src="{tauri.convertFileSrc(imgPath)}" alt="" style="max-width: 100%;">
     </div>
 </div>
 
@@ -60,7 +47,8 @@
 	@import "/theme.css";
 
 	.img-preview {
-		margin: 5px 50px;
+        width: 80%;
+		margin: 5px;
 
 		display: flex;
 		flex-direction: column;

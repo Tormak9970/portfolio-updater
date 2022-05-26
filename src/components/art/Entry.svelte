@@ -1,31 +1,36 @@
-<script>
-    import { jSwitchProj, state } from "../../stores";
-    import { updateSettings } from "../../Utils";
+<script lang="ts">
+    import { path, tauri } from "@tauri-apps/api";
+
+    import { onMount } from "svelte";
+    import { state } from "../../stores";
+    import { configPath, updateSettings } from "../../Utils";
 
 	export let data;
-	export let key;
-    export let category;
 
-    async function setProject(e) {
-        $state.projects.oProj = data.name;
-        $state.projects.key = key;
-        $state.projects.cat = category;
-        $state.projects.data = data;
+    let imgPath:string;
+
+    async function setArt(e) {
+        $state.art.oArt = data.name;
+        $state.art.key = data.key;
+        $state.art.data = data;
 
         $state = $state;
         await updateSettings({prop: "state", data: $state});
-        $jSwitchProj = true;
     }
+
+    onMount(async () => {
+        imgPath = await path.join(await path.dirname(configPath), data.path.substring(2));
+    });
 </script>
 
 <div id="entry-{data.name}" class="entry">
+    <img src="{tauri.convertFileSrc(imgPath)}" alt="" style="width: 40px; margin: 0px 7px;">
     <div class="info">
         <div class="field">{data.name}</div>
-        <div class="category">{category}</div>
     </div>
     <div class="btn-cont">
-        <div class="btn" on:click="{setProject}">
-            <div>{data.content.time ? "Edit" : "Create"}</div>
+        <div class="btn" on:click="{setArt}">
+            <div>Edit</div>
         </div>
     </div>
 </div>
@@ -51,14 +56,13 @@
 	}
 
     .entry > .info {
-        margin-left: 7px;
+        margin-right: 7px;
 
         display: flex;
         flex-direction: column;
         justify-content: start;
     }
     .entry > .info > .field { font-size: 20px; white-space: nowrap; }
-    .entry > .info > .category { font-size: 16px; }
 
     .entry > .btn-cont { margin-right: 7px; }
     .entry > .btn-cont > .btn {

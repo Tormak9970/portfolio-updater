@@ -1,8 +1,10 @@
 <script lang="ts">
+    import { fs } from '@tauri-apps/api';
+
     import { appWindow } from '@tauri-apps/api/window';
     import { afterUpdate, onMount } from 'svelte';
-    import { renderIdx, selCat, config } from '../../stores';
-    import { updateSettings } from '../../Utils';
+    import { renderIdx, selCat, config, state } from '../../stores';
+    import { getConfig, setSettingsPath, settingsPath, updateSettings } from '../../Utils';
     import SubMenu from './SubMenu.svelte';
 
     let minimize:HTMLDivElement;
@@ -11,19 +13,49 @@
 
     let isMaxed = false;
 
-    const menuConfig = {
-        default: $selCat ? $selCat : "Projects",
+    let menuConfig = {
+        default: $selCat,
         values: [
             "Experience",
             "Projects",
             "Organizations",
             "Art"
         ]
-    }
+    };
 
-    let dropVal:string = "Projects";
+    let dropVal:string;
 
-    onMount(() => {
+    onMount(async () => {
+        await setSettingsPath();
+		let settings = JSON.parse(await fs.readTextFile(settingsPath));
+		$selCat = settings.selCat;
+		$state = settings.state;
+
+		const cfg = await getConfig(settings.configPath);
+
+		if (!cfg) {
+			$renderIdx = 0;
+		} else {
+			$config = cfg;
+
+			switch ($selCat) {
+				case "Experience":
+					$renderIdx = 1;
+					break;
+				case "Projects":
+					$renderIdx = 2;
+					break;
+				case "Organizations":
+					$renderIdx = 3;
+					break;
+				case "Art":
+					$renderIdx = 4;
+					break;
+			}
+		}
+
+        dropVal = $selCat;
+        menuConfig.default = $selCat
         minimize.addEventListener('click', () => appWindow.minimize());
         maximize.addEventListener('click', () => {
             appWindow.toggleMaximize();

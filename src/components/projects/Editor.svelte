@@ -10,7 +10,7 @@
 	
 	import { onMount } from 'svelte';
 	import { state, jSwitchProj, config, changedCat, changedKey } from '../../stores';
-	import { configPath, uploadFile, uploadUrl, writeConfig } from '../../Utils';
+	import { configPath, updateSettings, uploadFile, uploadUrl, writeConfig } from '../../Utils';
 	import EditorInput from './EditorInput.svelte';
 	import ImagePreview from './ImagePreview.svelte';
 	import { path, tauri } from '@tauri-apps/api';
@@ -57,6 +57,7 @@
 					wasProgramatic = true;
 					// @ts-ignore
 					$state.projects.data.content = content;
+        			await updateSettings({prop: "state", data: $state});
 				} else {
 					wasProgramatic = false;
 				}
@@ -143,6 +144,7 @@
 
 		$state.projects.data.content = content;
 		$state.projects.data.description = content.blocks[1].data.text;
+        await updateSettings({prop: "state", data: $state});
 		// @ts-ignore
 		cfg.projects[$state.projects.cat][$state.projects.key] = $state.projects.data;
 
