@@ -8,12 +8,12 @@
 	async function inputHandler(e:Event, fieldName:string) {
 		const value = (e.currentTarget as HTMLInputElement).value;
 
-        if (fieldName == "Company Name" && $state.art.oArt != value) {
+        if (fieldName == "Company" && $state.art.oArt != value) {
             $state.experience.oExp = value;
             $changedKey = value.replace(" ", "-").toLowerCase();
         }
         
-        $state.experience.data.name = value;
+        $state.experience.data.company = value;
 
         $state = $state;
         await updateSettings({prop: "state", data: $state});
@@ -65,7 +65,7 @@
 	<div class:hide = "{$state.art.oArt == ""}" style="overflow: scroll; min-height: 100%;">
 		<h1>Editing: {$state.art.oArt}</h1>
 		<div class="info-cont">
-			<EditorInput fieldName={"Company Name"} cVal={$state.experience.data.name} handler={inputHandler} />
+			<EditorInput fieldName={"Company"} cVal={$state.experience.data.company} handler={inputHandler} />
 			<EditorInput fieldName={"Position"} cVal={$state.experience.data.position} handler={inputHandler} />
             <ImagePreview fieldName={"Logo"} cVal={$state.experience.data.img} handler={imageHandler}/>
             <TextAreaInput fieldName={"Description"} cVal={$state.experience.data.description} handler={descHandler}/>

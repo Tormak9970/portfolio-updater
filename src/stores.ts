@@ -8,7 +8,7 @@ export const state = writable({
         "oExp": "",
         "key": "",
         "data": {
-            "name": "",
+            "company": "",
             "img": "",
             "position": "",
             "description": ""

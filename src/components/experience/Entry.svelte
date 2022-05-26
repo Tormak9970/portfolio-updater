@@ -28,7 +28,7 @@
     <img src="{tauri.convertFileSrc(imgPath)}" alt="" style="width: 40px; margin: 0px 7px;">
     <div class="info">
         <div class="pos">{data.position}</div>
-        <div class="field">{data.name}</div>
+        <div class="field">{data.company}</div>
     </div>
     <div class="btn-cont">
         <div class="btn" on:click="{setExp}">

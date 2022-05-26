@@ -5,7 +5,7 @@
     import CTextArea from "../universal/create/CTextArea.svelte";
     import CTextInput from "../universal/create/CTextInput.svelte";
 
-    let name:string;
+    let comp:string;
     let pos:string;
     let img:string;
     let desc:string;
@@ -15,7 +15,7 @@
     }
 
     function validateFields(): boolean {
-        return name !== "" &&
+        return comp !== "" &&
             img !== "" &&
             pos !== "" &&
             desc !== "";
@@ -24,14 +24,14 @@
     async function saveNew(e:Event) {
         if (validateFields()) {
             const newExp = {
-                "name": name,
+                "company": comp,
                 "position": pos,
 				"img": img,
 				"description": desc
             }
 
             const cfg = $config;
-            const key = name.toLowerCase().replaceAll(" ", "-").replaceAll("'", "");
+            const key = comp.toLocaleLowerCase().concat("-").concat(pos.toLocaleLowerCase()).replaceAll(" ", "-");
 
             // @ts-ignore
             cfg.experience[key] = newExp;
@@ -50,7 +50,7 @@
             <h2>Create a Experience entry</h2>
             <div class="input-wrapper">
                 <div class="sub">
-                    <CTextInput fieldName="Company Name" cVal="something new" bind:value={name}/>
+                    <CTextInput fieldName="Company" cVal="something new" bind:value={comp}/>
                     <CTextInput fieldName="Position" cVal="position held" bind:value={pos}/>
 
                     <CImageInput fieldName="Image" cVal="" bind:value={img}/>
