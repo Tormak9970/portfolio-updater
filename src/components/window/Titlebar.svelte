@@ -28,7 +28,7 @@
     onMount(async () => {
         await setSettingsPath();
 		let settings = JSON.parse(await fs.readTextFile(settingsPath));
-		$selCat = settings.selCat;
+		$selCat = settings.selCat == "" ? "Projects" : settings.selCat;
 		$state = settings.state;
 
 		const cfg = await getConfig(settings.configPath);
