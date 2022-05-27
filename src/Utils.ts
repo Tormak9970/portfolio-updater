@@ -1,10 +1,9 @@
 import { fs, path, tauri } from "@tauri-apps/api";
 
-const devBuild = true;
 export let settingsPath = "";
 export let configPath = "";
 
-export async function setSettingsPath() { settingsPath = await path.resolve(devBuild ? '../public/settings.json' : "./resources/app/public/settings.json"); }
+export async function setSettingsPath() { settingsPath = import.meta.env.DEV ? await path.resolve('../public/settings.json') : await path.join(await path.resourceDir(), "settings.json"); }
 
 export async function updateSettings(data: { prop: string, data: any }) {
   if (data.prop == "configPath") {

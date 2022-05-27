@@ -2,11 +2,11 @@
 	import EditorJs, { OutputData } from '@editorjs/editorjs';
 	import Header from '@editorjs/header';
 	import Code from '@editorjs/code';
-	import List from '../../libs/nestedList';
+	import List from '@editorjs/nested-list';
+	import ImageTool from '@editorjs/image';
 	import Delimiter from '@editorjs/delimiter';
 	import Paragraph from '@editorjs/paragraph';
 	import Embed from '@editorjs/embed';
-	import ImageTool from '../../libs/imagePlugin';
 	
 	import { onMount } from 'svelte';
 	import { state, jSwitchProj, config, changedCat, changedKey } from '../../stores';
@@ -14,7 +14,7 @@
 	import EditorInput from '../universal/edit/EditorInput.svelte';
 	import { path, tauri } from '@tauri-apps/api';
 	import EditorDropDown from '../universal/edit/EditorDropDown.svelte';
-import ImagePreview from '../universal/edit/ImagePreview.svelte';
+	import ImagePreview from '../universal/edit/ImagePreview.svelte';
 
 	let editor: EditorJs;
 	let saved = true;
@@ -126,6 +126,7 @@ import ImagePreview from '../universal/edit/ImagePreview.svelte';
 		if (data) {
 			await Promise.all(data.blocks.map(async (block) => {
 				if (block.type == "image" && block.data.file.url.indexOf("./") == 0) {
+					console.log(block.data.file.url)
 					block.data.file.webUrl = block.data.file.url;
 					block.data.file.url = tauri.convertFileSrc(await path.join(await path.dirname(configPath), block.data.file.url));
 				}
