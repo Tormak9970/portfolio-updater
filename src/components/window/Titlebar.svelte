@@ -67,7 +67,7 @@
 <div data-tauri-drag-region class="titlebar">
     <div class="info">
         <img src="/logo.svg" alt="logo" height="15" style="margin-left: 10px;">
-        <div style="margin-left: 10px; margin-right: 30px;">Portfolio Updator</div>
+        <div style="margin-left: 10px; margin-right: 30px;">Portfolio Updater</div>
         {#if $config}
             <SubMenu config={menuConfig} bind:value={dropVal} />
         {/if}
