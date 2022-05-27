@@ -1,1 +1,53 @@
-{"configPath":"C:\\Users\\Tormak\\Documents\\GitHub\\portfolio-site-v2\\public\\config.json","selCat":"Organizations","state":{"experience":{"oExp":"","key":"","data":{"company":"","img":"","position":"","description":""}},"projects":{"oProj":"","cat":"","key":"","data":{"name":"","time":"","status":"","difficulty":"","description":"","content":{},"link":"","isRelative":false,"img":"","org":""}},"organizations":{"oOrg":"TORCommunity.com","key":"torcommunity","data":{"name":"TORCommunity.com","img":"./img/orgs/torc-icon-2016.png","about":"TORCommunity.com is a fan site for Star Wars The Old Republic. It was started in 2008, and has many neat features, such as guides, walkthroughs, tips, tools, and multiple databases. The sites goal is to provide great resources, and improve the experience players have while playing the game.","description":"I got involved with TORCommunity after the owner and head dev of the site reached out to me while I was working on the <i>Character and Outfit Designer</i> and asked if I would be willing to put it up on TORCommunity. He had been looking for a tool just like it for the site for a while, and I was hoping to get it up on one of the fan sites as well. After finishing the app, and putting it up live on the site, he offered me the opportunity to continue working on the site, which I gladly took him up on. Since then, I have continued to work on the <i>Character and Outfit Designer</i>, as well as other parts of the site.","projects":[{"name":"TORC Character Designer","linkId":"torc-character-designer"},{"name":"TORC NPC Viewers","linkId":"torc-npc-viewers"}]}},"art":{"oArt":"","key":"","data":{"name":"","img":"","description":""}}}}
+{
+    "configPath": "",
+    "selCat": "",
+    "state": {
+        "experience": {
+            "oExp": "",
+            "key": "",
+            "data": {
+                "company": "",
+                "img": "",
+                "position": "",
+                "description": ""
+            }
+        },
+        "projects": {
+            "oProj": "",
+            "cat": "",
+            "key": "",
+            "data": {
+                "name": "",
+                "time": "",
+                "status": "",
+                "difficulty": "",
+                "description": "",
+                "content": {},
+                "link": "",
+                "isRelative": false,
+                "img": "",
+                "org": ""
+            }
+        },
+        "organizations": {
+            "oOrg": "",
+            "key": "",
+            "data": {
+                "name": "",
+                "img": "",
+                "about": "",
+                "description": "",
+                "projects": []
+            }
+        },
+        "art": {
+            "oArt": "",
+            "key": "",
+            "data": {
+                "name": "",
+                "img": "",
+                "description": ""
+            }
+        }
+    }
+}
