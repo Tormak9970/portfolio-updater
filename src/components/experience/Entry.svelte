@@ -11,7 +11,7 @@
     let imgPath:string;
 
     async function setExp(e) {
-        $state.experience.oExp = data.name;
+        $state.experience.oExp = data.position;
         $state.experience.key = key;
         $state.experience.data = data;
 

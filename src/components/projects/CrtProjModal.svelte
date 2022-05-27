@@ -115,7 +115,7 @@
 </div>
 
 <style>
-    @import '../../themes.css';
+    @import '/theme.css';
 
     .backdrop {
         z-index: 10;

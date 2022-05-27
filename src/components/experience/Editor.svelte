@@ -8,10 +8,9 @@
 	async function inputHandler(e:Event, fieldName:string) {
 		const value = (e.currentTarget as HTMLInputElement).value;
 
-        if (fieldName == "Company" && $state.art.oArt != value) {
-            $state.experience.oExp = value;
-            $changedKey = value.replace(" ", "-").toLowerCase();
-        }
+        $state.experience.data[fieldName.toLowerCase()] = value;
+        $changedKey = $state.experience.data.company.toLocaleLowerCase().concat("-").concat($state.experience.data.position.toLocaleLowerCase()).replaceAll(" ", "-");
+		$state.experience.oExp = $state.experience.data.position;
         
         $state.experience.data.company = value;
 
@@ -20,7 +19,7 @@
 	}
 
 	async function descHandler(e:Event, fieldName:string) {
-        const value = (e.currentTarget as HTMLInputElement).value;
+        const value = (e.currentTarget as HTMLTextAreaElement).value;
         
         $state.experience.data.description = value;
 
@@ -42,7 +41,7 @@
 
         if ($changedKey) {
 			// @ts-ignore
-			cfg.experience[$changedKey] = cfg.art[$state.experience.key];
+			cfg.experience[$changedKey] = cfg.experience[$state.experience.key];
 
 			// @ts-ignore
 			delete cfg.experience[$state.experience.key];
@@ -62,17 +61,17 @@
 </script>
 
 <div id="editor">
-	<div class:hide = "{$state.art.oArt == ""}" style="overflow: scroll; min-height: 100%;">
-		<h1>Editing: {$state.art.oArt}</h1>
+	<div class:hide = "{$state.experience.oExp == ""}" style="overflow: scroll; min-height: 100%;">
+		<h1>Editing: {$state.experience.oExp}</h1>
 		<div class="info-cont">
 			<EditorInput fieldName={"Company"} cVal={$state.experience.data.company} handler={inputHandler} />
 			<EditorInput fieldName={"Position"} cVal={$state.experience.data.position} handler={inputHandler} />
-            <ImagePreview fieldName={"Logo"} cVal={$state.experience.data.img} handler={imageHandler}/>
+            <ImagePreview fieldName={"Image"} cVal={$state.experience.data.img} handler={imageHandler}/>
             <TextAreaInput fieldName={"Description"} cVal={$state.experience.data.description} handler={descHandler}/>
 		</div>
 		<button id="save" on:click="{save}">Save Content</button>
 	</div>
-	<div class:hide = "{$state.art.oArt != ""}">
+	<div class:hide = "{$state.experience.oExp != ""}">
 		<div class="welcome-msg">Select an Experience entry to get started</div>
 	</div>
 </div>

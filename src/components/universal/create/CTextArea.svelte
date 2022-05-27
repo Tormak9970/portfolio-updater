@@ -1,4 +1,5 @@
 <script lang="ts">
+    export let fieldName:string;
 	export let cVal:string;
 
     export let value = "";
@@ -7,6 +8,7 @@
 </script>
 
 <div class="desc-input">
+	<div class="field-name">{fieldName}</div>
     <textarea type="text" placeholder="{cVal}" value="{cVal}" on:change="{handleInput}"/>
 </div>
 

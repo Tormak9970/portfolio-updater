@@ -56,7 +56,7 @@
                     <CImageInput fieldName="Image" cVal="" bind:value={img}/>
                 </div>
 
-                <CTextArea cVal={""} bind:value={desc}/>
+                <CTextArea fieldName="Description" cVal={""} bind:value={desc}/>
             </div>
 
             <div class="btns-cont">
@@ -67,7 +67,7 @@
 </div>
 
 <style>
-    @import '../../themes.css';
+    @import '/theme.css';
 
     .backdrop {
         z-index: 10;

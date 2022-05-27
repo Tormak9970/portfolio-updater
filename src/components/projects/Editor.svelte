@@ -206,7 +206,7 @@ import ImagePreview from '../universal/edit/ImagePreview.svelte';
 		if (fieldName == "Category" && $state.projects.cat != value) {
             $changedCat = value;
         } else {
-			$state.projects.data[fieldName] = value;
+			$state.projects.data[fieldName == "Organization" ? "org" : fieldName.toLowerCase()] = value;
 		}
 
         $state = $state;

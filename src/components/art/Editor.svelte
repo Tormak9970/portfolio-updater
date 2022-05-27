@@ -20,7 +20,7 @@
 	}
 
 	async function descHandler(e:Event, fieldName:string) {
-        const value = (e.currentTarget as HTMLInputElement).value;
+        const value = (e.currentTarget as HTMLTextAreaElement).value;
         
         $state.art.data.description = value;
 
