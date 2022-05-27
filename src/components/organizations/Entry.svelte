@@ -10,7 +10,7 @@
 
     let imgPath:string;
 
-    async function setExp(e) {
+    async function setOrg(e) {
         $state.organizations.oOrg = data.name;
         $state.organizations.key = key;
         $state.organizations.data = data;
@@ -30,7 +30,7 @@
         <div class="field">{data.name}</div>
     </div>
     <div class="btn-cont">
-        <div class="btn" on:click="{setExp}">
+        <div class="btn" on:click="{setOrg}">
             <div>Edit</div>
         </div>
     </div>

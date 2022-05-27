@@ -18,7 +18,7 @@
 </script>
 
 <div>
-    <EditorPage main={Editor} crtModal={"exp"} entry={Entry} data={orgs}/>
+    <EditorPage main={Editor} crtModal={"org"} entry={Entry} data={orgs}/>
 </div>
 
 <style>

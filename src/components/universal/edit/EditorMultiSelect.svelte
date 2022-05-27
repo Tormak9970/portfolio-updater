@@ -1,25 +1,34 @@
 <script lang="ts">
     import MulSelDropDown from "../MulSelDropDown.svelte";
+    import MulSelEntry from "../MulSelEntry.svelte";
 
     export let fieldName:string;
-    export let options:string[];
-    export let selected:string[];
-    export let handler:(values:string[], fieldName:string)=>Promise<void>;
+    export let options:{name:string, linkId:string}[];
+    export let selected:{name:string, linkId:string}[];
+    export let handler:(values:{name:string, linkId:string}[], fieldName:string)=>Promise<void>;
 
     $: available = options.filter((o) => !selected.includes(o));
 
-    function projectAdded(event) {
-        // event.detail
+    function projectAdded(event: { detail: {name:string, linkId:string}; }) {
+        selected.push(event.detail);
+        selected = [...selected];
+
+        handler(selected, fieldName);
     }
 
-    function projectRemoved(event) {
-        // event.detail
+    function projectRemoved(event: { detail: {name:string, linkId:string}; }) {
+        selected.splice(selected.indexOf(event.detail), 1);
+        selected = [...selected];
+
+        handler(selected, fieldName);
     }
 </script>
 
 <div class="multi-select">
     <div class="sel-cont">
-
+        {#each selected as sel}
+            <MulSelEntry value={sel} on:removeProj={projectRemoved}/>
+        {/each}
     </div>
     <MulSelDropDown values={available} on:addedProject={projectAdded}/>
 </div>
@@ -34,6 +43,15 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        background-color: var(--foreground);
+
+        border-radius: 8px;
     }
 
+    .sel-cont {
+        width: 90%;
+
+        margin-top: 14px;
+    }
 </style>

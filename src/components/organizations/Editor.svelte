@@ -10,7 +10,10 @@
 
 	for (const projCat of Object.entries($config.projects)) {
 		for (const proj of Object.entries(projCat[1])) {
-			projects.push(proj[0]);
+			projects.push({
+				name: proj[1].name,
+				linkId: proj[0]
+			});
 		}
 	}
 
@@ -44,7 +47,7 @@
         await updateSettings({prop: "state", data: $state});
 	}
 
-    async function mulSelHandler(values:string[], fieldName:string) {
+    async function mulSelHandler(values:{name:string, linkId:string}[], fieldName:string) {
         $state.organizations.data.projects = values;
 
         $state = $state;

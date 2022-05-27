@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
 
-    export let values:string[];
+    export let values:{name:string, linkId:string}[];
 
     const dispatchEvent = createEventDispatcher();
 
@@ -38,13 +38,12 @@
         for (let i = 0; i < sl; i++) {
             if (s.options[i].innerHTML == elem.innerHTML) {
                 s.selectedIndex = i;
-                h.innerHTML = elem.innerHTML;
 
                 break;
             }
         }
 
-        dispatchEvent("addedProject", elem.innerHTML);
+        dispatchEvent("addedProject", values.find((v) => v.name == elem.innerHTML));
 
         (h as HTMLElement).click();
     }
@@ -54,14 +53,14 @@
     <select>
         <option value="default"></option>
         {#each values as val}
-            <option value="{val.toLowerCase()}">{val}</option>
+            <option value="{val.name.toLowerCase()}">{val.name}</option>
         {/each}
     </select>
         
     <div class="select-selected" on:click|stopPropagation="{aHandleClick}">Add a project</div>
     <div class="select-items select-hide">
         {#each values as val}
-            <div id="{val}" on:click|stopPropagation="{eHandleClick}">{val}</div>
+            <div id="{val.name}" on:click|stopPropagation="{eHandleClick}">{val.name}</div>
         {/each}
     </div>
 </div>
@@ -72,11 +71,20 @@
 
     .custom-select {
         position: relative;
-        font-size: 14px;
+        font-size: 16px;
         width: 100%;
     }
     .custom-select > select { display: none; }
-    .select-selected { background-color: var(--foreground); width: calc(100% - 8px); }
+    .select-selected {
+        background-color: var(--foreground);
+        width: calc(100% - 10px);
+        padding: 7px 4px;
+        
+        border: 1px solid transparent;
+
+        border-radius: 8px;
+        cursor: pointer;
+    }
     .select-selected::after {
         position: absolute;
         content: "";
@@ -91,7 +99,7 @@
         border-color: transparent transparent var(--font-color) transparent !important;
         top: 7px !important;
     }
-    .select-items > div, .select-selected {
+    .select-items > div {
         color: var(--font-color);
         padding: 2px 4px;
         border: 1px solid transparent;
@@ -100,10 +108,14 @@
     .select-items {
         position: absolute;
         background-color: var(--foreground);
-        top: 100%;
+        bottom: 100%;
         left: 0;
         right: 0;
         z-index: 99;
+
+        border-radius: 8px;
+
+        box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.85);
     }
     .select-items > div:hover { background-color: var(--hover); cursor: pointer; }
     .select-hide { display: none; }
