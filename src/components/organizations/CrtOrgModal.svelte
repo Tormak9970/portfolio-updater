@@ -10,13 +10,16 @@
     let img:string;
     let about:string;
     let desc:string;
-    let projs:string[];
+    let projs:{name:string, linkId:string}[];
 
     const projects = [];
 
 	for (const projCat of Object.entries($config.projects)) {
 		for (const proj of Object.entries(projCat[1])) {
-			projects.push(proj[0]);
+			projects.push({
+				name: proj[1].name,
+				linkId: proj[0]
+			});
 		}
 	}
 
@@ -68,7 +71,7 @@
                 <CTextArea fieldName="About" cVal="description of this organization" bind:value={about}/>
                 <CTextArea fieldName="Description" cVal={"my involvement"} bind:value={desc}/>
 
-                <CMultiSelect fieldName="Projects" options={projects} bind:values={projs}/>
+                <CMultiSelect fieldName="Projects" options={projects} bind:selected={projs}/>
             </div>
 
             <div class="btns-cont">
@@ -99,7 +102,7 @@
 
     .modal {
         padding: 14px;
-        max-width: 70vw;
+        max-width: 80vw;
         border-radius: 8px;
 
         display: flex;
@@ -115,7 +118,7 @@
     }
 
     .input-wrapper {
-        width: auto;
+        width: 100%;
 
         display: flex;
         flex-direction: column;

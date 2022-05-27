@@ -9,7 +9,7 @@
 
 <div class="desc-input">
 	<div class="field-name">{fieldName}</div>
-    <textarea type="text" placeholder="{cVal}" value="{cVal}" on:change="{handleInput}"/>
+    <textarea type="text" placeholder="{cVal}" value="" on:change="{handleInput}"/>
 </div>
 
 <style>
@@ -20,7 +20,7 @@
         width: 80%;
 
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		align-items: center;
 
 		color: var(--font-color);
