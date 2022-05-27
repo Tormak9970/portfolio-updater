@@ -3,7 +3,13 @@ import { fs, path, tauri } from "@tauri-apps/api";
 export let settingsPath = "";
 export let configPath = "";
 
-export async function setSettingsPath() { settingsPath = import.meta.env.DEV ? await path.resolve('../public/settings.json') : await path.join(await path.resourceDir(), "settings.json"); }
+export async function setSettingsPath() {
+  const setsPath = await path.join(await path.appDir(), "settings.json");
+  await fs.readTextFile(setsPath).then(() => {}, async () => {
+    await fs.copyFile(await path.join(await path.resourceDir(), "_up_", "settings.json"), setsPath);
+  });
+  settingsPath = setsPath;
+}
 
 export async function updateSettings(data: { prop: string, data: any }) {
   if (data.prop == "configPath") {
