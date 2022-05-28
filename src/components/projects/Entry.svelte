@@ -7,6 +7,7 @@
     export let category;
 
     async function setProject(e) {
+        $jSwitchProj = true;
         $state.projects.oProj = data.name;
         $state.projects.key = key;
         $state.projects.cat = category;
@@ -14,7 +15,6 @@
 
         $state = $state;
         await updateSettings({prop: "state", data: $state});
-        $jSwitchProj = true;
     }
 </script>
 
