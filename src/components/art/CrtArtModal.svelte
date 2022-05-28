@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { config, showCrtArtModal } from "../../stores";
+    import { config, showCrtArtModal, state } from "../../stores";
     import { writeConfig } from "../../Utils";
     import CImageInput from "../universal/create/CImageInput.svelte";
     import CTextArea from "../universal/create/CTextArea.svelte";
@@ -35,6 +35,16 @@
 
             $config = cfg;
             await writeConfig(JSON.stringify(cfg));
+
+            $state.art = {
+                "oArt": name,
+                "key": key,
+                "data": {
+                    "name": name,
+                    "img": img,
+                    "description": desc
+                }
+            }
 
             $showCrtArtModal = false;
         }

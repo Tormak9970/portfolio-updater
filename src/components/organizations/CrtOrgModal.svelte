@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { config, showCrtOrgModal } from "../../stores";
+    import { config, showCrtOrgModal, state } from "../../stores";
     import { writeConfig } from "../../Utils";
     import CImageInput from "../universal/create/CImageInput.svelte";
     import CMultiSelect from "../universal/create/CMultiSelect.svelte";
@@ -52,6 +52,18 @@
 
             $config = cfg;
             await writeConfig(JSON.stringify(cfg));
+
+            $state.organizations = {
+                "oOrg": name,
+                "key": key,
+                "data": {
+                    "name": name,
+                    "img": img,
+                    "about": about,
+                    "description": desc,
+                    "projects": projs
+                }
+            }
 
             $showCrtOrgModal = false;
         }

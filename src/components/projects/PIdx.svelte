@@ -1,11 +1,13 @@
 <script lang="ts">
+import { afterUpdate } from "svelte";
+
 	import { config } from "../../stores";
 
 	import EditorPage from "../universal/EditorPage.svelte";
 	import Editor from "./Editor.svelte";
 	import Entry from "./Entry.svelte";
 
-	const projects = [];
+	let projects = [];
 
 	for (const projCat of Object.entries($config.projects)) {
 		for (const proj of Object.entries(projCat[1])) {
@@ -18,6 +20,21 @@
 			});
 		}
 	}
+
+	afterUpdate(() => {
+		projects = [];
+		for (const projCat of Object.entries($config.projects)) {
+			for (const proj of Object.entries(projCat[1])) {
+				projects.push({
+					props: {
+						data: proj[1],
+						category: projCat[0],
+						key: proj[0]
+					}
+				});
+			}
+		}
+	});
 </script>
 
 <div>

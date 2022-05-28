@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { config, showCrtExpModal } from "../../stores";
+    import { config, showCrtExpModal, state } from "../../stores";
     import { writeConfig } from "../../Utils";
     import CImageInput from "../universal/create/CImageInput.svelte";
     import CTextArea from "../universal/create/CTextArea.svelte";
@@ -38,6 +38,17 @@
 
             $config = cfg;
             await writeConfig(JSON.stringify(cfg));
+
+            $state.experience = {
+                "oExp": pos,
+                "key": key,
+                "data": {
+                    "company": comp,
+                    "img": img,
+                    "position": pos,
+                    "description": desc
+                }
+            }
 
             $showCrtExpModal = false;
         }

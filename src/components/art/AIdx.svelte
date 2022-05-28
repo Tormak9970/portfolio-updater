@@ -1,11 +1,13 @@
 <script lang="ts">
+import { afterUpdate } from "svelte";
+
 	import { config } from "../../stores";
 
 	import EditorPage from "../universal/EditorPage.svelte";
 	import Editor from "./Editor.svelte";
     import Entry from "./Entry.svelte";
 
-	const pieces = [];
+	let pieces = [];
 
 	for (const artPiece of Object.entries($config.art)) {
 		pieces.push({
@@ -15,6 +17,18 @@
             }
         });
 	}
+
+	afterUpdate(() => {
+		pieces = [];
+		for (const artPiece of Object.entries($config.art)) {
+			pieces.push({
+				props: {
+					data: artPiece[1],
+					key: artPiece[0]
+				}
+			});
+		}
+	});
 </script>
 
 <div>

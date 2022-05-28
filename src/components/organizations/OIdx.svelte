@@ -1,11 +1,13 @@
 <script lang="ts">
+import { afterUpdate } from "svelte";
+
 	import { config } from "../../stores";
 
 	import EditorPage from "../universal/EditorPage.svelte";
 	import Editor from "./Editor.svelte";
     import Entry from "./Entry.svelte";
 
-	const orgs = [];
+	let orgs = [];
 
 	for (const orgEntr of Object.entries($config.organizations)) {
 		orgs.push({
@@ -15,6 +17,18 @@
             }
         });
 	}
+
+	afterUpdate(() => {
+		orgs = [];
+		for (const orgEntr of Object.entries($config.organizations)) {
+			orgs.push({
+				props: {
+					data: orgEntr[1],
+					key: orgEntr[0]
+				}
+			});
+		}
+	});
 </script>
 
 <div>
