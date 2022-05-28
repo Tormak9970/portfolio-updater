@@ -525,5 +525,31 @@
 	}
 	:global(.ce-conversion-toolbar__label) { color: var(--font-color) !important; }
 
+	/* new editorJS styles */
+	:global(.ce-popover) {
+		color: var(--font-color);
+		background-color: var(--foreground);
+		border: 1px solid black;
+		box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.85);
+	}
+	:global(.cdx-search-field) {
+		color: var(--font-color);
+		fill: var(--font-color);
+		background-color: var(--foreground);
+		border: 1px solid black;
+	}
+	:global(.cdx-search-field__icon .icon) { color: var(--font-color); }
+	:global(.cdx-search-field__input) {
+		color: var(--font-color);
+	}
+
+	:global(.ce-popover__item:hover) {
+		background-color: var(--hover);
+	}
+	:global(.ce-popover__item-icon) {
+		background-color: var(--hover);
+		border: 1px solid black;
+	}
+
 	#editor > div > .welcome-msg { color: var(--font-color); font-size: 30px; }
 </style>
