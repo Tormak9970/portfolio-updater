@@ -86,16 +86,16 @@
 					if (saved) saved = false;
 					const content = await getEditorContent();
 					wasProgramatic = true;
-					// @ts-ignore
 					$state.projects.data.content = content;
         			await updateSettings({prop: "state", data: $state});
 				} else {
 					wasProgramatic = false;
 				}
+			},
+			onReady: async () => {
+				if ($state.projects.data.content) editor.blocks.render(await convertToTauri($state.projects.data.content));
 			}
 		});
-
-		if ($state.projects.data.content) editor.blocks.render(await convertToTauri($state.projects.data.content));
 	});
 
 	$: {
