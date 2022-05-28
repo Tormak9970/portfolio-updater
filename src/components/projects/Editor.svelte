@@ -53,7 +53,6 @@
     }
 
 	onMount(async () => {
-		const cnt = await convertToTauri($state.projects.data.content);
 		editor = new EditorJs({
 			holder : 'editorjs',
 			// @ts-ignore
@@ -93,10 +92,10 @@
 				} else {
 					wasProgramatic = false;
 				}
-			},
-			// @ts-ignore
-			data: cnt
+			}
 		});
+
+		if ($state.projects.data.content) editor.blocks.render(await convertToTauri($state.projects.data.content));
 	});
 
 	$: {
@@ -112,12 +111,10 @@
 			wasProgramatic = true;
 			$jSwitchProj = false;
 			if (data.time && data.blocks?.length > 0 && data.version) {
-				console.log("updating editor");
 				const transformedDat = await convertToTauri(data);
-				console.log(transformedDat);
-				editor.render(transformedDat);
+				editor.blocks.render(transformedDat);
 			} else {
-				editor.clear();
+				editor.blocks.clear();
 			}
 		}
 	};
@@ -264,7 +261,7 @@
 	@import "/theme.css";
 
 	#editor {
-		width: calc(100% - 272px - 2em - 40px);
+		width: calc(100% - 292px - 2em - 40px);
 		margin: 0px 20px;
 		height: 100%;
 

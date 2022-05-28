@@ -7,8 +7,8 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "portfolio-updater",
-    "version": "0.1.0"
+    "productName": "Portfolio Updater",
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
