@@ -83,7 +83,7 @@
 			onChange: async () => {
 				if (!wasProgramatic) {
 					if (saved) saved = false;
-					const content = await getEditorContent();
+					const content = await editor.save();
 					wasProgramatic = true;
 					$state.projects.data.content = content;
         			await updateSettings({prop: "state", data: $state});
@@ -134,6 +134,7 @@
 	}
 
 	function convertToWeb(data: OutputData) {
+		console.log(data.blocks);
 		data.blocks = data.blocks.map((block) => {
 			if (block.type == "image") {
 				console.log(block);
