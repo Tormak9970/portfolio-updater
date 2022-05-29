@@ -64,9 +64,8 @@
 					class: ImageTool,
 					config: {
 						uploader: {
-							uploadByFile: async (file) => {
-								await file;
-								const uploadRes = await uploadFile(file.path);
+							uploadByFile: async (file:File) => {
+								const uploadRes = await uploadFile(file.name, await file.arrayBuffer());
 								return JSON.parse(uploadRes);
 							},
 							uploadByUrl: async (url) => {

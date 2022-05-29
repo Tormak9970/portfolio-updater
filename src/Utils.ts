@@ -63,12 +63,16 @@ export async function uploadUrl(url: string) {
 
   return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath), webUrl: preFinalPath } });
 }
-export async function uploadFile(filePath: string) {
-  const imagesWebsiteDir = await path.join(await path.dirname(configPath), 'img', 'projs');
-  const preFinalPath = await path.join(imagesWebsiteDir, await path.basename(filePath));
+export async function uploadFile(name:string, buffer: ArrayBuffer) {
+
+  const imagesWebsiteDir = await path.join('img', 'projs');
+  const preFinalPath = await path.join(imagesWebsiteDir, name);
   const finalPath = await path.join(await path.dirname(configPath), preFinalPath);
 
-  await fs.copyFile(filePath, finalPath);
+  await fs.writeBinaryFile({
+    path: finalPath,
+    contents: new Uint8Array(buffer)
+  });
 
   return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath), webUrl: preFinalPath } });
 }
