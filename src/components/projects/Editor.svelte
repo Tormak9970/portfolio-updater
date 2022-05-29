@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { toast } from "@zerodevx/svelte-toast";
 	import EditorJs, { OutputData } from '@editorjs/editorjs';
 	import Header from '@editorjs/header';
 	import Code from '@editorjs/code';
@@ -15,6 +16,7 @@
 	import { path, tauri } from '@tauri-apps/api';
 	import EditorDropDown from '../universal/edit/EditorDropDown.svelte';
 	import ImagePreview from '../universal/edit/ImagePreview.svelte';
+import ConfirmDelete from "../universal/ConfirmDelete.svelte";
 
 	let editor: EditorJs;
 	let saved = true;
@@ -220,11 +222,40 @@
         $state = $state;
         await updateSettings({prop: "state", data: $state});
 	}
+
+	function confirmDelete(e:Event) {
+		toast.push({
+			component: {
+				src: ConfirmDelete,
+				props: {
+					properties: ['projects', $state.projects.cat, $state.projects.data.name]
+				},
+				sendIdTo: 'toastId'
+			},
+			target: "top",
+			dismissable: false,
+			initial: 0,
+        	intro: { y: -192 },
+			theme: {
+				'--toastPadding': '0',
+          		'--toastBackground': 'transparent',
+				'--toastMsgPadding': '0'
+			}
+		});
+	}
 </script>
 
 <div id="editor">
 	<div class:hide = "{$state.projects.oProj == ""}" style="overflow: scroll; min-height: 100%;">
-		<h1>Editing: {$state.projects.oProj}</h1>
+		<div class="header">
+			<div></div>
+			<h1>Editing: {$state.projects.oProj}</h1>
+			<div class="btn-cont">
+				<div class="btn" on:click="{confirmDelete}">
+					<div>Delete</div>
+				</div>
+			</div>
+		</div>
 		<div class="info-cont">
 			<div class="sub">
 				<EditorInput fieldName={"Name"} cVal={$state.projects.data.name} handler={inputHandler}/>
@@ -288,6 +319,33 @@
 	}
 	#save:hover { cursor: pointer; background-color: var(--hover); }
 	#save:focus { outline: 1px solid var(--highlight); }
+
+	.header {
+		width: 100%;
+		
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.header > .btn-cont > .btn {
+        height: 30px;
+        width: 60px;
+
+        cursor: pointer;
+        background-color:var(--warning);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 10px;
+
+		margin-right: 10px;
+    }
+    .header > .btn-cont > .btn:hover { background-color: var(--warning-hover); }
 
 	.info-cont {
 		width: 100%;

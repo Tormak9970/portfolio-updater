@@ -1,9 +1,11 @@
 <script lang="ts">
+    import { toast } from "@zerodevx/svelte-toast";
 	import { state, config, changedKey } from '../../stores';
 	import { updateSettings, writeConfig } from '../../Utils';
     import TextAreaInput from '../universal/edit/TextAreaInput.svelte';
 	import EditorInput from '../universal/edit/EditorInput.svelte';
 	import ImagePreview from '../universal/edit/ImagePreview.svelte';
+import ConfirmDelete from "../universal/ConfirmDelete.svelte";
 
 	async function inputHandler(e:Event, fieldName:string) {
 		const value = (e.currentTarget as HTMLInputElement).value;
@@ -59,11 +61,40 @@
 
 		$config = cfg;
 	}
+
+	function confirmDelete(e:Event) {
+		toast.push({
+			component: {
+				src: ConfirmDelete,
+				props: {
+					properties: ['art', $state.art.data.name]
+				},
+				sendIdTo: 'toastId'
+			},
+			target: "top",
+			dismissable: false,
+			initial: 0,
+        	intro: { y: -192 },
+			theme: {
+				'--toastPadding': '0',
+          		'--toastBackground': 'transparent',
+				'--toastMsgPadding': '0'
+			}
+		});
+	}
 </script>
 
 <div id="editor">
 	<div class:hide = "{$state.art.oArt == ""}" style="overflow: scroll; min-height: 100%;">
-		<h1>Editing: {$state.art.oArt}</h1>
+		<div class="header">
+			<div></div>
+			<h1>Editing: {$state.art.oArt}</h1>
+			<div class="btn-cont">
+				<div class="btn" on:click="{confirmDelete}">
+					<div>Delete</div>
+				</div>
+			</div>
+		</div>
 		<div class="info-cont">
 			<EditorInput fieldName={"Name"} cVal={$state.art.data.name} handler={inputHandler} />
             <ImagePreview fieldName={"Image"} cVal={$state.art.data.img} handler={imageHandler}/>
@@ -92,6 +123,33 @@
 
 		position: relative;
 	}
+
+	.header {
+		width: 100%;
+		
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.header > .btn-cont > .btn {
+        height: 30px;
+        width: 60px;
+
+        cursor: pointer;
+        background-color:var(--warning);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 10px;
+
+		margin-right: 10px;
+    }
+    .header > .btn-cont > .btn:hover { background-color: var(--warning-hover); }
 
 	#save {
 		font-family: 'Source Sans Pro', sans-serif;
