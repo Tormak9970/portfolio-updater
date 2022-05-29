@@ -61,7 +61,7 @@ export async function uploadUrl(url: string) {
     contents: new Uint8Array(buffer)
   });
 
-  return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath), webUrl: preFinalPath } });
+  return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath), webUrl: "./" + preFinalPath.replaceAll("\\", "/") } });
 }
 export async function uploadFile(name:string, buffer: ArrayBuffer) {
 
@@ -74,5 +74,5 @@ export async function uploadFile(name:string, buffer: ArrayBuffer) {
     contents: new Uint8Array(buffer)
   });
 
-  return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath), webUrl: preFinalPath } });
+  return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath), webUrl: "./" + preFinalPath.replaceAll("\\", "/") } });
 }

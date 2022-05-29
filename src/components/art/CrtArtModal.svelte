@@ -34,7 +34,7 @@
             cfg.art[key] = newPiece;
 
             $config = cfg;
-            await writeConfig(JSON.stringify(cfg));
+            await writeConfig(JSON.stringify(cfg, null, '\t'));
 
             $state.art = {
                 "oArt": name,

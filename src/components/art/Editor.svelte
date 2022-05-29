@@ -55,7 +55,7 @@
 		// @ts-ignore
 		cfg.art[$state.art.key] = $state.art.data;
 
-		await writeConfig(JSON.stringify(cfg));
+		await writeConfig(JSON.stringify(cfg, null, '\t'));
 
 		$config = cfg;
 	}

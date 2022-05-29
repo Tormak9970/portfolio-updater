@@ -76,7 +76,7 @@
             cfg.projects[category][key] = newProj;
 
             $config = cfg;
-            await writeConfig(JSON.stringify(cfg));
+            await writeConfig(JSON.stringify(cfg, null, '\t'));
 
             $state.projects = {
                 "oProj": name,

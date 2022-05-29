@@ -37,7 +37,7 @@
             cfg.experience[key] = newExp;
 
             $config = cfg;
-            await writeConfig(JSON.stringify(cfg));
+            await writeConfig(JSON.stringify(cfg, null, '\t'));
 
             $state.experience = {
                 "oExp": pos,

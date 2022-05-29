@@ -51,7 +51,7 @@
             cfg.organizations[key] = newOrg;
 
             $config = cfg;
-            await writeConfig(JSON.stringify(cfg));
+            await writeConfig(JSON.stringify(cfg, null, '\t'));
 
             $state.organizations = {
                 "oOrg": name,

@@ -72,7 +72,7 @@
 		// @ts-ignore
 		cfg.organizations[$state.organizations.key] = $state.organizations.data;
 
-		await writeConfig(JSON.stringify(cfg));
+		await writeConfig(JSON.stringify(cfg, null, '\t'));
 
 		$config = cfg;
 	}

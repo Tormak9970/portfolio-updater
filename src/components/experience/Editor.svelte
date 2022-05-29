@@ -54,7 +54,7 @@
 		// @ts-ignore
 		cfg.experience[$state.experience.key] = $state.experience.data;
 
-		await writeConfig(JSON.stringify(cfg));
+		await writeConfig(JSON.stringify(cfg, null, '\t'));
 
 		$config = cfg;
 	}

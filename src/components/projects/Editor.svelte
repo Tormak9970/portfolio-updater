@@ -136,6 +136,7 @@
 	function convertToWeb(data: OutputData) {
 		data.blocks = data.blocks.map((block) => {
 			if (block.type == "image") {
+				console.log(block);
 				block.data.file.url = block.data.file.webUrl;
 				delete block.data.file.webUrl;
 			}
@@ -182,7 +183,7 @@
 		// @ts-ignore
 		cfg.projects[$state.projects.cat][$state.projects.key] = $state.projects.data;
 
-		await writeConfig(JSON.stringify(cfg));
+		await writeConfig(JSON.stringify(cfg, null, '\t'));
 
 		$config = cfg;
 		saved = true;
