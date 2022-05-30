@@ -44,7 +44,7 @@
 <div class="img-preview">
 	<div class="info">
         <div class="field-name">{fieldName}:</div>
-        <input type="text" placeholder="{cVal}" on:change="{wrapper}" bind:this="{input}">
+        <input type="text" placeholder="{cVal}" value="{cVal}" on:change="{wrapper}" bind:this="{input}">
         <button class="upload-file" on:click="{selectImage}">select</button>
     </div>
     <div class="prev" style="margin-top: 7px;">

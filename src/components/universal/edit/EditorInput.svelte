@@ -10,7 +10,7 @@
 
 <div class="editor-input">
 	<div class="field-name">{fieldName}:</div>
-    <input type="text" placeholder="{cVal}" on:change="{wrapper}">
+    <input type="text" placeholder="{cVal}" value="{cVal}" on:change="{wrapper}">
 </div>
 
 <!-- svelte-ignore css-unused-selector -->
