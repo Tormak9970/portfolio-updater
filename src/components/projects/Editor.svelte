@@ -16,7 +16,7 @@
 	import { path, tauri } from '@tauri-apps/api';
 	import EditorDropDown from '../universal/edit/EditorDropDown.svelte';
 	import ImagePreview from '../universal/edit/ImagePreview.svelte';
-import ConfirmDelete from "../universal/ConfirmDelete.svelte";
+	import ConfirmDelete from "../universal/ConfirmDelete.svelte";
 
 	let editor: EditorJs;
 	let saved = true;
