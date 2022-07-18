@@ -94,7 +94,8 @@
 				}
 			},
 			onReady: async () => {
-				if ($state.projects.data.content) editor.blocks.render(await convertToTauri($state.projects.data.content));
+				// @ts-ignore
+				if ($state.projects.data.content.blocks) editor.blocks.render(await convertToTauri($state.projects.data.content));
 			}
 		});
 	});
