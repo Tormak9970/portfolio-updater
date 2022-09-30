@@ -6,17 +6,16 @@
 	import EditorInput from '../universal/edit/EditorInput.svelte';
 	import ImagePreview from '../universal/edit/ImagePreview.svelte';
     import EditorMultiSelect from '../universal/edit/EditorMultiSelect.svelte';
-import ConfirmDelete from "../universal/ConfirmDelete.svelte";
+	import ConfirmDelete from "../universal/ConfirmDelete.svelte";
 
     const projects = [];
 
-	for (const projCat of Object.entries($config.projects)) {
-		for (const proj of Object.entries(projCat[1])) {
-			projects.push({
-				name: proj[1].name,
-				linkId: proj[0]
-			});
-		}
+	for (const proj of Object.entries($config.projects)) {
+		projects.push({
+			// @ts-ignore
+			name: proj[1].name,
+			linkId: proj[0]
+		});
 	}
 
 	async function inputHandler(e:Event, fieldName:string) {

@@ -490,6 +490,8 @@
 		background: transparent !important;
 		border: 1px solid var(--foreground);
 	}
+	:global(.ce-settings.ce-settings--opened) { background-color: var(--foreground) !important; }
+	:global(.ce-block--selected  .ce-block__content) { background-color: var(--selection-color) !important; }
 	:global(.ce-settings__button) {
 		color: var(--font-color) !important;
 		background-color: transparent !important;

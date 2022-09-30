@@ -5,7 +5,7 @@
     import TextAreaInput from '../universal/edit/TextAreaInput.svelte';
 	import EditorInput from '../universal/edit/EditorInput.svelte';
 	import ImagePreview from '../universal/edit/ImagePreview.svelte';
-import ConfirmDelete from "../universal/ConfirmDelete.svelte";
+	import ConfirmDelete from "../universal/ConfirmDelete.svelte";
 
 	async function inputHandler(e:Event, fieldName:string) {
 		const value = (e.currentTarget as HTMLInputElement).value;
