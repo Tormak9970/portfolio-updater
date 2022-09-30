@@ -29,9 +29,9 @@
             case "projects":
                 $state[properties[0]] = {
                     "oProj": "",
-                    "cat": "",
                     "key": "",
                     "data": {
+                        "category": "",
                         "name": "",
                         "time": "",
                         "status": "",

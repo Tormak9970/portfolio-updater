@@ -10,7 +10,7 @@
 	import Embed from '@editorjs/embed';
 	
 	import { onMount } from 'svelte';
-	import { state, jSwitchProj, config, changedCat, changedKey } from '../../stores';
+	import { state, jSwitchProj, config, changedKey } from '../../stores';
 	import { configPath, updateSettings, uploadFile, uploadUrl, writeConfig } from '../../Utils';
 	import EditorInput from '../universal/edit/EditorInput.svelte';
 	import { path, tauri } from '@tauri-apps/api';
@@ -24,7 +24,7 @@
 	let wasProgramatic = false;
 
 	let dropCnfgCat = {
-        default: $state.projects.cat,
+        default: $state.projects.data.category,
         // @ts-ignore
         values: $config.projects ? Object.keys($config.projects) : []
     }
@@ -102,7 +102,7 @@
 
 	$: {
 		renderNewContent($state.projects.data.content);
-		dropCnfgCat.default = $state.projects.cat;
+		dropCnfgCat.default = $state.projects.data.category;
 		dropCnfgOrg.default = $state.projects.data.org;
 		dropCfgDiff.default = $state.projects.data.difficulty;
 		dropCfgStat.default = $state.projects.data.status;
@@ -158,24 +158,13 @@
 	async function save() {
 		const content = await getEditorContent();
 		const cfg = $config;
-
-		if ($changedCat) {
-			// @ts-ignore
-			cfg.projects[$changedCat][$state.projects.key] = cfg.projects[$state.projects.cat][$state.projects.key]
-
-			// @ts-ignore
-			delete cfg.projects[$state.projects.cat][$state.projects.key];
-
-			$state.projects.cat = $changedCat;
-			$changedCat = null;
-		}
 		
 		if ($changedKey) {
 			// @ts-ignore
-			cfg.projects[$state.projects.cat][$changedKey] = cfg.projects[$state.projects.cat][$state.projects.key]
+			cfg.projects[$changedKey] = cfg.projects[$state.projects.key]
 
 			// @ts-ignore
-			delete cfg.projects[$state.projects.cat][$state.projects.key];
+			delete cfg.projects[$state.projects.key];
 
 			$state.projects.key = $changedKey;
 			$changedKey = null;
@@ -185,7 +174,7 @@
 		$state.projects.data.description = content.blocks[1].data.text;
         await updateSettings({prop: "state", data: $state});
 		// @ts-ignore
-		cfg.projects[$state.projects.cat][$state.projects.key] = $state.projects.data;
+		cfg.projects[$state.projects.key] = $state.projects.data;
 
 		await writeConfig(JSON.stringify(cfg, null, '\t'));
 
@@ -206,11 +195,7 @@
         await updateSettings({prop: "state", data: $state});
 	}
 	async function dropDownHandler(value:string, fieldName:string) {
-		if (fieldName == "Category" && $state.projects.cat != value) {
-            $changedCat = value;
-        } else {
-			$state.projects.data[fieldName == "Organization" ? "org" : fieldName.toLowerCase()] = value;
-		}
+		$state.projects.data[fieldName == "Organization" ? "org" : fieldName.toLowerCase()] = value;
 
         $state = $state;
         await updateSettings({prop: "state", data: $state});
@@ -229,7 +214,7 @@
 			component: {
 				src: ConfirmDelete,
 				props: {
-					properties: ['projects', $state.projects.cat, $state.projects.data.name]
+					properties: ['projects', $state.projects.data.category, $state.projects.data.name]
 				},
 				sendIdTo: 'toastId'
 			},

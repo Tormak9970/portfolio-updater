@@ -16,9 +16,9 @@ export const state = writable({
     },
     "projects": {
         "oProj": "",
-        "cat": "",
         "key": "",
         "data": {
+            "category": "",
             "name": "",
             "time": "",
             "status": "",
@@ -56,7 +56,6 @@ export const changedKey = writable(null);
 
 // Projects stores
 export const jSwitchProj = writable(false);
-export const changedCat = writable(null);
 export const showCrtProjModal = writable(false);
 
 // Art stores

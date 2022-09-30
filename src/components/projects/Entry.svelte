@@ -10,7 +10,6 @@
         $jSwitchProj = true;
         $state.projects.oProj = data.name;
         $state.projects.key = key;
-        $state.projects.cat = category;
         $state.projects.data = data;
 
         $state = $state;

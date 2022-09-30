@@ -9,30 +9,28 @@ import { afterUpdate } from "svelte";
 
 	let projects = [];
 
-	for (const projCat of Object.entries($config.projects)) {
-		for (const proj of Object.entries(projCat[1])) {
-			projects.push({
-				props: {
-					data: proj[1],
-					category: projCat[0],
-					key: proj[0]
-				}
-			});
-		}
+	for (const proj of Object.entries($config.projects)) {
+		projects.push({
+			props: {
+				data: proj[1],
+				// @ts-ignore
+				category: proj[1].category,
+				key: proj[0]
+			}
+		});
 	}
 
 	afterUpdate(() => {
 		projects = [];
-		for (const projCat of Object.entries($config.projects)) {
-			for (const proj of Object.entries(projCat[1])) {
-				projects.push({
-					props: {
-						data: proj[1],
-						category: projCat[0],
-						key: proj[0]
-					}
-				});
-			}
+		for (const proj of Object.entries($config.projects)) {
+			projects.push({
+				props: {
+					data: proj[1],
+					// @ts-ignore
+					category: proj[1].category,
+					key: proj[0]
+				}
+			});
 		}
 	});
 </script>

@@ -57,6 +57,7 @@
     async function saveNew(e:Event) {
         if (validateFields()) {
             const newProj = {
+                "category": category,
                 "name": name,
 				"time": time,
 				"status": status,
@@ -73,16 +74,16 @@
             const key = name.toLowerCase().replaceAll(" ", "-").replaceAll("'", "");
 
             // @ts-ignore
-            cfg.projects[category][key] = newProj;
+            cfg.projects[key] = newProj;
 
             $config = cfg;
             await writeConfig(JSON.stringify(cfg, null, '\t'));
 
             $state.projects = {
                 "oProj": name,
-                "cat": category,
                 "key": key,
                 "data": {
+                    "category": category,
                     "name": name,
                     "time": time,
                     "status": status,
