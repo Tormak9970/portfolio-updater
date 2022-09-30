@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { config, showCrtProjModal, state } from "../../stores";
+    import { config, jSwitchProj, showCrtProjModal, state } from "../../stores";
     import { writeConfig } from "../../Utils";
     import CDropDown from "../universal/create/CDropDown.svelte";
     import CImageInput from "../universal/create/CImageInput.svelte";
@@ -79,6 +79,7 @@
             $config = cfg;
             await writeConfig(JSON.stringify(cfg, null, '\t'));
 
+            $jSwitchProj = true;
             $state.projects = {
                 "oProj": name,
                 "key": key,
