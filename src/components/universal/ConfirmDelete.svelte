@@ -1,17 +1,13 @@
 <script lang="ts">
     import { toast } from "@zerodevx/svelte-toast";
+    import { writeConfig } from "../../Utils";
     import { config, state } from "../../stores";
 
     export let toastId:string;
     export let properties:string[];
-    export let isProj:boolean;
 
-    function onConfirm() {
-        if (isProj) {
-            delete $config[properties[0]][properties[1]][properties[2]];
-        } else {
-            delete $config[properties[0]][properties[1]];
-        }
+    async function onConfirm() {
+        delete $config[properties[0]][properties[1]];
 
         switch (properties[0]) {
             case "experience":
@@ -70,6 +66,8 @@
                 }
                 break;
         }
+
+        await writeConfig(JSON.stringify($config, null, '\t'));
     }
 
     const clicked = (canceled: boolean) => {

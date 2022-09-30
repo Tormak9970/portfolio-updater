@@ -214,7 +214,7 @@
 			component: {
 				src: ConfirmDelete,
 				props: {
-					properties: ['projects', $state.projects.data.category, $state.projects.data.name]
+					properties: ['projects', $state.projects.data.name]
 				},
 				sendIdTo: 'toastId'
 			},
