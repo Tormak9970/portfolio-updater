@@ -39,7 +39,8 @@ export const state = writable({
 			"img": "",
 			"about": "",
 			"description": "",
-			"projects": []
+			"projects": [],
+            "link": ""
         }
     },
     "art": {

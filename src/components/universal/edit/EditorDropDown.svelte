@@ -55,7 +55,7 @@
             }
         }
 
-        handler(elem.innerHTML, fieldName);
+        handler(elem.innerHTML, fieldName.toLowerCase());
 
         (h as HTMLElement).click();
     }

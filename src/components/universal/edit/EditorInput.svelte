@@ -4,7 +4,7 @@
     export let handler:(e:Event, fieldName:string)=>Promise<void>;
 
     async function wrapper(e:Event) {
-        await handler(e, fieldName);
+        await handler(e, fieldName.toLowerCase());
     }
 </script>
 

@@ -19,7 +19,8 @@
             "Projects",
             "Art",
             "Experience",
-            "Organizations"
+            "Organizations",
+            "Archive"
         ]
     };
 

@@ -21,10 +21,14 @@
 	async function inputHandler(e:Event, fieldName:string) {
 		const value = (e.currentTarget as HTMLInputElement).value;
 
-        $state.organizations.data.name = value;
-        $changedKey = value.replaceAll(" ", "-");
-        
-        $state.organizations.oOrg = value;
+        if (fieldName == "name") {
+			$state.organizations.data.name = value;
+			$changedKey = value.replaceAll(" ", "-");
+			
+			$state.organizations.oOrg = value;
+		} else {
+			$state.organizations.data[fieldName] = value;
+		}
 
         $state = $state;
         await updateSettings({prop: "state", data: $state});
@@ -114,6 +118,7 @@
 		<div class="info-cont">
 			<EditorInput fieldName="Name" cVal={$state.organizations.data.name} handler={inputHandler}/>
             <ImagePreview fieldName="Image" cVal={$state.organizations.data.img} handler={imageHandler}/>
+			<EditorInput fieldName="Link" cVal={$state.organizations.data.link} handler={inputHandler}/>
 
             <TextAreaInput fieldName="About" cVal={$state.organizations.data.about} handler={descHandler}/>
             <TextAreaInput fieldName="Description" cVal={$state.organizations.data.description} handler={descHandler}/>

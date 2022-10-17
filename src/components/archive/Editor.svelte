@@ -229,14 +229,6 @@
 			}
 		});
 	}
-
-	function archiveProject(e:Event) {
-		// move project to archive
-		// switch selcat to archive
-		// clear old oProj data
-		// refresh projects list
-		// refresh archives list
-	}
 </script>
 
 <div id="editor">
@@ -245,9 +237,6 @@
 			<div></div>
 			<h1>Editing: {$state.projects.oProj}</h1>
 			<div class="btn-cont">
-				<div class="btn" on:click="{archiveProject}">
-					<div>Archive</div>
-				</div>
 				<div class="btn" on:click="{confirmDelete}">
 					<div>Delete</div>
 				</div>
@@ -326,10 +315,6 @@
 		align-items: center;
 	}
 
-	.header> .btn-cont {
-		display: flex;
-		flex-direction: row;
-	}
 	.header > .btn-cont > .btn {
         height: 30px;
         width: 60px;

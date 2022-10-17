@@ -10,17 +10,25 @@
     let img:string;
     let about:string;
     let desc:string;
+    let link:string;
     let projs:{name:string, linkId:string}[];
 
     const projects = [];
 
-	for (const projCat of Object.entries($config.projects)) {
-		for (const proj of Object.entries(projCat[1])) {
-			projects.push({
-				name: proj[1].name,
-				linkId: proj[0]
-			});
-		}
+	for (const proj of Object.entries($config.projects)) {
+		projects.push({
+            // @ts-ignore
+            name: proj[1].name,
+            linkId: proj[0]
+        });
+	}
+
+    for (const proj of Object.entries($config.archive)) {
+		projects.push({
+            // @ts-ignore
+            name: proj[1].name,
+            linkId: proj[0]
+        });
 	}
 
     async function close(e:Event) {
@@ -61,7 +69,8 @@
                     "img": img,
                     "about": about,
                     "description": desc,
-                    "projects": projs
+                    "projects": projs,
+                    "link": link
                 }
             }
 
@@ -78,6 +87,7 @@
                 <div class="sub">
                     <CTextInput fieldName="Name" cVal="something new" bind:value={name}/>
                     <CImageInput fieldName="Image" cVal="" bind:value={img}/>
+                    <CTextInput fieldName="Link" cVal="link to org" bind:value={link}/>
                 </div>
 
                 <CTextArea fieldName="About" cVal="description of this organization" bind:value={about}/>

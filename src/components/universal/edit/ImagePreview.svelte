@@ -13,7 +13,7 @@
     const changeEvnt = new Event("change");
 
     async function wrapper(e:Event) {
-        await handler(e, fieldName);
+        await handler(e, fieldName.toLowerCase());
     }
 
     async function selectImage(e:Event) {

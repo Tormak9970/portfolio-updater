@@ -14,8 +14,9 @@
 	import CrtArtModal from "./components/art/CrtArtModal.svelte";
 	import CrtExpModal from "./components/experience/CrtExpModal.svelte";
 	import CrtOrgModal from "./components/organizations/CrtOrgModal.svelte";
+    import ArchIdx from "./components/archive/ArchIdx.svelte";
 
-	const components = [ Setup, PIdx, AIdx, EIdx, OIdx ];
+	const components = [ Setup, PIdx, AIdx, EIdx, OIdx, ArchIdx ];
 </script>
 
 <div class="wrap">
