@@ -1,5 +1,6 @@
 <script lang="ts">
-import { afterUpdate } from "svelte";
+    import { archList } from "../../listStores";
+	import { afterUpdate, onMount } from "svelte";
 
 	import { config } from "../../stores";
 
@@ -7,23 +8,10 @@ import { afterUpdate } from "svelte";
 	import Editor from "./Editor.svelte";
 	import Entry from "./Entry.svelte";
 
-	let projects = [];
-
-	for (const proj of Object.entries($config.projects)) {
-		projects.push({
-			props: {
-				data: proj[1],
-				// @ts-ignore
-				category: proj[1].category,
-				key: proj[0]
-			}
-		});
-	}
-
 	afterUpdate(() => {
-		projects = [];
+		$archList = [];
 		for (const proj of Object.entries($config.projects)) {
-			projects.push({
+			$archList.push({
 				props: {
 					data: proj[1],
 					// @ts-ignore
@@ -33,10 +21,24 @@ import { afterUpdate } from "svelte";
 			});
 		}
 	});
+
+	onMount(() => {
+		$archList = [];
+		for (const proj of Object.entries($config.projects)) {
+			$archList.push({
+				props: {
+					data: proj[1],
+					// @ts-ignore
+					category: proj[1].category,
+					key: proj[0]
+				}
+			});
+		}
+	})
 </script>
 
 <div>
-    <EditorPage main={Editor} crtModal={"proj"} entry={Entry} data={projects}/>
+    <EditorPage main={Editor} crtModal={""} entry={Entry} data={$archList}/>
 </div>
 
 <style>

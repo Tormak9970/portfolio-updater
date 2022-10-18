@@ -1,5 +1,6 @@
 <script lang="ts">
-import { afterUpdate } from "svelte";
+    import { artList } from "../../listStores";
+	import { afterUpdate, onMount } from "svelte";
 
 	import { config } from "../../stores";
 
@@ -7,21 +8,10 @@ import { afterUpdate } from "svelte";
 	import Editor from "./Editor.svelte";
     import Entry from "./Entry.svelte";
 
-	let pieces = [];
-
-	for (const artPiece of Object.entries($config.art)) {
-		pieces.push({
-            props: {
-                data: artPiece[1],
-				key: artPiece[0]
-            }
-        });
-	}
-
 	afterUpdate(() => {
-		pieces = [];
+		$artList = [];
 		for (const artPiece of Object.entries($config.art)) {
-			pieces.push({
+			$artList.push({
 				props: {
 					data: artPiece[1],
 					key: artPiece[0]
@@ -29,10 +19,22 @@ import { afterUpdate } from "svelte";
 			});
 		}
 	});
+
+	onMount(() => {
+		$artList = [];
+		for (const artPiece of Object.entries($config.art)) {
+			$artList.push({
+				props: {
+					data: artPiece[1],
+					key: artPiece[0]
+				}
+			});
+		}
+	})
 </script>
 
 <div>
-    <EditorPage main={Editor} crtModal={"art"} entry={Entry} data={pieces}/>
+    <EditorPage main={Editor} crtModal={"art"} entry={Entry} data={$artList}/>
 </div>
 
 <style>

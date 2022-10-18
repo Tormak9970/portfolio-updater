@@ -109,7 +109,6 @@
 	}
 
 	const renderNewContent = async (data) => {
-		console.log("rerendering");
 		if (editor && $jSwitchProj) {
 			wasProgramatic = true;
 			$jSwitchProj = false;

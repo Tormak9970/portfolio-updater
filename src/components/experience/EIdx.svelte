@@ -1,5 +1,6 @@
 <script lang="ts">
-import { afterUpdate } from "svelte";
+    import { expList } from "../../listStores";
+import { afterUpdate, onMount } from "svelte";
 
 	import { config } from "../../stores";
 
@@ -7,21 +8,10 @@ import { afterUpdate } from "svelte";
 	import Editor from "./Editor.svelte";
     import Entry from "./Entry.svelte";
 
-	let entrs = [];
-
-	for (const expEntr of Object.entries($config.experience)) {
-		entrs.push({
-            props: {
-                data: expEntr[1],
-				key: expEntr[0]
-            }
-        });
-	}
-
 	afterUpdate(() => {
-		entrs = [];
+		$expList = [];
 		for (const expEntr of Object.entries($config.experience)) {
-			entrs.push({
+			$expList.push({
 				props: {
 					data: expEntr[1],
 					key: expEntr[0]
@@ -29,10 +19,22 @@ import { afterUpdate } from "svelte";
 			});
 		}
 	});
+
+	onMount(() => {
+		$expList = [];
+		for (const expEntr of Object.entries($config.experience)) {
+			$expList.push({
+				props: {
+					data: expEntr[1],
+					key: expEntr[0]
+				}
+			});
+		}
+	})
 </script>
 
 <div>
-    <EditorPage main={Editor} crtModal={"exp"} entry={Entry} data={entrs}/>
+    <EditorPage main={Editor} crtModal={"exp"} entry={Entry} data={$expList}/>
 </div>
 
 <style>

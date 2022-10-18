@@ -50,7 +50,8 @@
                         "img": "",
                         "about": "",
                         "description": "",
-                        "projects": []
+                        "projects": [],
+                        "link": ""
                     }
                 }
                 break;
@@ -62,6 +63,25 @@
                         "name": "",
                         "img": "",
                         "description": ""
+                    }
+                }
+                break;
+            case "archive":
+                $state[properties[0]] = {
+                    "oArc": "",
+                    "key": "",
+                    "data": {
+                        "category": "",
+                        "name": "",
+                        "time": "",
+                        "status": "",
+                        "difficulty": "",
+                        "description": "",
+                        "content": {},
+                        "link": "",
+                        "isRelative": false,
+                        "img": "",
+                        "org": ""
                     }
                 }
                 break;

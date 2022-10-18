@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { afterUpdate } from "svelte";
+    import { orgsList } from "../../listStores";
+	import { afterUpdate, onMount } from "svelte";
 
 	import { config } from "../../stores";
 
@@ -7,21 +8,10 @@
 	import Editor from "./Editor.svelte";
     import Entry from "./Entry.svelte";
 
-	let orgs = [];
-
-	for (const orgEntr of Object.entries($config.organizations)) {
-		orgs.push({
-            props: {
-                data: orgEntr[1],
-				key: orgEntr[0]
-            }
-        });
-	}
-
 	afterUpdate(() => {
-		orgs = [];
+		$orgsList = [];
 		for (const orgEntr of Object.entries($config.organizations)) {
-			orgs.push({
+			$orgsList.push({
 				props: {
 					data: orgEntr[1],
 					key: orgEntr[0]
@@ -29,10 +19,22 @@
 			});
 		}
 	});
+
+	onMount(() => {
+		$orgsList = [];
+		for (const orgEntr of Object.entries($config.organizations)) {
+			$orgsList.push({
+				props: {
+					data: orgEntr[1],
+					key: orgEntr[0]
+				}
+			});
+		}
+	})
 </script>
 
 <div>
-    <EditorPage main={Editor} crtModal={"org"} entry={Entry} data={orgs}/>
+    <EditorPage main={Editor} crtModal={"org"} entry={Entry} data={$orgsList}/>
 </div>
 
 <style>

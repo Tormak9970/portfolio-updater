@@ -24,20 +24,20 @@
 	let wasProgramatic = false;
 
 	let dropCnfgCat = {
-        default: $state.projects.data.category,
+        default: $state.archive.data.category,
         // @ts-ignore
-        values: $config.projects ? Object.keys($config.projects) : []
+        values: $config.archive ? Object.keys($config.archive) : []
     }
 
     let dropCnfgOrg = {
-        default: $state.projects.data.org,
+        default: $state.archive.data.org,
         // @ts-ignore
         values: $config.organizations ? Object.keys($config.organizations) : []
     }
     dropCnfgOrg.values.unshift("none");
 
     let dropCfgDiff = {
-        default: $state.projects.data.difficulty,
+        default: $state.archive.data.difficulty,
         values: [
             "Simple",
             "Moderate",
@@ -46,7 +46,7 @@
     }
 
     let dropCfgStat = {
-        default: $state.projects.data.status,
+        default: $state.archive.data.status,
         values: [
             "Not Live / Obsolete",
             "In Progress",
@@ -87,7 +87,7 @@
 					if (saved) saved = false;
 					const content = await editor.save();
 					wasProgramatic = true;
-					$state.projects.data.content = content;
+					$state.archive.data.content = content;
         			await updateSettings({prop: "state", data: $state});
 				} else {
 					wasProgramatic = false;
@@ -95,21 +95,20 @@
 			},
 			onReady: async () => {
 				// @ts-ignore
-				if ($state.projects.data.content.blocks) editor.blocks.render(await convertToTauri($state.projects.data.content));
+				if ($state.archive.data.content.blocks) editor.blocks.render(await convertToTauri($state.archive.data.content));
 			}
 		});
 	});
 
 	$: {
-		renderNewContent($state.projects.data.content);
-		dropCnfgCat.default = $state.projects.data.category;
-		dropCnfgOrg.default = $state.projects.data.org;
-		dropCfgDiff.default = $state.projects.data.difficulty;
-		dropCfgStat.default = $state.projects.data.status;
+		renderNewContent($state.archive.data.content);
+		dropCnfgCat.default = $state.archive.data.category;
+		dropCnfgOrg.default = $state.archive.data.org;
+		dropCfgDiff.default = $state.archive.data.difficulty;
+		dropCfgStat.default = $state.archive.data.status;
 	}
 
 	const renderNewContent = async (data) => {
-		console.log("rerendering");
 		if (editor && $jSwitchProj) {
 			wasProgramatic = true;
 			$jSwitchProj = false;
@@ -161,20 +160,20 @@
 		
 		if ($changedKey) {
 			// @ts-ignore
-			cfg.projects[$changedKey] = cfg.projects[$state.projects.key]
+			cfg.projects[$changedKey] = cfg.projects[$state.archive.key]
 
 			// @ts-ignore
-			delete cfg.projects[$state.projects.key];
+			delete cfg.projects[$state.archive.key];
 
-			$state.projects.key = $changedKey;
+			$state.archive.key = $changedKey;
 			$changedKey = null;
 		}
 
-		$state.projects.data.content = content;
-		$state.projects.data.description = content.blocks[1].data.text;
+		$state.archive.data.content = content;
+		$state.archive.data.description = content.blocks[1].data.text;
         await updateSettings({prop: "state", data: $state});
 		// @ts-ignore
-		cfg.projects[$state.projects.key] = $state.projects.data;
+		cfg.projects[$state.archive.key] = $state.archive.data;
 
 		await writeConfig(JSON.stringify(cfg, null, '\t'));
 
@@ -184,18 +183,18 @@
 
 	async function inputHandler(e:Event, fieldName:string) {
         const value = (e.currentTarget as HTMLInputElement).value;
-        if (fieldName == "Name" && $state.projects.oProj != value) {
-            $state.projects.oProj = value;
+        if (fieldName == "Name" && $state.archive.oArc != value) {
+            $state.archive.oArc = value;
             $changedKey = value.replace(" ", "-").toLowerCase();
         }
         
-        $state.projects.data[fieldName.toLowerCase()] = value;
+        $state.archive.data[fieldName.toLowerCase()] = value;
 
         $state = $state;
         await updateSettings({prop: "state", data: $state});
 	}
 	async function dropDownHandler(value:string, fieldName:string) {
-		$state.projects.data[fieldName == "Organization" ? "org" : fieldName.toLowerCase()] = value;
+		$state.archive.data[fieldName == "Organization" ? "org" : fieldName.toLowerCase()] = value;
 
         $state = $state;
         await updateSettings({prop: "state", data: $state});
@@ -203,7 +202,7 @@
 	async function imageHandler(e:Event, fieldName:string) {
         const value = (e.currentTarget as HTMLInputElement).value;
         
-        $state.projects.data.img = value;
+        $state.archive.data.img = value;
 
         $state = $state;
         await updateSettings({prop: "state", data: $state});
@@ -214,7 +213,7 @@
 			component: {
 				src: ConfirmDelete,
 				props: {
-					properties: ['projects', $state.projects.data.name]
+					properties: ['archive', $state.archive.data.name]
 				},
 				sendIdTo: 'toastId'
 			},
@@ -229,14 +228,25 @@
 			}
 		});
 	}
+
+	function unArchiveProject(e:Event) {
+		// move project to archive
+		// switch selcat to archive
+		// clear old oProj data
+		// refresh projects list
+		// refresh archives list
+	}
 </script>
 
 <div id="editor">
-	<div class:hide = "{$state.projects.oProj == ""}" style="overflow: scroll; min-height: 100%;">
+	<div class:hide = "{$state.archive.oArc == ""}" style="overflow: scroll; min-height: 100%;">
 		<div class="header">
 			<div></div>
-			<h1>Editing: {$state.projects.oProj}</h1>
+			<h1>Editing: {$state.archive.oArc}</h1>
 			<div class="btn-cont">
+				<div class="btn" on:click="{unArchiveProject}">
+					<div>Unarchive</div>
+				</div>
 				<div class="btn" on:click="{confirmDelete}">
 					<div>Delete</div>
 				</div>
@@ -244,22 +254,22 @@
 		</div>
 		<div class="info-cont">
 			<div class="sub">
-				<EditorInput fieldName={"Name"} cVal={$state.projects.data.name} handler={inputHandler}/>
-				<EditorInput fieldName={"Time"} cVal={$state.projects.data.time} handler={inputHandler}/>
-				<EditorInput fieldName={"Link"} cVal={$state.projects.data.link} handler={inputHandler}/>
+				<EditorInput fieldName={"Name"} cVal={$state.archive.data.name} handler={inputHandler}/>
+				<EditorInput fieldName={"Time"} cVal={$state.archive.data.time} handler={inputHandler}/>
+				<EditorInput fieldName={"Link"} cVal={$state.archive.data.link} handler={inputHandler}/>
 				<EditorDropDown fieldName={"Category"} config={dropCnfgCat} handler={dropDownHandler}/>
 				<EditorDropDown fieldName={"Status"} config={dropCfgStat} handler={dropDownHandler}/>
 				<EditorDropDown fieldName={"Difficulty"} config={dropCfgDiff} handler={dropDownHandler}/>
 				<EditorDropDown fieldName={"Organization"} config={dropCnfgOrg} handler={dropDownHandler}/>
 			</div>
 			<div class="sub">
-				<ImagePreview fieldName={"Project"} cVal={$state.projects.data.img} handler={imageHandler}/>
+				<ImagePreview fieldName={"Project"} cVal={$state.archive.data.img} handler={imageHandler}/>
 			</div>
 		</div>
 		<div id="editorjs"></div>
 		<button id="save" on:click="{save}">Save Content</button>
 	</div>
-	<div class:hide = "{$state.projects.oProj != ""}">
+	<div class:hide = "{$state.archive.oArc != ""}">
 		<div class="welcome-msg">Select an Project to get started</div>
 	</div>
 	<div class="save-modal{showSave ? '' : ' hide-modal'}">
@@ -315,6 +325,11 @@
 		align-items: center;
 	}
 
+	.header> .btn-cont {
+		display: flex;
+		flex-direction: row;
+	}
+	
 	.header > .btn-cont > .btn {
         height: 30px;
         width: 60px;

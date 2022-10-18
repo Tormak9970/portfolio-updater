@@ -13,7 +13,9 @@ import OpenCrtModal from "./OpenCrtModal.svelte";
 
 <div id="entries">
     <div class="wrapper">
-		<OpenCrtModal modal={crtModal}/>
+		{#if crtModal != ""}
+			<OpenCrtModal modal={crtModal}/>
+		{/if}
 		<div class="wrap-inner">
 			{#each data as datEntr}
 				<svelte:component this={entry} {...datEntr.props}/>

@@ -51,6 +51,23 @@ export const state = writable({
             "img": "",
             "description": ""
         }
+    },
+    "archive": {
+        "oArc": "",
+        "key": "",
+        "data": {
+            "category": "",
+            "name": "",
+            "time": "",
+            "status": "",
+            "difficulty": "",
+            "description": "",
+            "content": {},
+            "link": "",
+            "isRelative": false,
+            "img": "",
+            "org": ""
+        }
     }
 });
 export const changedKey = writable(null);
