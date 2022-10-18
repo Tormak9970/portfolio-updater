@@ -10,7 +10,7 @@
 
 	afterUpdate(() => {
 		$archList = [];
-		for (const proj of Object.entries($config.projects)) {
+		for (const proj of Object.entries($config.archive)) {
 			$archList.push({
 				props: {
 					data: proj[1],
@@ -24,7 +24,7 @@
 
 	onMount(() => {
 		$archList = [];
-		for (const proj of Object.entries($config.projects)) {
+		for (const proj of Object.entries($config.archive)) {
 			$archList.push({
 				props: {
 					data: proj[1],

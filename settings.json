@@ -48,6 +48,23 @@
                 "img": "",
                 "description": ""
             }
+        },
+        "archive": {
+            "oArc": "",
+            "cat": "",
+            "key": "",
+            "data": {
+                "name": "",
+                "time": "",
+                "status": "",
+                "difficulty": "",
+                "description": "",
+                "content": {},
+                "link": "",
+                "isRelative": false,
+                "img": "",
+                "org": ""
+            }
         }
     }
 }

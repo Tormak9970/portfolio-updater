@@ -8,9 +8,9 @@
 
     async function setProject(e) {
         $jSwitchProj = true;
-        $state.projects.oProj = data.name;
-        $state.projects.key = key;
-        $state.projects.data = data;
+        $state.archive.oArc = data.name;
+        $state.archive.key = key;
+        $state.archive.data = data;
 
         $state = $state;
         await updateSettings({prop: "state", data: $state});

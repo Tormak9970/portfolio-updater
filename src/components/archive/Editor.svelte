@@ -230,11 +230,11 @@
 	}
 
 	function unArchiveProject(e:Event) {
-		// move project to archive
-		// switch selcat to archive
-		// clear old oProj data
-		// refresh projects list
+		// move archive to projects
+		// switch selcat to projects
+		// clear old oArc data
 		// refresh archives list
+		// refresh projects list
 	}
 </script>
 
@@ -245,7 +245,7 @@
 			<h1>Editing: {$state.archive.oArc}</h1>
 			<div class="btn-cont">
 				<div class="btn" on:click="{unArchiveProject}">
-					<div>Unarchive</div>
+					<div>Move</div>
 				</div>
 				<div class="btn" on:click="{confirmDelete}">
 					<div>Delete</div>
