@@ -8,7 +8,15 @@
     let dropCnfgCat = {
         default:"web-dev",
         // @ts-ignore
-        values: $config.projects ? Object.keys($config.projects) : []
+        values: [
+            "web-dev",
+            "software-engineering",
+            "web-games",
+            "blender",
+            "steam-deck",
+            "education",
+            "miscellaneous"
+        ]
     }
 
     let dropCnfgOrg = {
