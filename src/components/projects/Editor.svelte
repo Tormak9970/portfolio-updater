@@ -10,13 +10,14 @@
 	import Embed from '@editorjs/embed';
 	
 	import { onMount } from 'svelte';
-	import { state, jSwitchProj, config, changedKey } from '../../stores';
+	import { state, jSwitchProj, config, changedKey, selCat, renderIdx } from '../../stores';
 	import { configPath, updateSettings, uploadFile, uploadUrl, writeConfig } from '../../Utils';
 	import EditorInput from '../universal/edit/EditorInput.svelte';
 	import { path, tauri } from '@tauri-apps/api';
 	import EditorDropDown from '../universal/edit/EditorDropDown.svelte';
 	import ImagePreview from '../universal/edit/ImagePreview.svelte';
 	import ConfirmDelete from "../universal/ConfirmDelete.svelte";
+    import { archList, projsList } from "../../listStores";
 
 	let editor: EditorJs;
 	let saved = true;
@@ -229,12 +230,59 @@
 		});
 	}
 
-	function archiveProject(e:Event) {
-		// move project to archive
-		// switch selcat to archive
-		// clear old oProj data
-		// refresh projects list
-		// refresh archives list
+	async function archiveProject(e:Event) {
+		const cfg = $config;
+		
+		cfg['archive'][$state.projects.key] = $state.projects.data;
+		$state.archive.oArc = $state.projects.oProj;
+		$state.archive.key = $state.projects.key;
+		$state.archive.data = $state.projects.data;
+
+		delete cfg['projects'][$state.projects.key];
+		$state.projects = {
+			"oProj": "",
+			"key": "",
+			"data": {
+				"category": "",
+				"name": "",
+				"time": "",
+				"status": "",
+				"difficulty": "",
+				"description": "",
+				"content": {},
+				"link": "",
+				"isRelative": false,
+				"img": "",
+				"org": ""
+			}
+		}
+		
+		$config = cfg;
+		await writeConfig(JSON.stringify(cfg, null, '\t'));
+		await updateSettings({prop: "state", data: $state});
+
+		$projsList = [];
+		for (const proj of Object.entries($config.projects)) {
+			$projsList.push({
+				props: {
+					data: proj[1],
+					// @ts-ignore
+					category: proj[1].category,
+					key: proj[0]
+				}
+			});
+		}
+		$archList = [];
+		for (const proj of Object.entries($config.archive)) {
+			$archList.push({
+				props: {
+					data: proj[1],
+					// @ts-ignore
+					category: proj[1].category,
+					key: proj[0]
+				}
+			});
+		}
 	}
 </script>
 

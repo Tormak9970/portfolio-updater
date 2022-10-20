@@ -17,6 +17,7 @@
 	import EditorDropDown from '../universal/edit/EditorDropDown.svelte';
 	import ImagePreview from '../universal/edit/ImagePreview.svelte';
 	import ConfirmDelete from "../universal/ConfirmDelete.svelte";
+    import { archList, projsList } from "../../listStores";
 
 	let editor: EditorJs;
 	let saved = true;
@@ -229,12 +230,59 @@
 		});
 	}
 
-	function unArchiveProject(e:Event) {
-		// move archive to projects
-		// switch selcat to projects
-		// clear old oArc data
-		// refresh archives list
-		// refresh projects list
+	async function unArchiveProject(e:Event) {
+		const cfg = $config;
+		
+		cfg['projects'][$state.archive.key] = $state.archive.data;
+		$state.projects.oProj = $state.archive.oArc;
+		$state.projects.key = $state.archive.key;
+		$state.projects.data = $state.archive.data;
+
+		delete cfg['archive'][$state.archive.key];
+		$state.archive = {
+			"oArc": "",
+			"key": "",
+			"data": {
+				"category": "",
+				"name": "",
+				"time": "",
+				"status": "",
+				"difficulty": "",
+				"description": "",
+				"content": {},
+				"link": "",
+				"isRelative": false,
+				"img": "",
+				"org": ""
+			}
+		}
+		
+		$config = cfg;
+		await writeConfig(JSON.stringify(cfg, null, '\t'));
+		await updateSettings({prop: "state", data: $state});
+
+		$archList = [];
+		for (const proj of Object.entries($config.archive)) {
+			$archList.push({
+				props: {
+					data: proj[1],
+					// @ts-ignore
+					category: proj[1].category,
+					key: proj[0]
+				}
+			});
+		}
+		$projsList = [];
+		for (const proj of Object.entries($config.projects)) {
+			$projsList.push({
+				props: {
+					data: proj[1],
+					// @ts-ignore
+					category: proj[1].category,
+					key: proj[0]
+				}
+			});
+		}
 	}
 </script>
 
