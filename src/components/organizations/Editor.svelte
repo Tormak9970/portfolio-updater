@@ -7,6 +7,7 @@
 	import ImagePreview from '../universal/edit/ImagePreview.svelte';
     import EditorMultiSelect from '../universal/edit/EditorMultiSelect.svelte';
 	import ConfirmDelete from "../universal/ConfirmDelete.svelte";
+    import { projsList } from "../../listStores";
 
     const projects = [];
 
@@ -72,6 +73,16 @@
 			$state.organizations.key = $changedKey;
         	await updateSettings({prop: "state", data: $state});
 			$changedKey = null;
+		}
+
+		for (const val of $state.organizations.data.projects) {
+			const id = val.linkId;
+			
+			if (cfg.projects[id]) {
+				cfg.projects[id].org = $state.organizations.key;
+			} else {
+				cfg.archive[id].org = $state.organizations.key;
+			}
 		}
 
 		// @ts-ignore

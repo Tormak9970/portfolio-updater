@@ -53,7 +53,7 @@
             }
 
             const cfg = $config;
-            const key = name.replaceAll(" ", "-");
+            const key = name.replaceAll(" ", "-").toLowerCase();
 
             // @ts-ignore
             cfg.organizations[key] = newOrg;
