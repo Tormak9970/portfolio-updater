@@ -1,13 +1,14 @@
 <script lang="ts">
     import { toast } from "@zerodevx/svelte-toast";
-    import { writeConfig } from "../../Utils";
+    import { updateSettings, writeConfig } from "../../Utils";
     import { config, state } from "../../stores";
 
     export let toastId:string;
     export let properties:string[];
 
     async function onConfirm() {
-        delete $config[properties[0]][properties[1]];
+        console.log("Props:", properties);
+        delete $config[properties[0]][properties[1].toLowerCase().replaceAll(" ", "-").replaceAll("'", "")];
 
         switch (properties[0]) {
             case "experience":
@@ -86,8 +87,10 @@
                 }
                 break;
         }
+		await updateSettings({ prop: "state", data: $state });
 
-        await writeConfig(JSON.stringify($config, null, '\t'));
+        console.log("Config before updating file:", {...$config});
+        await writeConfig(JSON.stringify({...$config}, null, '\t'));
     }
 
     const clicked = (canceled: boolean) => {
