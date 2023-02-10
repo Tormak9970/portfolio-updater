@@ -284,6 +284,7 @@
 				org: "",
 			},
 		};
+		$selCat = "Archive";
 
 		$config = cfg;
 		await writeConfig(JSON.stringify(cfg, null, "\t"));
