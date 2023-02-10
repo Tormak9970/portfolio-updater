@@ -1,23 +1,36 @@
 <script lang="ts">
-    import { toast } from "@zerodevx/svelte-toast";
-	import EditorJs, { OutputData } from '@editorjs/editorjs';
-	import Header from '@editorjs/header';
-	import Code from '@editorjs/code';
-	import List from '@editorjs/nested-list';
-	import ImageTool from '@editorjs/image';
-	import Delimiter from '@editorjs/delimiter';
-	import Paragraph from '@editorjs/paragraph';
-	import Embed from '@editorjs/embed';
-	
-	import { onMount } from 'svelte';
-	import { state, jSwitchProj, config, changedKey, selCat, renderIdx } from '../../stores';
-	import { configPath, updateSettings, uploadFile, uploadUrl, writeConfig } from '../../Utils';
-	import EditorInput from '../universal/edit/EditorInput.svelte';
-	import { path, tauri } from '@tauri-apps/api';
-	import EditorDropDown from '../universal/edit/EditorDropDown.svelte';
-	import ImagePreview from '../universal/edit/ImagePreview.svelte';
+	import { toast } from "@zerodevx/svelte-toast";
+	import EditorJs, { OutputData } from "@editorjs/editorjs";
+	import Header from "@editorjs/header";
+	import Code from "@editorjs/code";
+	import List from "@editorjs/nested-list";
+	import ImageTool from "@editorjs/image";
+	import Delimiter from "@editorjs/delimiter";
+	import Paragraph from "@editorjs/paragraph";
+	import Embed from "@editorjs/embed";
+
+	import { onMount } from "svelte";
+	import {
+		state,
+		jSwitchProj,
+		config,
+		changedKey,
+		selCat,
+		renderIdx,
+	} from "../../stores";
+	import {
+		configPath,
+		updateSettings,
+		uploadFile,
+		uploadUrl,
+		writeConfig,
+	} from "../../Utils";
+	import EditorInput from "../universal/edit/EditorInput.svelte";
+	import { path, tauri } from "@tauri-apps/api";
+	import EditorDropDown from "../universal/edit/EditorDropDown.svelte";
+	import ImagePreview from "../universal/edit/ImagePreview.svelte";
 	import ConfirmDelete from "../universal/ConfirmDelete.svelte";
-    import { archList, projsList } from "../../listStores";
+	import { archList, projsList } from "../../listStores";
 
 	let editor: EditorJs;
 	let saved = true;
@@ -25,63 +38,58 @@
 	let wasProgramatic = false;
 
 	let dropCnfgCat = {
-        default: $state.projects.data.category,
-        // @ts-ignore
-        values: $config.projects ? Object.keys($config.projects) : []
-    }
+		default: $state.projects.data.category,
+		// @ts-ignore
+		values: $config.projects ? Object.keys($config.projects) : [],
+	};
 
-    let dropCnfgOrg = {
-        default: $state.projects.data.org,
-        // @ts-ignore
-        values: $config.organizations ? Object.keys($config.organizations) : []
-    }
-    dropCnfgOrg.values.unshift("none");
+	let dropCnfgOrg = {
+		default: $state.projects.data.org,
+		// @ts-ignore
+		values: $config.organizations ? Object.keys($config.organizations) : [],
+	};
+	dropCnfgOrg.values.unshift("none");
 
-    let dropCfgDiff = {
-        default: $state.projects.data.difficulty,
-        values: [
-            "Simple",
-            "Moderate",
-            "Complex"
-        ]
-    }
+	let dropCfgDiff = {
+		default: $state.projects.data.difficulty,
+		values: ["Simple", "Moderate", "Complex"],
+	};
 
-    let dropCfgStat = {
-        default: $state.projects.data.status,
-        values: [
-            "Not Live / Obsolete",
-            "In Progress",
-            "Complete"
-        ]
-    }
+	let dropCfgStat = {
+		default: $state.projects.data.status,
+		values: ["Not Live / Obsolete", "In Progress", "Complete"],
+	};
 
 	onMount(async () => {
 		editor = new EditorJs({
-			holder : 'editorjs',
+			holder: "editorjs",
 			// @ts-ignore
-			logLevel: 'ERROR',
+			logLevel: "ERROR",
 			tools: {
-				header: { class: Header, inlineToolbar : true },
-				code: { class: Code, inlineToolbar : true },
+				header: { class: Header, inlineToolbar: true },
+				code: { class: Code, inlineToolbar: true },
 				image: {
 					class: ImageTool,
 					config: {
 						uploader: {
-							uploadByFile: async (file:File) => {
-								const uploadRes = await uploadFile(file.name, await file.arrayBuffer());
+							uploadByFile: async (file: File) => {
+								const uploadRes = await uploadFile(
+									file.name,
+									await file.arrayBuffer()
+								);
 								return JSON.parse(uploadRes);
 							},
 							uploadByUrl: async (url) => {
 								const uploadRes = await uploadUrl(url);
 								return JSON.parse(uploadRes);
-							}
-						}
-					}
+							},
+						},
+					},
 				},
-				list: { class: List, inlineToolbar : true },
-				delimiter: { class: Delimiter, inlineToolbar : true },
-				paragraph: { class: Paragraph, inlineToolbar : true },
-				embed: { class: Embed, inlineToolbar : true },
+				list: { class: List, inlineToolbar: true },
+				delimiter: { class: Delimiter, inlineToolbar: true },
+				paragraph: { class: Paragraph, inlineToolbar: true },
+				embed: { class: Embed, inlineToolbar: true },
 			},
 			onChange: async () => {
 				if (!wasProgramatic) {
@@ -89,15 +97,19 @@
 					const content = await editor.save();
 					wasProgramatic = true;
 					$state.projects.data.content = content;
-        			await updateSettings({prop: "state", data: $state});
+					await updateSettings({ prop: "state", data: $state });
 				} else {
 					wasProgramatic = false;
 				}
 			},
 			onReady: async () => {
 				// @ts-ignore
-				if ($state.projects.data.content.blocks) editor.blocks.render(await convertToTauri($state.projects.data.content));
-			}
+				if ($state.projects.data.content.blocks) {
+					editor.blocks.render(
+						await convertToTauri($state.projects.data.content)
+					);
+				}
+			},
 		});
 	});
 
@@ -124,25 +136,32 @@
 
 	async function convertToTauri(data) {
 		if (data) {
-			await Promise.all(data.blocks.map(async (block) => {
-				if (block.type == "image" && block.data.file.url.indexOf("./") == 0) {
-					console.log(block.data.file.url)
-					block.data.file.webUrl = block.data.file.url;
-					block.data.file.url = tauri.convertFileSrc(await path.join(await path.dirname(configPath), block.data.file.url));
-				}
-				return block;
-			}));
+			await Promise.all(
+				data.blocks.map(async (block) => {
+					if (block.type == "image" && block.data.file.url.indexOf("./") == 0) {
+						block.data.file.webUrl = block.data.file.url;
+						block.data.file.url = tauri.convertFileSrc(
+							await path.join(
+								await path.dirname(configPath),
+								block.data.file.url
+							)
+						);
+					}
+					console.log(block.data.file);
+					return block;
+				})
+			);
 		}
 		return data;
 	}
 
 	function convertToWeb(data: OutputData) {
-		console.log(data.blocks);
 		data.blocks = data.blocks.map((block) => {
 			if (block.type == "image") {
-				console.log(block);
-				block.data.file.url = block.data.file.webUrl;
-				delete block.data.file.webUrl;
+				if (block.data.file.webUrl) {
+					block.data.file.url = block.data.file.webUrl;
+					delete block.data.file.webUrl;
+				}
 			}
 			return block;
 		});
@@ -150,18 +169,25 @@
 	}
 
 	async function getEditorContent() {
-		const content = await editor.save().then((outputData) => { return convertToWeb(outputData); });
+		const content = await editor.save().then((outputData) => {
+			return convertToWeb(outputData);
+		});
 		const contentStr = JSON.stringify(content);
-		return JSON.parse(contentStr.replaceAll(`<a href`, `<a target=\\"_blank\\" rel=\\"noreferrer noopener\\" href`));
+		return JSON.parse(
+			contentStr.replaceAll(
+				`<a href`,
+				`<a target=\\"_blank\\" rel=\\"noreferrer noopener\\" href`
+			)
+		);
 	}
 
 	async function save() {
 		const content = await getEditorContent();
 		const cfg = $config;
-		
+
 		if ($changedKey) {
 			// @ts-ignore
-			cfg.projects[$changedKey] = cfg.projects[$state.projects.key]
+			cfg.projects[$changedKey] = cfg.projects[$state.projects.key];
 
 			// @ts-ignore
 			delete cfg.projects[$state.projects.key];
@@ -172,94 +198,96 @@
 
 		$state.projects.data.content = content;
 		$state.projects.data.description = content.blocks[1].data.text;
-        await updateSettings({prop: "state", data: $state});
+		await updateSettings({ prop: "state", data: $state });
 		// @ts-ignore
 		cfg.projects[$state.projects.key] = $state.projects.data;
 
-		await writeConfig(JSON.stringify(cfg, null, '\t'));
+		await writeConfig(JSON.stringify(cfg, null, "\t"));
 
 		$config = cfg;
 		saved = true;
 	}
 
-	async function inputHandler(e:Event, fieldName:string) {
-        const value = (e.currentTarget as HTMLInputElement).value;
-        if (fieldName == "Name" && $state.projects.oProj != value) {
-            $state.projects.oProj = value;
-            $changedKey = value.replace(" ", "-").toLowerCase();
-        }
-        
-        $state.projects.data[fieldName.toLowerCase()] = value;
+	async function inputHandler(e: Event, fieldName: string) {
+		const value = (e.currentTarget as HTMLInputElement).value;
+		if (fieldName == "Name" && $state.projects.oProj != value) {
+			$state.projects.oProj = value;
+			$changedKey = value.replace(" ", "-").toLowerCase();
+		}
 
-        $state = $state;
-        await updateSettings({prop: "state", data: $state});
+		$state.projects.data[fieldName.toLowerCase()] = value;
+
+		$state = $state;
+		await updateSettings({ prop: "state", data: $state });
 	}
-	async function dropDownHandler(value:string, fieldName:string) {
-		$state.projects.data[fieldName == "Organization" ? "org" : fieldName.toLowerCase()] = value;
+	async function dropDownHandler(value: string, fieldName: string) {
+		$state.projects.data[
+			fieldName == "Organization" ? "org" : fieldName.toLowerCase()
+		] = value;
 
-        $state = $state;
-        await updateSettings({prop: "state", data: $state});
+		$state = $state;
+		await updateSettings({ prop: "state", data: $state });
 	}
-	async function imageHandler(e:Event, fieldName:string) {
-        const value = (e.currentTarget as HTMLInputElement).value;
-        
-        $state.projects.data.img = value;
+	async function imageHandler(e: Event, fieldName: string) {
+		const value = (e.currentTarget as HTMLInputElement).value;
 
-        $state = $state;
-        await updateSettings({prop: "state", data: $state});
+		$state.projects.data.img = value;
+
+		$state = $state;
+		await updateSettings({ prop: "state", data: $state });
 	}
 
-	function confirmDelete(e:Event) {
+	function confirmDelete(e: Event) {
 		toast.push({
 			component: {
 				src: ConfirmDelete,
 				props: {
-					properties: ['projects', $state.projects.data.name]
+					properties: ["projects", $state.projects.data.name],
 				},
-				sendIdTo: 'toastId'
+				sendIdTo: "toastId",
 			},
 			target: "top",
 			dismissable: false,
 			initial: 0,
-        	intro: { y: -192 },
+			intro: { y: -192 },
 			theme: {
-				'--toastPadding': '0',
-          		'--toastBackground': 'transparent',
-				'--toastMsgPadding': '0'
-			}
+				"--toastPadding": "0",
+				"--toastBackground": "transparent",
+				"--toastMsgPadding": "0",
+			},
 		});
 	}
 
-	async function archiveProject(e:Event) {
+	async function archiveProject(e: Event) {
 		const cfg = $config;
-		
-		cfg['archive'][$state.projects.key] = $state.projects.data;
+
+		cfg["archive"][$state.projects.key] = $state.projects.data;
 		$state.archive.oArc = $state.projects.oProj;
 		$state.archive.key = $state.projects.key;
 		$state.archive.data = $state.projects.data;
 
-		delete cfg['projects'][$state.projects.key];
+		delete cfg["projects"][$state.projects.key];
 		$state.projects = {
-			"oProj": "",
-			"key": "",
-			"data": {
-				"category": "",
-				"name": "",
-				"time": "",
-				"status": "",
-				"difficulty": "",
-				"description": "",
-				"content": {},
-				"link": "",
-				"isRelative": false,
-				"img": "",
-				"org": ""
-			}
-		}
-		
+			oProj: "",
+			key: "",
+			data: {
+				category: "",
+				name: "",
+				time: "",
+				status: "",
+				difficulty: "",
+				description: "",
+				content: {},
+				link: "",
+				isRelative: false,
+				img: "",
+				org: "",
+			},
+		};
+
 		$config = cfg;
-		await writeConfig(JSON.stringify(cfg, null, '\t'));
-		await updateSettings({prop: "state", data: $state});
+		await writeConfig(JSON.stringify(cfg, null, "\t"));
+		await updateSettings({ prop: "state", data: $state });
 
 		$projsList = [];
 		for (const proj of Object.entries($config.projects)) {
@@ -268,8 +296,8 @@
 					data: proj[1],
 					// @ts-ignore
 					category: proj[1].category,
-					key: proj[0]
-				}
+					key: proj[0],
+				},
 			});
 		}
 		$archList = [];
@@ -279,55 +307,100 @@
 					data: proj[1],
 					// @ts-ignore
 					category: proj[1].category,
-					key: proj[0]
-				}
+					key: proj[0],
+				},
 			});
 		}
 	}
 </script>
 
 <div id="editor">
-	<div class:hide = "{$state.projects.oProj == ""}" style="overflow: scroll; min-height: 100%;">
+	<div
+		class:hide={$state.projects.oProj == ""}
+		style="overflow: scroll; min-height: 100%;"
+	>
 		<div class="header">
-			<div></div>
+			<div />
 			<h1>Editing: {$state.projects.oProj}</h1>
 			<div class="btn-cont">
-				<div class="btn" on:click="{archiveProject}">
+				<div class="btn" on:click={archiveProject}>
 					<div>Archive</div>
 				</div>
-				<div class="btn" on:click="{confirmDelete}">
+				<div class="btn" on:click={confirmDelete}>
 					<div>Delete</div>
 				</div>
 			</div>
 		</div>
 		<div class="info-cont">
 			<div class="sub">
-				<EditorInput fieldName={"Name"} cVal={$state.projects.data.name} handler={inputHandler}/>
-				<EditorInput fieldName={"Time"} cVal={$state.projects.data.time} handler={inputHandler}/>
-				<EditorInput fieldName={"Link"} cVal={$state.projects.data.link} handler={inputHandler}/>
-				<EditorDropDown fieldName={"Category"} config={dropCnfgCat} handler={dropDownHandler}/>
-				<EditorDropDown fieldName={"Status"} config={dropCfgStat} handler={dropDownHandler}/>
-				<EditorDropDown fieldName={"Difficulty"} config={dropCfgDiff} handler={dropDownHandler}/>
-				<EditorDropDown fieldName={"Organization"} config={dropCnfgOrg} handler={dropDownHandler}/>
+				<EditorInput
+					fieldName={"Name"}
+					cVal={$state.projects.data.name}
+					handler={inputHandler}
+				/>
+				<EditorInput
+					fieldName={"Time"}
+					cVal={$state.projects.data.time}
+					handler={inputHandler}
+				/>
+				<EditorInput
+					fieldName={"Link"}
+					cVal={$state.projects.data.link}
+					handler={inputHandler}
+				/>
+				<EditorDropDown
+					fieldName={"Category"}
+					config={dropCnfgCat}
+					handler={dropDownHandler}
+				/>
+				<EditorDropDown
+					fieldName={"Status"}
+					config={dropCfgStat}
+					handler={dropDownHandler}
+				/>
+				<EditorDropDown
+					fieldName={"Difficulty"}
+					config={dropCfgDiff}
+					handler={dropDownHandler}
+				/>
+				<EditorDropDown
+					fieldName={"Organization"}
+					config={dropCnfgOrg}
+					handler={dropDownHandler}
+				/>
 			</div>
 			<div class="sub">
-				<ImagePreview fieldName={"Project"} cVal={$state.projects.data.img} handler={imageHandler}/>
+				<ImagePreview
+					fieldName={"Project"}
+					cVal={$state.projects.data.img}
+					handler={imageHandler}
+				/>
 			</div>
 		</div>
-		<div id="editorjs"></div>
-		<button id="save" on:click="{save}">Save Content</button>
+		<div id="editorjs" />
+		<button id="save" on:click={save}>Save Content</button>
 	</div>
-	<div class:hide = "{$state.projects.oProj != ""}">
+	<div class:hide={$state.projects.oProj != ""}>
 		<div class="welcome-msg">Select an Project to get started</div>
 	</div>
 	<div class="save-modal{showSave ? '' : ' hide-modal'}">
 		<div class="modal">
 			<div class="modal-msg">
-				<p>You have not saved the current changes. Do you want to save before exiting?</p>
+				<p>
+					You have not saved the current changes. Do you want to save before
+					exiting?
+				</p>
 			</div>
 			<div class="modal-btns">
-				<button id="saveBtn" class="modal-btn" on:click|stopPropagation="{save}">Save</button>
-				<button class="modal-btn" on:click|stopPropagation="{() => { showSave = false; }}">Cancel</button>
+				<button id="saveBtn" class="modal-btn" on:click|stopPropagation={save}
+					>Save</button
+				>
+				<button
+					class="modal-btn"
+					on:click|stopPropagation={() => {
+						showSave = false;
+					}}>Cancel</button
+				>
 			</div>
 		</div>
 	</div>
@@ -338,7 +411,6 @@
 	@import "/theme.css";
 
 	#editor {
-		width: calc(100% - 292px - 2em - 40px);
 		margin: 0px 20px;
 		height: 100%;
 
@@ -352,7 +424,7 @@
 	}
 
 	#save {
-		font-family: 'Source Sans Pro', sans-serif;
+		font-family: "Source Sans Pro", sans-serif;
 		font-size: 16px;
 		color: var(--font-color);
 		background-color: var(--foreground);
@@ -361,39 +433,46 @@
 		box-shadow: 0 0 4px rgb(0 0 0 / 50%);
 		border-radius: 3px;
 	}
-	#save:hover { cursor: pointer; background-color: var(--hover); }
-	#save:focus { outline: 1px solid var(--highlight); }
+	#save:hover {
+		cursor: pointer;
+		background-color: var(--hover);
+	}
+	#save:focus {
+		outline: 1px solid var(--highlight);
+	}
 
 	.header {
 		width: 100%;
-		
+
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
 	}
 
-	.header> .btn-cont {
+	.header > .btn-cont {
 		display: flex;
 		flex-direction: row;
 	}
 	.header > .btn-cont > .btn {
-        height: 30px;
-        width: 60px;
+		height: 30px;
+		width: 60px;
 
-        cursor: pointer;
-        background-color:var(--warning);
+		cursor: pointer;
+		background-color: var(--warning);
 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 
-        border-radius: 10px;
+		border-radius: 10px;
 
 		margin-right: 10px;
-    }
-    .header > .btn-cont > .btn:hover { background-color: var(--warning-hover); }
+	}
+	.header > .btn-cont > .btn:hover {
+		background-color: var(--warning-hover);
+	}
 
 	.info-cont {
 		width: 100%;
@@ -441,7 +520,9 @@
 		text-align: center;
 		font-size: 18px;
 	}
-	#editor > .save-modal > .modal > .modal-msg > p { margin: 0px; }
+	#editor > .save-modal > .modal > .modal-msg > p {
+		margin: 0px;
+	}
 	#editor > .save-modal > .modal > .modal-btns {
 		margin: 10px;
 
@@ -468,11 +549,19 @@
 		border-radius: 2px;
 		border: 1px solid black;
 	}
-	#editor > .save-modal > .modal > .modal-btns > .modal-btn:hover { background-color: var(--hover); }
-	#editor > .save-modal > .modal > .modal-btns > #saveBtn:hover { background-color: var(--highlight-hover);}
+	#editor > .save-modal > .modal > .modal-btns > .modal-btn:hover {
+		background-color: var(--hover);
+	}
+	#editor > .save-modal > .modal > .modal-btns > #saveBtn:hover {
+		background-color: var(--highlight-hover);
+	}
 
-	#editor > .hide-modal { display: none; }
-	#editor > .hide { display: none; }
+	#editor > .hide-modal {
+		display: none;
+	}
+	#editor > .hide {
+		display: none;
+	}
 
 	#editor > div {
 		width: 100%;
@@ -489,27 +578,47 @@
 	#editor > div > #editorjs {
 		width: calc(100% - 100px);
 		padding: 7px 50px;
-		background-color:  transparent;
+		background-color: transparent;
 	}
-	:global(.codex-editor) { width: 100%; }
-	:global(.codex-editor__redactor) { padding-bottom: 60px !important; }
+	:global(.codex-editor) {
+		width: 100%;
+	}
+	:global(.codex-editor__redactor) {
+		padding-bottom: 60px !important;
+	}
 	:global(.ce-block__content) {
 		max-width: calc(100% - 20px);
 		background-color: transparent;
 	}
 
-	:global(.ce-block a) { color: #58a6ff; }
-	:global(::selection) { background-color: #1982d582; }
+	:global(.ce-block a) {
+		color: #58a6ff;
+	}
+	:global(::selection) {
+		background-color: #1982d582;
+	}
 
-	:global(.ce-toolbar__content) { max-width: calc(100% - 20px); }
+	:global(.ce-toolbar__content) {
+		max-width: calc(100% - 20px);
+	}
 
-	:global(.cdx-block) { background-color: transparent; }
-	:global(.cdx-button) { background-color: var(--foreground); }
-	
-	:global(.cdx-settings-button) { background-color: transparent; }
-	:global(.cdx-settings-button:hover) { background-color: var(--hover) !important; }
-	:global(.cdx-settings-button--active) { background-color: var(--hover) !important; }
-	
+	:global(.cdx-block) {
+		background-color: transparent;
+	}
+	:global(.cdx-button) {
+		background-color: var(--foreground);
+	}
+
+	:global(.cdx-settings-button) {
+		background-color: transparent;
+	}
+	:global(.cdx-settings-button:hover) {
+		background-color: var(--hover) !important;
+	}
+	:global(.cdx-settings-button--active) {
+		background-color: var(--hover) !important;
+	}
+
 	:global(.ce-toolbar__settings-btn) {
 		color: var(--font-color) !important;
 		background-color: transparent !important;
@@ -544,7 +653,9 @@
 		background-color: var(--hover) !important;
 		background: var(--hover) !important;
 	}
-	:global(.codex-editor--narrow .ce-toolbox) { background-color: transparent !important; }
+	:global(.codex-editor--narrow .ce-toolbox) {
+		background-color: transparent !important;
+	}
 	:global(.ce-settings) {
 		color: var(--font-color) !important;
 		background-color: transparent !important;
@@ -552,8 +663,12 @@
 		background: transparent !important;
 		border: 1px solid var(--foreground);
 	}
-	:global(.ce-settings.ce-settings--opened) { background-color: var(--foreground) !important; }
-	:global(.ce-block--selected  .ce-block__content) { background-color: var(--selection-color) !important; }
+	:global(.ce-settings.ce-settings--opened) {
+		background-color: var(--foreground) !important;
+	}
+	:global(.ce-block--selected .ce-block__content) {
+		background-color: var(--selection-color) !important;
+	}
 	:global(.ce-settings__button) {
 		color: var(--font-color) !important;
 		background-color: transparent !important;
@@ -597,12 +712,16 @@
 		box-shadow: -3px 2px 8px 2px black;
 		border: 1px solid var(--foreground);
 	}
-	:global(.ce-inline-toolbar__buttons > button > svg) { fill: var(--font-color) !important; }
+	:global(.ce-inline-toolbar__buttons > button > svg) {
+		fill: var(--font-color) !important;
+	}
 	:global(.ce-inline-toolbar__buttons > button:hover) {
 		background-color: var(--hover) !important;
 		background: var(--hover) !important;
 	}
-	:global(.ce-inline-toolbar__dropdown) { margin: 0px; }
+	:global(.ce-inline-toolbar__dropdown) {
+		margin: 0px;
+	}
 	:global(.ce-inline-toolbar__dropdown:hover) {
 		background-color: var(--hover) !important;
 		background: var(--hover) !important;
@@ -632,14 +751,16 @@
 		background: transparent !important;
 		border: 1px solid var(--foreground);
 	}
-	:global(.ce-conversion-toolbar__label) { color: var(--font-color) !important; }
+	:global(.ce-conversion-toolbar__label) {
+		color: var(--font-color) !important;
+	}
 
 	/* new editorJS styles */
 	:global(.ce-popover) {
 		color: var(--font-color);
 		background-color: var(--foreground);
 		border: 1px solid black;
-		box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.85);
+		box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.85);
 	}
 	:global(.cdx-search-field) {
 		color: var(--font-color);
@@ -647,7 +768,9 @@
 		background-color: var(--foreground);
 		border: 1px solid black;
 	}
-	:global(.cdx-search-field__icon .icon) { color: var(--font-color); }
+	:global(.cdx-search-field__icon .icon) {
+		color: var(--font-color);
+	}
 	:global(.cdx-search-field__input) {
 		color: var(--font-color);
 	}
@@ -660,5 +783,8 @@
 		border: 1px solid black;
 	}
 
-	#editor > div > .welcome-msg { color: var(--font-color); font-size: 30px; }
+	#editor > div > .welcome-msg {
+		color: var(--font-color);
+		font-size: 30px;
+	}
 </style>

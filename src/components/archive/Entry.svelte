@@ -51,6 +51,7 @@
 
     .entry > .info {
         margin-left: 7px;
+        margin-right: 14px;
 
         display: flex;
         flex-direction: column;

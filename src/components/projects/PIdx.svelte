@@ -38,7 +38,7 @@
 </script>
 
 <div>
-    <EditorPage main={Editor} crtModal={"proj"} entry={Entry} data={$projsList}/>
+	<EditorPage main={Editor} crtModal={"proj"} entry={Entry} data={$projsList}/>
 </div>
 
 <style>

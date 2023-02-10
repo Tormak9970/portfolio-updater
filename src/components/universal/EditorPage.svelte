@@ -1,9 +1,11 @@
 <script lang="ts">
-import OpenCrtModal from "./OpenCrtModal.svelte";
+	import OpenCrtModal from "./OpenCrtModal.svelte";
 
 	type Data = {
 		props:any
 	}
+
+	let wrapper:HTMLDivElement;
 
 	export let crtModal:string;
 	export let main:any;
@@ -12,7 +14,7 @@ import OpenCrtModal from "./OpenCrtModal.svelte";
 </script>
 
 <div id="entries">
-    <div class="wrapper">
+	<div class="wrapper" bind:this={wrapper}>
 		{#if crtModal != ""}
 			<OpenCrtModal modal={crtModal}/>
 		{/if}
@@ -22,7 +24,9 @@ import OpenCrtModal from "./OpenCrtModal.svelte";
 			{/each}
 		</div>
 	</div>
-	<svelte:component this={main} />
+	<div class="editor-cont" style="width: calc(100% - {wrapper?.clientWidth}px);">
+		<svelte:component this={main} />
+	</div>
 </div>
 
 <style>
@@ -52,8 +56,13 @@ import OpenCrtModal from "./OpenCrtModal.svelte";
 		height: calc(100% - 60px);
 		min-width: 100%;
 
-		overflow: auto;
+		overflow-y: scroll;
 
-		overflow: scroll;
+		overflow-x: none;
+	}
+
+	#entries > .editor-cont {
+		height: 100%;
+		width: auto;
 	}
 </style>

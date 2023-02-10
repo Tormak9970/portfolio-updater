@@ -58,12 +58,19 @@
 
     .entry > .info {
         margin-right: 7px;
+        margin-right: 14px;
 
         display: flex;
         flex-direction: column;
         justify-content: start;
     }
-    .entry > .info > .field { font-size: 20px; white-space: nowrap; }
+    .entry > .info > .field {
+        font-size: 20px;
+        white-space: nowrap;
+        max-width: 170px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
     .entry > .btn-cont { margin-right: 7px; }
     .entry > .btn-cont > .btn {

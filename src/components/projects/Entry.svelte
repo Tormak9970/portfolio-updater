@@ -51,12 +51,19 @@
 
     .entry > .info {
         margin-left: 7px;
+        margin-right: 14px;
 
         display: flex;
         flex-direction: column;
         justify-content: start;
     }
-    .entry > .info > .field { font-size: 20px; white-space: nowrap; }
+    .entry > .info > .field {
+        font-size: 20px;
+        white-space: nowrap;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
     .entry > .info > .category { font-size: 16px; }
 
     .entry > .btn-cont { margin-right: 7px; }
