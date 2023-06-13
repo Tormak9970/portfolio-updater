@@ -15,15 +15,15 @@ export async function updateSettings(data: { prop: string, data: any }) {
   if (data.prop == "configPath") {
     configPath = data.data;
   }
-  const settingsData = await fs.readTextFile(settingsPath);
+  // const settingsData = await fs.readTextFile(settingsPath);
 
-  const settings = JSON.parse(settingsData);
-  settings[data.prop] = data.data;
+  // const settings = JSON.parse(settingsData);
+  // settings[data.prop] = data.data;
 
-  await fs.writeFile({
-    path: settingsPath, 
-    contents: JSON.stringify(settings)
-  });
+  // await fs.writeFile({
+  //   path: settingsPath, 
+  //   contents: JSON.stringify(settings)
+  // });
 }
 export async function getConfig(cfgPath: string) {
   const res = await fs.readTextFile(cfgPath).then((contents) => {

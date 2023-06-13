@@ -3,7 +3,7 @@
   "build": {
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
-    "devPath": "http://localhost:8080",
+    "devPath": "http://localhost:1420",
     "distDir": "../dist"
   },
   "package": {
@@ -13,27 +13,56 @@
   "tauri": {
     "allowlist": {
       "dialog": { "all": true },
-      "path": { "all": true },
-      "fs": {
-        "all": true,
-        "scope": [
-          "$APP/**",
-          "$DESKTOP/**",
-          "$DOCUMENT/**",
-          "$RESOURCE/**"
-        ]
-      },
-      "protocol": {
-        "all": true,
-        "asset": true,
-        "assetScope": [
-          "$APP/**",
-          "$DESKTOP/**",
-          "$DOCUMENT/**",
-          "$RESOURCE/**"
-        ]
-      },
-      "window": { "all": true }
+			"path": { "all": true },
+			"os": { "all": true },
+			"fs": {
+				"all": true,
+				"scope": [
+					"$APP",
+					"$APP/**",
+					"$DESKTOP",
+					"$DESKTOP/**",
+					"$RESOURCE",
+					"$RESOURCE/**",
+					"$APPCONFIG",
+					"$APPCONFIG/**",
+					"$DATA",
+					"$DATA/**",
+					"$APPLOG",
+					"$APPLOG/**",
+					"$APPCACHE",
+					"$APPCACHE/**"
+				]
+			},
+			"protocol": {
+				"all": true,
+				"asset": true,
+				"assetScope": [
+					"$APP",
+					"$APP/**",
+					"$DESKTOP",
+					"$DESKTOP/**",
+					"$RESOURCE",
+					"$RESOURCE/**",
+					"$APPCONFIG",
+					"$APPCONFIG/**",
+					"$DATA",
+					"$DATA/**",
+					"$APPLOG",
+					"$APPLOG/**",
+					"$APPCACHE",
+					"$APPCACHE/**"
+				]
+			},
+			"window": {
+				"all": true
+			},
+			"process": {
+				"all": false,
+				"exit": true,
+				"relaunch": true,
+				"relaunchDangerousAllowSymlinkMacos": false
+			}
     },
     "bundle": {
       "active": true,
