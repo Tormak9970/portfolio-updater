@@ -73,7 +73,7 @@
       }
     }
 
-    value = elem.innerHTML;
+    value = elem.innerHTML.replace(" ", "");
 
     (h as HTMLElement).click();
   }

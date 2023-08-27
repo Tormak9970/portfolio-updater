@@ -3,7 +3,7 @@
 
   import { appWindow } from "@tauri-apps/api/window";
   import { afterUpdate, onMount } from "svelte";
-  import { renderIdx, selCat, config, state } from "../../stores";
+  import { selectedCategory, config, showSetup } from "../../stores";
   import {
     getConfig,
     setSettingsPath,
@@ -20,29 +20,28 @@
   let isMaxed = false;
 
   let menuConfig = {
-    default: $selCat,
+    default: $selectedCategory,
     values: ["Projects", "Art", "Experience", "Organizations", "Archive"],
   };
 
-  let dropVal: string = "Projects";
+  let dropVal: PortfolioCategory = "Projects";
 
   onMount(async () => {
     await setSettingsPath();
     let settings = JSON.parse(await fs.readTextFile(settingsPath));
-    $selCat = "Projects";
+    $selectedCategory = "Projects";
 
     const cfg = await getConfig(settings.configPath);
 
     if (!cfg) {
-      $renderIdx = 0;
+      $showSetup = true;
     } else {
       $config = cfg;
-
-      $renderIdx = menuConfig.values.indexOf($selCat) + 1;
+      $showSetup = false;
     }
 
-    dropVal = $selCat;
-    menuConfig.default = $selCat;
+    dropVal = $selectedCategory;
+    menuConfig.default = $selectedCategory;
     minimize.addEventListener("click", () => appWindow.minimize());
     maximize.addEventListener("click", () => {
       appWindow.toggleMaximize();
@@ -55,12 +54,10 @@
 
   afterUpdate(async () => {
     if ($config) {
-      const oldCat = $selCat;
-      $selCat = dropVal;
+      const oldCat = $selectedCategory;
+      $selectedCategory = dropVal;
 
-      if (oldCat != $selCat) {
-        $renderIdx = menuConfig.values.indexOf(dropVal.replace(" ", "")) + 1;
-
+      if (oldCat != $selectedCategory) {
         await updateSettings({ prop: "selCat", data: dropVal });
       }
     }
@@ -71,7 +68,7 @@
   <div class="info">
     <img src="/logo.svg" alt="logo" height="15px" style="margin-left: 10px;" />
     <div style="margin-left: 10px; margin-right: 30px;">Portfolio Updater</div>
-    {#if $config}
+    {#if !$showSetup}
       <SubMenu config={menuConfig} bind:value={dropVal} />
     {/if}
   </div>

@@ -1,74 +1,74 @@
 import { writable } from "svelte/store";
 
-export const renderIdx = writable(0);
+export const showSetup = writable(true);
 export const config = writable(null);
-export const selCat = writable("Projects");
+export const selectedCategory = writable<PortfolioCategory>("Projects");
 export const state = writable({
-    "experience": {
-        "oExp": "",
-        "key": "",
-        "data": {
-            "company": "",
-            "img": "",
-            "position": "",
-            "description": ""
-        }
-    },
-    "projects": {
-        "oProj": "",
-        "key": "",
-        "data": {
-            "category": "",
-            "name": "",
-            "time": "",
-            "status": "",
-            "difficulty": "",
-            "description": "",
-            "content": {},
-            "link": "",
-            "isRelative": false,
-            "img": "",
-            "org": ""
-        }
-    },
-    "organizations": {
-        "oOrg": "",
-        "key": "",
-        "data": {
-            "name": "",
-			"img": "",
-			"about": "",
-			"description": "",
-			"projects": [],
-            "link": ""
-        }
-    },
-    "art": {
-        "oArt": "",
-        "key": "",
-        "data": {
-            "name": "",
-            "img": "",
-            "description": ""
-        }
-    },
-    "archive": {
-        "oArc": "",
-        "key": "",
-        "data": {
-            "category": "",
-            "name": "",
-            "time": "",
-            "status": "",
-            "difficulty": "",
-            "description": "",
-            "content": {},
-            "link": "",
-            "isRelative": false,
-            "img": "",
-            "org": ""
-        }
+  "experience": {
+    "oExp": "",
+    "key": "",
+    "data": {
+      "company": "",
+      "img": "",
+      "position": "",
+      "description": ""
     }
+  },
+  "projects": {
+    "oProj": "",
+    "key": "",
+    "data": {
+      "category": "",
+      "name": "",
+      "time": "",
+      "status": "",
+      "difficulty": "",
+      "description": "",
+      "content": {},
+      "link": "",
+      "isRelative": false,
+      "img": "",
+      "org": ""
+    }
+  },
+  "organizations": {
+    "oOrg": "",
+    "key": "",
+    "data": {
+      "name": "",
+      "img": "",
+      "about": "",
+      "description": "",
+      "projects": [],
+      "link": ""
+    }
+  },
+  "art": {
+    "oArt": "",
+    "key": "",
+    "data": {
+      "name": "",
+      "img": "",
+      "description": ""
+    }
+  },
+  "archive": {
+    "oArc": "",
+    "key": "",
+    "data": {
+      "category": "",
+      "name": "",
+      "time": "",
+      "status": "",
+      "difficulty": "",
+      "description": "",
+      "content": {},
+      "link": "",
+      "isRelative": false,
+      "img": "",
+      "org": ""
+    }
+  }
 });
 export const changedKey = writable(null);
 

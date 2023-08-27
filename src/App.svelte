@@ -1,22 +1,15 @@
 <script lang="ts">
 	import { SvelteToast } from "@zerodevx/svelte-toast";
-	import { renderIdx, showCrtArtModal, showCrtExpModal, showCrtOrgModal, showCrtProjModal } from "./stores";
+	import { showCrtArtModal, showCrtExpModal, showCrtOrgModal, showCrtProjModal, showSetup } from "./stores";
 
 	import Titlebar from "./components/window/Titlebar.svelte";
 	import Setup from "./components/Setup.svelte";
+  import Core from "./components/Core.svelte";
 
-	import PIdx from "./components/projects/PIdx.svelte";
-	import AIdx from "./components/art/AIdx.svelte";
-	import EIdx from "./components/experience/EIdx.svelte";
-	import OIdx from "./components/organizations/OIdx.svelte";
-
-	import CrtProjModal from "./components/projects/CrtProjModal.svelte";
-	import CrtArtModal from "./components/art/CrtArtModal.svelte";
-	import CrtExpModal from "./components/experience/CrtExpModal.svelte";
-	import CrtOrgModal from "./components/organizations/CrtOrgModal.svelte";
-  import ArchIdx from "./components/archive/ArchIdx.svelte";
-
-	const components = [ Setup, PIdx, AIdx, EIdx, OIdx, ArchIdx ];
+	import CrtProjModal from "./components/modals/CrtProjModal.svelte";
+	import CrtArtModal from "./components/modals/CrtArtModal.svelte";
+	import CrtExpModal from "./components/modals/CrtExpModal.svelte";
+	import CrtOrgModal from "./components/modals/CrtOrgModal.svelte";
 </script>
 
 <div class="wrap">
@@ -25,7 +18,7 @@
 <main>
 	<Titlebar />
 	<div class="content">
-		<svelte:component this={components[$renderIdx]}/>
+		<svelte:component this={$showSetup ? Setup : Core}/>
 	
 		{#if $showCrtProjModal}
 			<CrtProjModal />

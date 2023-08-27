@@ -15,7 +15,7 @@
 		jSwitchProj,
 		config,
 		changedKey,
-		selCat,
+		selectedCategory,
 		renderIdx,
 	} from "../../stores";
 	import {
@@ -286,7 +286,7 @@
 				org: "",
 			},
 		};
-		$selCat = "Archive";
+		$selectedCategory = "Archive";
 
 		$config = cfg;
 		await writeConfig(JSON.stringify(cfg, null, "\t"));

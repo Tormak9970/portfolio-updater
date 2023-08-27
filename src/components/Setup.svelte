@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { dialog, fs } from "@tauri-apps/api";
-  import { config, renderIdx, selCat } from "../stores";
+  import { dialog } from "@tauri-apps/api";
+  import { config, showSetup } from "../stores";
   import { getConfig, updateSettings } from "../Utils";
 
   async function click() {
@@ -15,24 +15,7 @@
         await updateSettings({ prop: "configPath", data: configFile });
 
         $config = cfg;
-
-        switch ($selCat) {
-          case "Projects":
-            $renderIdx = 1;
-            break;
-          case "Art":
-            $renderIdx = 2;
-            break;
-          case "Experience":
-            $renderIdx = 3;
-            break;
-          case "Organizations":
-            $renderIdx = 4;
-            break;
-          case "Archive":
-            $renderIdx = 5;
-            break;
-        }
+        $showSetup = false;
       }
     }
   }
