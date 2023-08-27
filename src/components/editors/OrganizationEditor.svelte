@@ -2,12 +2,11 @@
   import { toast } from "@zerodevx/svelte-toast";
   import { state, config, changedKey } from "../../stores";
   import { updateSettings, writeConfig } from "../../Utils";
-  import TextAreaInput from "../universal/edit/TextAreaInput.svelte";
-  import EditorInput from "../universal/edit/EditorInput.svelte";
-  import ImagePreview from "../universal/edit/ImagePreview.svelte";
-  import EditorMultiSelect from "../universal/edit/EditorMultiSelect.svelte";
-  import ConfirmDelete from "../universal/ConfirmDelete.svelte";
-  import { projsList } from "../../listStores";
+  import ImagePreview from "../interactables/ImagePreview.svelte";
+  import ConfirmDelete from "../modals/ConfirmDelete.svelte";
+    import MultiSelect from "../interactables/multi-select/MultiSelect.svelte";
+    import TextArea from "../interactables/TextArea.svelte";
+    import TextInput from "../interactables/TextInput.svelte";
 
   const projects = [];
 
@@ -26,7 +25,7 @@
       $state.organizations.data.name = value;
       $changedKey = value.replaceAll(" ", "-");
 
-      $state.organizations.oOrg = value;
+      $state.organizations.original = value;
     } else {
       $state.organizations.data[fieldName] = value;
     }
@@ -35,16 +34,14 @@
     await updateSettings({ prop: "state", data: $state });
   }
 
-  async function descHandler(e: Event, fieldName: string) {
-    const value = (e.currentTarget as HTMLTextAreaElement).value;
-
+  async function descHandler(value: string, fieldName: string) {
     $state.organizations.data[fieldName.toLowerCase()] = value;
 
     $state = $state;
     await updateSettings({ prop: "state", data: $state });
   }
 
-  async function imageHandler(e: Event, fieldName: string) {
+  async function imageHandler(e: Event) {
     const value = (e.currentTarget as HTMLInputElement).value;
 
     $state.organizations.data.img = value;
@@ -53,10 +50,7 @@
     await updateSettings({ prop: "state", data: $state });
   }
 
-  async function mulSelHandler(
-    values: { name: string; linkId: string }[],
-    fieldName: string
-  ) {
+  async function mulSelHandler(values: { name: string; linkId: string }[]) {
     $state.organizations.data.projects = values;
 
     $state = $state;
@@ -121,12 +115,12 @@
 
 <div id="editor">
   <div
-    class:hide={$state.organizations.oOrg == ""}
+    class:hide={$state.organizations.original == ""}
     style="overflow: scroll; min-height: 100%;"
   >
     <div class="header">
       <div />
-      <h1>Editing: {$state.organizations.oOrg}</h1>
+      <h1>Editing: {$state.organizations.original}</h1>
       <div class="btn-cont">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="btn" on:click={confirmDelete}>
@@ -135,43 +129,45 @@
       </div>
     </div>
     <div class="info-cont">
-      <EditorInput
-        fieldName="Name"
-        cVal={$state.organizations.data.name}
-        handler={inputHandler}
+      <TextInput
+        label="Name"
+        value={$state.organizations.data.name}
+        onInput={(value) => inputHandler(value, "Name")}
       />
       <ImagePreview
-        fieldName="Image"
-        cVal={$state.organizations.data.img}
+        label="Image"
+        placeholder={$state.organizations.data.img}
         handler={imageHandler}
       />
-      <EditorInput
-        fieldName="Link"
-        cVal={$state.organizations.data.link}
-        handler={inputHandler}
+      <TextInput
+        label="Link"
+        value={$state.organizations.data.link}
+        onInput={(value) => inputHandler(value, "Link")}
       />
 
-      <TextAreaInput
-        fieldName="About"
-        cVal={$state.organizations.data.about}
-        handler={descHandler}
+      <TextArea
+        label="About"
+        placeholder={""}
+        value={$state.organizations.data.about}
+        handler={(value) => descHandler(value, "About")}
       />
-      <TextAreaInput
-        fieldName="Description"
-        cVal={$state.organizations.data.description}
-        handler={descHandler}
+      <TextArea
+        label="Description"
+        placeholder={""}
+        value={$state.organizations.data.description}
+        handler={(value) => descHandler(value, "Description")}
       />
 
-      <EditorMultiSelect
-        fieldName="Projects"
+      <MultiSelect
+        label="Projects"
         options={projects}
-        selected={$state.organizations.data.projects}
+        values={$state.organizations.data.projects}
         handler={mulSelHandler}
       />
     </div>
     <button id="save" on:click={save}>Save Content</button>
   </div>
-  <div class:hide={$state.organizations.oOrg != ""}>
+  <div class:hide={$state.organizations.original != ""}>
     <div class="welcome-msg">Select an Organization to get started</div>
   </div>
 </div>

@@ -4,10 +4,10 @@ const scopeCache = [];
 
 const DEFAULT_SETTINGS = {
   "configPath": "",
-  "selCat": "",
+  "selectedCategory": "",
   "state": {
     "experience": {
-      "oExp": "",
+      "original": "",
       "key": "",
       "data": {
         "company": "",
@@ -17,11 +17,11 @@ const DEFAULT_SETTINGS = {
       }
     },
     "projects": {
-      "oProj": "",
-      "cat": "",
+      "original": "",
       "key": "",
       "data": {
         "name": "",
+        "category": "",
         "time": "",
         "status": "",
         "difficulty": "",
@@ -34,7 +34,7 @@ const DEFAULT_SETTINGS = {
       }
     },
     "organizations": {
-      "oOrg": "",
+      "original": "",
       "key": "",
       "data": {
         "name": "",
@@ -45,7 +45,7 @@ const DEFAULT_SETTINGS = {
       }
     },
     "art": {
-      "oArt": "",
+      "original": "",
       "key": "",
       "data": {
         "name": "",
@@ -54,11 +54,11 @@ const DEFAULT_SETTINGS = {
       }
     },
     "archive": {
-      "oArc": "",
-      "cat": "",
+      "original": "",
       "key": "",
       "data": {
         "name": "",
+        "category": "",
         "time": "",
         "status": "",
         "difficulty": "",

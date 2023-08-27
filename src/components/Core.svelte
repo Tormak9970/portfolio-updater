@@ -4,58 +4,46 @@
 
 	import { config, selectedCategory } from "../stores";
 
-	import EditorPage from "./universal/EditorPage.svelte";
+	import EditorPage from "./EditorPage.svelte";
 
 	import ProjectEditor from "./editors/ProjectEditor.svelte";
   import ArtEditor from "./editors/ArtEditor.svelte";
   import ExperienceEditor from "./editors/ExperienceEditor.svelte";
   import OrganizationEditor from "./editors/OrganizationEditor.svelte";
   import ArchiveEditor from "./editors/ArchiveEditor.svelte";
-  
-	import ProjectEntry from "./entries/ProjectEntry.svelte";
-  import ArtEntry from "./entries/ArtEntry.svelte";
-  import ExperienceEntry from "./entries/ExperienceEntry.svelte";
-  import OrganizationEntry from "./entries/OrganizationEntry.svelte";
-  import ArchiveEntry from "./entries/ArchiveEntry.svelte";
 
   const configs = {
     "Projects": {
       "list": $projsList,
       "field": "projects",
-      "editor": ProjectEditor,
-      "entry": ProjectEntry
+      "editor": ProjectEditor
     },
     "Art": {
       "list": $artList,
       "field": "art",
-      "editor": ArtEditor,
-      "entry": ArtEntry
+      "editor": ArtEditor
     },
     "Experience": {
       "list": $expList,
       "field": "experience",
-      "editor": ExperienceEditor,
-      "entry": ExperienceEntry
+      "editor": ExperienceEditor
     },
     "Organizations": {
       "list": $orgsList,
       "field": "organizations",
-      "editor": OrganizationEditor,
-      "entry": OrganizationEntry
+      "editor": OrganizationEditor
     },
     "Archive": {
       "list": $archList,
       "field": "archive",
-      "editor": ArchiveEditor,
-      "entry": ArchiveEntry
+      "editor": ArchiveEditor
     }
   }
 
   $: currentConfig = configs[$selectedCategory];
   $: editor = currentConfig.editor;
-  $: entry = currentConfig.entry;
   $: list = currentConfig.list;
-  $: field = currentConfig.field;
+  $: field = currentConfig.field as LowercaseCategory;
 
   function handleListUpdate() {
     list = [];
@@ -77,7 +65,7 @@
 </script>
 
 <div>
-	<EditorPage main={editor} crtModal={field} entry={entry} data={list}/>
+	<EditorPage editor={editor} field={field} data={list}/>
 </div>
 
 <style>

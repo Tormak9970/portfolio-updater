@@ -2,16 +2,16 @@
   import { toast } from "@zerodevx/svelte-toast";
   import { state, config, changedKey } from "../../stores";
   import { updateSettings, writeConfig } from "../../Utils";
-  import TextAreaInput from "../universal/edit/TextAreaInput.svelte";
-  import EditorInput from "../universal/edit/EditorInput.svelte";
-  import ImagePreview from "../universal/edit/ImagePreview.svelte";
-  import ConfirmDelete from "../universal/ConfirmDelete.svelte";
+  import ImagePreview from "../interactables/ImagePreview.svelte";
+  import ConfirmDelete from "../modals/ConfirmDelete.svelte";
+  import TextInput from "../interactables/TextInput.svelte";
+    import TextArea from "../interactables/TextArea.svelte";
 
-  async function inputHandler(e: Event, fieldName: string) {
+  async function inputHandler(e: Event) {
     const value = (e.currentTarget as HTMLInputElement).value;
 
-    if ($state.art.oArt != value) {
-      $state.art.oArt = value;
+    if ($state.art.original != value) {
+      $state.art.original = value;
       $changedKey = value.replace(" ", "-").toLowerCase();
     }
 
@@ -21,16 +21,14 @@
     await updateSettings({ prop: "state", data: $state });
   }
 
-  async function descHandler(e: Event, fieldName: string) {
-    const value = (e.currentTarget as HTMLTextAreaElement).value;
-
+  async function descHandler(value: string) {
     $state.art.data.description = value;
 
     $state = $state;
     await updateSettings({ prop: "state", data: $state });
   }
 
-  async function imageHandler(e: Event, fieldName: string) {
+  async function imageHandler(e: Event) {
     const value = (e.currentTarget as HTMLInputElement).value;
 
     $state.art.data.img = value;
@@ -86,12 +84,12 @@
 
 <div id="editor">
   <div
-    class:hide={$state.art.oArt == ""}
+    class:hide={$state.art.original == ""}
     style="overflow: scroll; min-height: 100%;"
   >
     <div class="header">
       <div />
-      <h1>Editing: {$state.art.oArt}</h1>
+      <h1>Editing: {$state.art.original}</h1>
       <div class="btn-cont">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="btn" on:click={confirmDelete}>
@@ -100,25 +98,26 @@
       </div>
     </div>
     <div class="info-cont">
-      <EditorInput
-        fieldName={"Name"}
-        cVal={$state.art.data.name}
-        handler={inputHandler}
+      <TextInput
+        label={"Name"}
+        value={$state.art.data.name}
+        onInput={inputHandler}
       />
       <ImagePreview
-        fieldName={"Image"}
-        cVal={$state.art.data.img}
+        label={"Image"}
+        placeholder={$state.art.data.img}
         handler={imageHandler}
       />
-      <TextAreaInput
-        fieldName={"Description"}
-        cVal={$state.art.data.description}
+      <TextArea
+        label={"Description"}
+        placeholder=""
+        value={$state.art.data.description}
         handler={descHandler}
       />
     </div>
     <button id="save" on:click={save}>Save Content</button>
   </div>
-  <div class:hide={$state.art.oArt != ""}>
+  <div class:hide={$state.art.original != ""}>
     <div class="welcome-msg">Select an Art Piece to get started</div>
   </div>
 </div>

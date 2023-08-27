@@ -15,7 +15,7 @@
     switch (properties[0]) {
       case "experience":
         $state[properties[0]] = {
-          oExp: "",
+          original: "",
           key: "",
           data: {
             company: "",
@@ -27,7 +27,7 @@
         break;
       case "projects":
         $state[properties[0]] = {
-          oProj: "",
+          original: "",
           key: "",
           data: {
             category: "",
@@ -46,7 +46,7 @@
         break;
       case "organizations":
         $state[properties[0]] = {
-          oOrg: "",
+          original: "",
           key: "",
           data: {
             name: "",
@@ -60,7 +60,7 @@
         break;
       case "art":
         $state[properties[0]] = {
-          oArt: "",
+          original: "",
           key: "",
           data: {
             name: "",
@@ -71,7 +71,7 @@
         break;
       case "archive":
         $state[properties[0]] = {
-          oArc: "",
+          original: "",
           key: "",
           data: {
             category: "",

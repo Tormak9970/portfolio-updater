@@ -5,7 +5,7 @@ export const config = writable(null);
 export const selectedCategory = writable<PortfolioCategory>("Projects");
 export const state = writable({
   "experience": {
-    "oExp": "",
+    "original": "",
     "key": "",
     "data": {
       "company": "",
@@ -15,7 +15,7 @@ export const state = writable({
     }
   },
   "projects": {
-    "oProj": "",
+    "original": "",
     "key": "",
     "data": {
       "category": "",
@@ -32,7 +32,7 @@ export const state = writable({
     }
   },
   "organizations": {
-    "oOrg": "",
+    "original": "",
     "key": "",
     "data": {
       "name": "",
@@ -44,7 +44,7 @@ export const state = writable({
     }
   },
   "art": {
-    "oArt": "",
+    "original": "",
     "key": "",
     "data": {
       "name": "",
@@ -53,7 +53,7 @@ export const state = writable({
     }
   },
   "archive": {
-    "oArc": "",
+    "original": "",
     "key": "",
     "data": {
       "category": "",

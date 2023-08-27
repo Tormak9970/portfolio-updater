@@ -1,35 +1,31 @@
 <script lang="ts">
   import { config, showCrtOrgModal, state } from "../../stores";
   import { writeConfig } from "../../Utils";
-  import CImageInput from "../universal/create/CImageInput.svelte";
-  import CMultiSelect from "../universal/create/CMultiSelect.svelte";
-  import CTextArea from "../universal/create/CTextArea.svelte";
-  import CTextInput from "../universal/create/CTextInput.svelte";
+  import ImageInput from "../interactables/ImageInput.svelte";
+  import MultiSelect from "../interactables/multi-select/MultiSelect.svelte";
+  import TextArea from "../interactables/TextArea.svelte";
+  import TextInput from "../interactables/TextInput.svelte";
 
   let name: string;
   let img: string;
   let about: string;
   let desc: string;
   let link: string;
-  let projs: { name: string; linkId: string }[];
+  let includedProjects: { name: string; linkId: string }[];
 
   const projects = [];
-
-  for (const proj of Object.entries($config.projects)) {
-    projects.push({
-      // @ts-ignore
-      name: proj[1].name,
-      linkId: proj[0],
-    });
-  }
-
-  for (const proj of Object.entries($config.archive)) {
-    projects.push({
-      // @ts-ignore
-      name: proj[1].name,
-      linkId: proj[0],
-    });
-  }
+  projects.push(...Object.entries($config.projects).map(([linkId, entry]) => {
+    return {
+      name: (entry as any).name,
+      linkId: linkId
+    }
+  }));
+  projects.push(...Object.entries($config.archive).map(([linkId, entry]) => {
+    return {
+      name: (entry as any).name,
+      linkId: linkId
+    }
+  }));
 
   async function close(e: Event) {
     $showCrtOrgModal = false;
@@ -46,7 +42,7 @@
         img: img,
         about: about,
         description: desc,
-        projects: projs,
+        projects: includedProjects,
       };
 
       const cfg = $config;
@@ -59,14 +55,14 @@
       await writeConfig(JSON.stringify(cfg, null, "\t"));
 
       $state.organizations = {
-        oOrg: name,
+        original: name,
         key: key,
         data: {
           name: name,
           img: img,
           about: about,
           description: desc,
-          projects: projs,
+          projects: includedProjects,
           link: link,
         },
       };
@@ -84,26 +80,26 @@
       <h2>Create a Experience entry</h2>
       <div class="input-wrapper">
         <div class="sub">
-          <CTextInput fieldName="Name" cVal="something new" bind:value={name} />
-          <CImageInput fieldName="Image" cVal="" bind:value={img} />
-          <CTextInput fieldName="Link" cVal="link to org" bind:value={link} />
+          <TextInput label="Name" placeholder="something new" bind:value={name} />
+          <ImageInput label="Image" placeholder="" bind:value={img} />
+          <TextInput label="Link" placeholder="link to org" bind:value={link} />
         </div>
 
-        <CTextArea
-          fieldName="About"
-          cVal="description of this organization"
+        <TextArea
+          label="About"
+          placeholder="description of this organization"
           bind:value={about}
         />
-        <CTextArea
-          fieldName="Description"
-          cVal={"my involvement"}
+        <TextArea
+          label="Description"
+          placeholder={"my involvement"}
           bind:value={desc}
         />
 
-        <CMultiSelect
-          fieldName="Projects"
+        <MultiSelect
+          label="Projects"
           options={projects}
-          bind:selected={projs}
+          bind:values={includedProjects}
         />
       </div>
 

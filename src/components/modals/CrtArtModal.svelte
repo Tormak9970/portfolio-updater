@@ -1,9 +1,9 @@
 <script lang="ts">
   import { config, showCrtArtModal, state } from "../../stores";
   import { writeConfig } from "../../Utils";
-  import CImageInput from "../universal/create/CImageInput.svelte";
-  import CTextArea from "../universal/create/CTextArea.svelte";
-  import CTextInput from "../universal/create/CTextInput.svelte";
+  import ImageInput from "../interactables/ImageInput.svelte";
+  import TextArea from "../interactables/TextArea.svelte";
+    import TextInput from "../interactables/TextInput.svelte";
 
   let name: string;
   let img: string;
@@ -35,7 +35,7 @@
       await writeConfig(JSON.stringify(cfg, null, "\t"));
 
       $state.art = {
-        oArt: name,
+        original: name,
         key: key,
         data: {
           name: name,
@@ -57,12 +57,12 @@
       <h2>Create a New Art Piece</h2>
       <div class="input-wrapper">
         <div class="sub">
-          <CTextInput fieldName="Name" cVal="something new" bind:value={name} />
+          <TextInput label="Name" placeholder="something new" bind:value={name} />
 
-          <CImageInput fieldName="Image" cVal="" bind:value={img} />
+          <ImageInput label="Image" placeholder="" bind:value={img} />
         </div>
 
-        <CTextArea fieldName="Description" cVal={""} bind:value={desc} />
+        <TextArea label="Description" placeholder={""} bind:value={desc} />
       </div>
 
       <div class="btns-cont">

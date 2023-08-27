@@ -2,20 +2,21 @@
   import { path, tauri } from "@tauri-apps/api";
 
   import { onMount } from "svelte";
-  import { state } from "../../stores";
-  import { addPathToScope, configPath, updateSettings } from "../../Utils";
+  import { state } from "../stores";
+  import { addPathToScope, configPath, updateSettings } from "../Utils";
 
-  export let data;
+  export let data: any;
+  export let field: LowercaseCategory;
   export let key: string;
 
   let imgPath: string;
 
-  async function setOrg(e) {
-    $state.organizations.oOrg = data.name;
-    $state.organizations.key = key;
-    $state.organizations.data = data;
+  async function setState() {
+    $state[field].original = data.name;
+    $state[field].key = key;
+    $state[field].data = data;
 
-    $state = $state;
+    $state = { ...$state };
     await updateSettings({ prop: "state", data: $state });
   }
 
@@ -24,7 +25,7 @@
       await path.dirname(configPath),
       data.img.substring(2)
     );
-          
+
     if (tmpPath && tmpPath != "") await addPathToScope(tmpPath);
 
     imgPath = tmpPath;
@@ -42,7 +43,7 @@
   </div>
   <div class="btn-cont">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="btn" on:click={setOrg}>
+    <div class="btn" on:click={setState}>
       <div>Edit</div>
     </div>
   </div>

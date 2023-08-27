@@ -1,5 +1,6 @@
 <script lang="ts">
-	import OpenCrtModal from "./OpenCrtModal.svelte";
+	import Entry from "./Entry.svelte";
+  import OpenCrtModal from "./modals/OpenCrtModal.svelte";
 
 	type Data = {
 		props:any
@@ -7,25 +8,24 @@
 
 	let wrapper:HTMLDivElement;
 
-	export let crtModal:string;
-	export let main:any;
-	export let entry:any;
+	export let field: LowercaseCategory;
+	export let editor:any;
 	export let data:Data[];
 </script>
 
 <div id="entries">
 	<div class="wrapper" bind:this={wrapper}>
-		{#if crtModal != ""}
-			<OpenCrtModal modal={crtModal}/>
+		{#if field != "archive"}
+			<OpenCrtModal modal={field}/>
 		{/if}
 		<div class="wrap-inner">
 			{#each data as datEntr}
-				<svelte:component this={entry} {...datEntr.props}/>
+				<Entry data={datEntr.props.data} key={datEntr.props.key} field={field} />
 			{/each}
 		</div>
 	</div>
 	<div class="editor-cont" style="width: calc(100% - {wrapper?.clientWidth}px);">
-		<svelte:component this={main} />
+		<svelte:component this={editor} />
 	</div>
 </div>
 

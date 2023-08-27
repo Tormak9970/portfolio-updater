@@ -2,10 +2,10 @@
   import { dialog, fs, path, tauri } from "@tauri-apps/api";
 
   import { afterUpdate, onMount } from "svelte";
-  import { configPath } from "../../../Utils";
+  import { configPath } from "../../Utils";
 
-  export let fieldName: string;
-  export let cVal: string;
+  export let label: string;
+  export let placeholder: string;
   export let handler: (e: Event, fieldName: string) => Promise<void>;
 
   let input: HTMLInputElement;
@@ -13,13 +13,13 @@
   const changeEvnt = new Event("change");
 
   async function wrapper(e: Event) {
-    await handler(e, fieldName.toLowerCase());
+    await handler(e, label.toLowerCase());
   }
 
   async function selectImage(e: Event) {
     await dialog
       .open({
-        title: `Choose the ${fieldName.toLowerCase()}`,
+        title: `Choose the ${label.toLowerCase()}`,
         directory: false,
       })
       .then(async (file: string) => {
@@ -44,29 +44,29 @@
   onMount(async () => {
     const tmpPath = await path.join(
       await path.dirname(configPath),
-      (input.value != "" ? input.value : cVal).substring(2)
+      (input.value != "" ? input.value : placeholder).substring(2)
     );
 
-    if (input.value != "" || cVal != "") imgPath = tmpPath;
+    if (input.value != "" || placeholder != "") imgPath = tmpPath;
   });
 
   afterUpdate(async () => {
     const tmpPath = await path.join(
       await path.dirname(configPath),
-      (input.value != "" ? input.value : cVal).substring(2)
+      (input.value != "" ? input.value : placeholder).substring(2)
     );
 
-    if (input.value != "" || cVal != "") imgPath = tmpPath;
+    if (input.value != "" || placeholder != "") imgPath = tmpPath;
   });
 </script>
 
 <div class="img-preview">
   <div class="info">
-    <div class="field-name">{fieldName}:</div>
+    <div class="field-name">{label}:</div>
     <input
       type="text"
-      placeholder={cVal}
-      value={cVal}
+      placeholder={placeholder}
+      value={placeholder}
       on:change={wrapper}
       bind:this={input}
     />

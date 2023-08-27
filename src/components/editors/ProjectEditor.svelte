@@ -15,8 +15,7 @@
 		jSwitchProj,
 		config,
 		changedKey,
-		selectedCategory,
-		renderIdx,
+		selectedCategory
 	} from "../../stores";
 	import {
     addPathToScope,
@@ -26,40 +25,85 @@
 		uploadUrl,
 		writeConfig,
 	} from "../../Utils";
-	import EditorInput from "../universal/edit/EditorInput.svelte";
 	import { path, tauri } from "@tauri-apps/api";
-	import EditorDropDown from "../universal/edit/EditorDropDown.svelte";
-	import ImagePreview from "../universal/edit/ImagePreview.svelte";
-	import ConfirmDelete from "../universal/ConfirmDelete.svelte";
+	import ImagePreview from "../interactables/ImagePreview.svelte";
+	import ConfirmDelete from "../modals/ConfirmDelete.svelte";
 	import { archList, projsList } from "../../listStores";
+  import TextInput from "../interactables/TextInput.svelte";
+  import DropDown from "../interactables/DropDown.svelte";
 
 	let editor: EditorJs;
 	let saved = true;
 	let showSave = false;
 	let wasProgramatic = false;
 
-	let dropCnfgCat = {
-		default: $state.projects.data.category,
-		// @ts-ignore
-		values: $config.projects ? Object.keys($config.projects) : [],
-	};
+  const categories = [
+    {
+      label: "Web Dev",
+      data: "web-dev"
+    },
+    {
+      label: "Software Engineering",
+      data: "software-engineering"
+    },
+    {
+      label: "Web Games",
+      data: "web-games"
+    },
+    {
+      label: "Blender",
+      data: "blender"
+    },
+    {
+      label: "Steam Deck",
+      data: "steam-deck"
+    },
+    {
+      label: "Education",
+      data: "education"
+    },
+    {
+      label: "Miscellaneous",
+      data: "miscellaneous"
+    }
+  ];
 
-	let dropCnfgOrg = {
-		default: $state.projects.data.org,
-		// @ts-ignore
-		values: $config.organizations ? Object.keys($config.organizations) : [],
-	};
-	dropCnfgOrg.values.unshift("none");
+  const organizations = $config.organizations ?[ { label: "none", data: "none" }, ...Object.keys($config.organizations).map((entry: string) => { return { label: entry, data: entry } }) ] : [];
 
-	let dropCfgDiff = {
-		default: $state.projects.data.difficulty,
-		values: ["Simple", "Moderate", "Complex"],
-	};
+  const difficulties = [
+    {
+      label: "Simple",
+      data: "Simple"
+    },
+    {
+      label: "Moderate",
+      data: "Moderate"
+    },
+    {
+      label: "Complex",
+      data: "Complex"
+    }
+  ];
 
-	let dropCfgStat = {
-		default: $state.projects.data.status,
-		values: ["Not Live / Obsolete", "In Progress", "Complete"],
-	};
+  const statusses = [
+    {
+      label: "Not Live / Obsolete",
+      data: "Not Live / Obsolete"
+    },
+    {
+      label: "In Progress",
+      data: "In Progress"
+    },
+    {
+      label: "Complete",
+      data: "Complete"
+    }
+  ];
+
+  $: category = $state.projects.data.category;
+  $: organization = $state.projects.data.org;
+  $: status = $state.projects.data.status;
+  $: difficulty = $state.projects.data.difficulty;
 
 	onMount(async () => {
 		editor = new EditorJs({
@@ -116,10 +160,6 @@
 
 	$: {
 		renderNewContent($state.projects.data.content);
-		dropCnfgCat.default = $state.projects.data.category;
-		dropCnfgOrg.default = $state.projects.data.org;
-		dropCfgDiff.default = $state.projects.data.difficulty;
-		dropCfgStat.default = $state.projects.data.status;
 	}
 
 	const renderNewContent = async (data) => {
@@ -212,8 +252,8 @@
 
 	async function inputHandler(e: Event, fieldName: string) {
 		const value = (e.currentTarget as HTMLInputElement).value;
-		if (fieldName == "Name" && $state.projects.oProj != value) {
-			$state.projects.oProj = value;
+		if (fieldName == "Name" && $state.projects.original != value) {
+			$state.projects.original = value;
 			$changedKey = value.replace(" ", "-").toLowerCase();
 		}
 
@@ -230,7 +270,7 @@
 		$state = $state;
 		await updateSettings({ prop: "state", data: $state });
 	}
-	async function imageHandler(e: Event, fieldName: string) {
+	async function imageHandler(e: Event) {
 		const value = (e.currentTarget as HTMLInputElement).value;
 
 		$state.projects.data.img = value;
@@ -264,13 +304,13 @@
 		const cfg = $config;
 
 		cfg["archive"][$state.projects.key] = $state.projects.data;
-		$state.archive.oArc = $state.projects.oProj;
+		$state.archive.original = $state.projects.original;
 		$state.archive.key = $state.projects.key;
 		$state.archive.data = $state.projects.data;
 
 		delete cfg["projects"][$state.projects.key];
 		$state.projects = {
-			oProj: "",
+			original: "",
 			key: "",
 			data: {
 				category: "",
@@ -319,12 +359,12 @@
 
 <div id="editor">
 	<div
-		class:hide={$state.projects.oProj == ""}
+		class:hide={$state.projects.original == ""}
 		style="overflow: scroll; min-height: 100%;"
 	>
 		<div class="header">
 			<div />
-			<h1>Editing: {$state.projects.oProj}</h1>
+			<h1>Editing: {$state.projects.original}</h1>
 			<div class="btn-cont">
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div class="btn" on:click={archiveProject}>
@@ -338,46 +378,34 @@
 		</div>
 		<div class="info-cont">
 			<div class="sub">
-				<EditorInput
-					fieldName={"Name"}
-					cVal={$state.projects.data.name}
-					handler={inputHandler}
+				<TextInput
+					label={"Name"}
+					placeholder={$state.projects.data.name}
+          value={$state.projects.data.name}
+					onInput={(e) => inputHandler(e, "Name")}
 				/>
-				<EditorInput
-					fieldName={"Time"}
-					cVal={$state.projects.data.time}
-					handler={inputHandler}
+				<TextInput
+					label={"Time"}
+					placeholder={$state.projects.data.time}
+          value={$state.projects.data.time}
+					onInput={(e) => inputHandler(e, "Time")}
 				/>
-				<EditorInput
-					fieldName={"Link"}
-					cVal={$state.projects.data.link}
-					handler={inputHandler}
+				<TextInput
+					label={"Link"}
+					placeholder={$state.projects.data.link}
+          value={$state.projects.data.link}
+					onInput={(e) => inputHandler(e, "Link")}
 				/>
-				<EditorDropDown
-					fieldName={"Category"}
-					config={dropCnfgCat}
-					handler={dropDownHandler}
-				/>
-				<EditorDropDown
-					fieldName={"Status"}
-					config={dropCfgStat}
-					handler={dropDownHandler}
-				/>
-				<EditorDropDown
-					fieldName={"Difficulty"}
-					config={dropCfgDiff}
-					handler={dropDownHandler}
-				/>
-				<EditorDropDown
-					fieldName={"Organization"}
-					config={dropCnfgOrg}
-					handler={dropDownHandler}
-				/>
+        
+        <DropDown label={"Category"} options={categories} value={category} onChange={(selected) => dropDownHandler(selected, "Category")} />
+        <DropDown label={"Organization"} options={organizations} value={organization} onChange={(selected) => dropDownHandler(selected, "Organization")} />
+        <DropDown label={"Difficulty"} options={difficulties} value={difficulty} onChange={(selected) => dropDownHandler(selected, "Difficulty")} />
+        <DropDown label={"Status"} options={statusses} value={status} onChange={(selected) => dropDownHandler(selected, "Status")} />
 			</div>
 			<div class="sub">
 				<ImagePreview
-					fieldName={"Project"}
-					cVal={$state.projects.data.img}
+					label={"Project"}
+					placeholder={$state.projects.data.img}
 					handler={imageHandler}
 				/>
 			</div>
@@ -385,7 +413,7 @@
 		<div id="editorjs" />
 		<button id="save" on:click={save}>Save Content</button>
 	</div>
-	<div class:hide={$state.projects.oProj != ""}>
+	<div class:hide={$state.projects.original != ""}>
 		<div class="welcome-msg">Select an Project to get started</div>
 	</div>
 	<div class="save-modal{showSave ? '' : ' hide-modal'}">

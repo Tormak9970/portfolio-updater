@@ -1,54 +1,89 @@
 <script lang="ts">
   import { config, jSwitchProj, showCrtProjModal, state } from "../../stores";
   import { writeConfig } from "../../Utils";
-  import CDropDown from "../universal/create/CDropDown.svelte";
-  import CImageInput from "../universal/create/CImageInput.svelte";
-  import CTextInput from "../universal/create/CTextInput.svelte";
+  import DropDown from "../interactables/DropDown.svelte";
+  import TextInput from "../interactables/TextInput.svelte";
+  
+  import ImageInput from "../interactables/ImageInput.svelte";
 
-  let dropCnfgCat = {
-    default: "web-dev",
-    // @ts-ignore
-    values: [
-      "web-dev",
-      "software-engineering",
-      "web-games",
-      "blender",
-      "steam-deck",
-      "education",
-      "miscellaneous",
-    ],
-  };
+  const categories = [
+    {
+      label: "Web Dev",
+      data: "web-dev"
+    },
+    {
+      label: "Software Engineering",
+      data: "software-engineering"
+    },
+    {
+      label: "Web Games",
+      data: "web-games"
+    },
+    {
+      label: "Blender",
+      data: "blender"
+    },
+    {
+      label: "Steam Deck",
+      data: "steam-deck"
+    },
+    {
+      label: "Education",
+      data: "education"
+    },
+    {
+      label: "Miscellaneous",
+      data: "miscellaneous"
+    }
+  ];
 
-  let dropCnfgOrg = {
-    default: "none",
-    // @ts-ignore
-    values: $config.organizations ? Object.keys($config.organizations) : [],
-  };
-  dropCnfgOrg.values.unshift("none");
-  let dropCfgDiff = {
-    default: "Moderate",
-    values: ["Simple", "Moderate", "Complex"],
-  };
-  let dropCfgStat = {
-    default: "In Progress",
-    values: ["Not Live / Obsolete", "In Progress", "Complete"],
-  };
+  const organizations = $config.organizations ?[ { label: "none", data: "none" }, ...Object.keys($config.organizations).map((entry: string) => { return { label: entry, data: entry } }) ] : [];
 
-  let category: string;
-  let org: string;
+  const difficulties = [
+    {
+      label: "Simple",
+      data: "Simple"
+    },
+    {
+      label: "Moderate",
+      data: "Moderate"
+    },
+    {
+      label: "Complex",
+      data: "Complex"
+    }
+  ];
+
+  const statusses = [
+    {
+      label: "Not Live / Obsolete",
+      data: "Not Live / Obsolete"
+    },
+    {
+      label: "In Progress",
+      data: "In Progress"
+    },
+    {
+      label: "Complete",
+      data: "Complete"
+    }
+  ];
+
+  let category = "web-dev";
+  let organization = "none";
   let name: string;
   let time: string;
-  let status: string;
-  let difficulty: string;
+  let status = "In Progress";
+  let difficulty = "Moderate";
   let link: string;
-  let projImg: string;
+  let projectImage: string;
 
   async function close(e: Event) {
     $showCrtProjModal = false;
   }
 
   function validateFields(): boolean {
-    return name !== "" && time !== "" && link !== "" && projImg !== "";
+    return name !== "" && time !== "" && link !== "" && projectImage !== "";
   }
 
   async function saveNew(e: Event) {
@@ -63,8 +98,8 @@
         content: {},
         link: link,
         isRelative: false,
-        img: projImg,
-        org: org,
+        img: projectImage,
+        org: organization,
       };
 
       const cfg = $config;
@@ -78,7 +113,7 @@
 
       $jSwitchProj = true;
       $state.projects = {
-        oProj: name,
+        original: name,
         key: key,
         data: {
           category: category,
@@ -90,8 +125,8 @@
           content: {},
           link: link,
           isRelative: false,
-          img: projImg,
-          org: org,
+          img: projectImage,
+          org: organization,
         },
       };
 
@@ -107,39 +142,16 @@
     <div class="content">
       <h2>Create a New Project</h2>
       <div class="input-wrapper">
-        <!-- Catagory Dropdown -->
-        <CDropDown
-          fieldName="Catagory"
-          config={dropCnfgCat}
-          bind:value={category}
-        />
+        <DropDown label={"Category"} options={categories} bind:value={category} />
+        <DropDown label={"Organization"} options={organizations} bind:value={organization} />
+        <DropDown label={"Difficulty"} options={difficulties} bind:value={difficulty} />
+        <DropDown label={"Status"} options={statusses} bind:value={status} />
 
-        <!-- Organization Dropdown -->
-        <CDropDown
-          fieldName="Organization"
-          config={dropCnfgOrg}
-          bind:value={org}
-        />
+        <TextInput label="Name" placeholder="something new" bind:value={name} />
+        <TextInput label="Time" placeholder="# hours" bind:value={time} />
+        <TextInput label="Link" placeholder="" bind:value={link} />
 
-        <!-- Organization Dropdown -->
-        <CDropDown
-          fieldName="Difficulty"
-          config={dropCfgDiff}
-          bind:value={difficulty}
-        />
-
-        <!-- Organization Dropdown -->
-        <CDropDown
-          fieldName="Status"
-          config={dropCfgStat}
-          bind:value={status}
-        />
-
-        <CTextInput fieldName="Name" cVal="something new" bind:value={name} />
-        <CTextInput fieldName="Time" cVal="# hours" bind:value={time} />
-        <CTextInput fieldName="Link" cVal="" bind:value={link} />
-
-        <CImageInput fieldName="Project Image" cVal="" bind:value={projImg} />
+        <ImageInput label="Project Image" placeholder="" bind:value={projectImage} />
       </div>
 
       <div class="btns-cont">

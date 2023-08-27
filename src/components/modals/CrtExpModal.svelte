@@ -1,9 +1,9 @@
 <script lang="ts">
   import { config, showCrtExpModal, state } from "../../stores";
   import { writeConfig } from "../../Utils";
-  import CImageInput from "../universal/create/CImageInput.svelte";
-  import CTextArea from "../universal/create/CTextArea.svelte";
-  import CTextInput from "../universal/create/CTextInput.svelte";
+  import ImageInput from "../interactables/ImageInput.svelte";
+  import TextArea from "../interactables/TextArea.svelte";
+    import TextInput from "../interactables/TextInput.svelte";
 
   let comp: string;
   let pos: string;
@@ -41,7 +41,7 @@
       await writeConfig(JSON.stringify(cfg, null, "\t"));
 
       $state.experience = {
-        oExp: pos,
+        original: pos,
         key: key,
         data: {
           company: comp,
@@ -64,21 +64,21 @@
       <h2>Create a Experience entry</h2>
       <div class="input-wrapper">
         <div class="sub">
-          <CTextInput
-            fieldName="Company"
-            cVal="something new"
+          <TextInput
+            label="Company"
+            placeholder="something new"
             bind:value={comp}
           />
-          <CTextInput
-            fieldName="Position"
-            cVal="position held"
+          <TextInput
+            label="Position"
+            placeholder="position held"
             bind:value={pos}
           />
 
-          <CImageInput fieldName="Image" cVal="" bind:value={img} />
+          <ImageInput label="Image" placeholder="" bind:value={img} />
         </div>
 
-        <CTextArea fieldName="Description" cVal={""} bind:value={desc} />
+        <TextArea label="Description" placeholder={""} bind:value={desc} />
       </div>
 
       <div class="btns-cont">
