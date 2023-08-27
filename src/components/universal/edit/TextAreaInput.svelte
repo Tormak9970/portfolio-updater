@@ -10,7 +10,7 @@
 
 <div class="text-area-input">
 	<div class="field-name">{fieldName}</div>
-    <textarea type="text" placeholder="{cVal}" value="{cVal}" on:change="{wrapper}"/>
+    <textarea placeholder="{cVal}" value="{cVal}" on:change="{wrapper}"/>
 </div>
 
 <style>

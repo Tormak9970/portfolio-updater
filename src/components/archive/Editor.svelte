@@ -11,7 +11,7 @@
 	
 	import { onMount } from 'svelte';
 	import { state, jSwitchProj, config, changedKey } from '../../stores';
-	import { configPath, updateSettings, uploadFile, uploadUrl, writeConfig } from '../../Utils';
+	import { addPathToScope, configPath, updateSettings, uploadFile, uploadUrl, writeConfig } from '../../Utils';
 	import EditorInput from '../universal/edit/EditorInput.svelte';
 	import { path, tauri } from '@tauri-apps/api';
 	import EditorDropDown from '../universal/edit/EditorDropDown.svelte';
@@ -71,7 +71,7 @@
 								const uploadRes = await uploadFile(file.name, await file.arrayBuffer());
 								return JSON.parse(uploadRes);
 							},
-							uploadByUrl: async (url) => {
+							uploadByUrl: async (url: any) => {
 								const uploadRes = await uploadUrl(url);
 								return JSON.parse(uploadRes);
 							}
@@ -89,7 +89,7 @@
 					const content = await editor.save();
 					wasProgramatic = true;
 					$state.archive.data.content = content;
-        			await updateSettings({prop: "state", data: $state});
+          await updateSettings({prop: "state", data: $state});
 				} else {
 					wasProgramatic = false;
 				}
@@ -128,7 +128,12 @@
 				if (block.type == "image" && block.data.file.url.indexOf("./") == 0) {
 					console.log(block.data.file.url)
 					block.data.file.webUrl = block.data.file.url;
-					block.data.file.url = tauri.convertFileSrc(await path.join(await path.dirname(configPath), block.data.file.url));
+          const targetPath = await path.join(await path.dirname(configPath), block.data.file.url);
+          
+          const pathAdded = await addPathToScope(targetPath);
+          console.log(pathAdded ? `successfully added ${targetPath} to scope` : `failed to add ${targetPath} to scope`);
+          
+					block.data.file.url = tauri.convertFileSrc(targetPath);
 				}
 				return block;
 			}));
@@ -172,7 +177,8 @@
 
 		$state.archive.data.content = content;
 		$state.archive.data.description = content.blocks[1].data.text;
-        await updateSettings({prop: "state", data: $state});
+    await updateSettings({prop: "state", data: $state});
+
 		// @ts-ignore
 		cfg.projects[$state.archive.key] = $state.archive.data;
 
@@ -183,30 +189,30 @@
 	}
 
 	async function inputHandler(e:Event, fieldName:string) {
-        const value = (e.currentTarget as HTMLInputElement).value;
-        if (fieldName == "Name" && $state.archive.oArc != value) {
-            $state.archive.oArc = value;
-            $changedKey = value.replace(" ", "-").toLowerCase();
-        }
-        
-        $state.archive.data[fieldName.toLowerCase()] = value;
+    const value = (e.currentTarget as HTMLInputElement).value;
+    if (fieldName == "Name" && $state.archive.oArc != value) {
+      $state.archive.oArc = value;
+      $changedKey = value.replace(" ", "-").toLowerCase();
+    }
+    
+    $state.archive.data[fieldName.toLowerCase()] = value;
 
-        $state = $state;
-        await updateSettings({prop: "state", data: $state});
+    $state = $state;
+    await updateSettings({prop: "state", data: $state});
 	}
 	async function dropDownHandler(value:string, fieldName:string) {
-		$state.archive.data[fieldName == "Organization" ? "org" : fieldName.toLowerCase()] = value;
+    $state.archive.data[fieldName == "Organization" ? "org" : fieldName.toLowerCase()] = value;
 
-        $state = $state;
-        await updateSettings({prop: "state", data: $state});
+    $state = $state;
+    await updateSettings({prop: "state", data: $state});
 	}
 	async function imageHandler(e:Event, fieldName:string) {
-        const value = (e.currentTarget as HTMLInputElement).value;
-        
-        $state.archive.data.img = value;
+    const value = (e.currentTarget as HTMLInputElement).value;
+    
+    $state.archive.data.img = value;
 
-        $state = $state;
-        await updateSettings({prop: "state", data: $state});
+    $state = $state;
+    await updateSettings({prop: "state", data: $state});
 	}
 
 	function confirmDelete(e:Event) {
@@ -292,9 +298,11 @@
 			<div></div>
 			<h1>Editing: {$state.archive.oArc}</h1>
 			<div class="btn-cont">
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div class="btn" on:click="{unArchiveProject}">
 					<div>Move</div>
 				</div>
+			  <!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div class="btn" on:click="{confirmDelete}">
 					<div>Delete</div>
 				</div>

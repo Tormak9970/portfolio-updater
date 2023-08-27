@@ -1,13 +1,90 @@
-import { fs, path, tauri } from "@tauri-apps/api";
+import { fs, invoke, path, tauri } from "@tauri-apps/api";
+
+const scopeCache = [];
+
+const DEFAULT_SETTINGS = {
+  "configPath": "",
+  "selCat": "",
+  "state": {
+    "experience": {
+      "oExp": "",
+      "key": "",
+      "data": {
+        "company": "",
+        "img": "",
+        "position": "",
+        "description": ""
+      }
+    },
+    "projects": {
+      "oProj": "",
+      "cat": "",
+      "key": "",
+      "data": {
+        "name": "",
+        "time": "",
+        "status": "",
+        "difficulty": "",
+        "description": "",
+        "content": {},
+        "link": "",
+        "isRelative": false,
+        "img": "",
+        "org": ""
+      }
+    },
+    "organizations": {
+      "oOrg": "",
+      "key": "",
+      "data": {
+        "name": "",
+        "img": "",
+        "about": "",
+        "description": "",
+        "projects": []
+      }
+    },
+    "art": {
+      "oArt": "",
+      "key": "",
+      "data": {
+        "name": "",
+        "img": "",
+        "description": ""
+      }
+    },
+    "archive": {
+      "oArc": "",
+      "cat": "",
+      "key": "",
+      "data": {
+        "name": "",
+        "time": "",
+        "status": "",
+        "difficulty": "",
+        "description": "",
+        "content": {},
+        "link": "",
+        "isRelative": false,
+        "img": "",
+        "org": ""
+      }
+    }
+  }
+}
 
 export let settingsPath = "";
 export let configPath = "";
 
 export async function setSettingsPath() {
-  const setsPath = await path.join(await path.appDir(), "settings.json");
-  await fs.readTextFile(setsPath).then(() => {}, async () => {
-    await fs.copyFile(await path.join(await path.resourceDir(), "_up_", "settings.json"), setsPath);
-  });
+  const appDir = await path.appConfigDir();
+  if (!(await fs.exists(appDir))) await fs.createDir(appDir);
+
+  const setsPath = await path.join(appDir, "settings.json");
+  if (!(await fs.exists(setsPath))) {
+    await fs.writeTextFile(setsPath, JSON.stringify(DEFAULT_SETTINGS));
+  }
+
   settingsPath = setsPath;
 }
 
@@ -15,33 +92,30 @@ export async function updateSettings(data: { prop: string, data: any }) {
   if (data.prop == "configPath") {
     configPath = data.data;
   }
-  // const settingsData = await fs.readTextFile(settingsPath);
 
-  // const settings = JSON.parse(settingsData);
-  // settings[data.prop] = data.data;
+  const settingsData = await fs.readTextFile(settingsPath);
 
-  // await fs.writeFile({
-  //   path: settingsPath, 
-  //   contents: JSON.stringify(settings)
-  // });
+  const settings = JSON.parse(settingsData);
+  settings[data.prop] = data.data;
+
+  await fs.writeTextFile(settingsPath, JSON.stringify(settings));
 }
 export async function getConfig(cfgPath: string) {
-  const res = await fs.readTextFile(cfgPath).then((contents) => {
+  await addPathToScope(cfgPath);
+
+  if (cfgPath !== "" && await fs.exists(cfgPath)) {
+    const contents = await fs.readTextFile(cfgPath);
     configPath = cfgPath;
     const config = JSON.parse(contents);
 
     return config;
-  }, () => {
+  } else {
     return null;
-  });
-  return res;
+  }
 }
 export async function writeConfig(data: string) {
   try {
-    await fs.writeFile({
-      path: configPath, 
-      contents: data
-    })
+    await fs.writeTextFile(configPath, data);
   } catch (e) {
     console.log(e);
   }
@@ -64,7 +138,6 @@ export async function uploadUrl(url: string) {
   return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath), webUrl: "./" + preFinalPath.replaceAll("\\", "/") } });
 }
 export async function uploadFile(name:string, buffer: ArrayBuffer) {
-
   const imagesWebsiteDir = await path.join('img', 'projs');
   const preFinalPath = await path.join(imagesWebsiteDir, name);
   const finalPath = await path.join(await path.dirname(configPath), preFinalPath);
@@ -75,4 +148,12 @@ export async function uploadFile(name:string, buffer: ArrayBuffer) {
   });
 
   return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath), webUrl: "./" + preFinalPath.replaceAll("\\", "/") } });
+}
+
+export async function addPathToScope(filePath: string) {
+  if (scopeCache.includes(filePath)) return true;
+  const res = await invoke<boolean>("add_path_to_scope", { targetPath: filePath });
+
+  if (res) scopeCache.push(filePath);
+  return res;
 }

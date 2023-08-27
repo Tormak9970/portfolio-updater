@@ -11,7 +11,7 @@
     updateSettings,
   } from "../../Utils";
   import SubMenu from "./SubMenu.svelte";
-    import { exit } from "@tauri-apps/api/process";
+  import { exit } from "@tauri-apps/api/process";
 
   let minimize: HTMLDivElement;
   let maximize: HTMLDivElement;
@@ -24,14 +24,14 @@
     values: ["Projects", "Art", "Experience", "Organizations", "Archive"],
   };
 
-  let dropVal: string;
+  let dropVal: string = "Projects";
 
   onMount(async () => {
-    // await setSettingsPath();
-    // let settings = JSON.parse(await fs.readTextFile(settingsPath));
+    await setSettingsPath();
+    let settings = JSON.parse(await fs.readTextFile(settingsPath));
     $selCat = "Projects";
 
-    const cfg = null; //await getConfig(settings.configPath);
+    const cfg = await getConfig(settings.configPath);
 
     if (!cfg) {
       $renderIdx = 0;
@@ -59,7 +59,8 @@
       $selCat = dropVal;
 
       if (oldCat != $selCat) {
-        $renderIdx = menuConfig.values.indexOf(dropVal) + 1;
+        $renderIdx = menuConfig.values.indexOf(dropVal.replace(" ", "")) + 1;
+
         await updateSettings({ prop: "selCat", data: dropVal });
       }
     }
@@ -68,7 +69,7 @@
 
 <div data-tauri-drag-region class="titlebar">
   <div class="info">
-    <img src="/logo.svg" alt="logo" height="15" style="margin-left: 10px;" />
+    <img src="/logo.svg" alt="logo" height="15px" style="margin-left: 10px;" />
     <div style="margin-left: 10px; margin-right: 30px;">Portfolio Updater</div>
     {#if $config}
       <SubMenu config={menuConfig} bind:value={dropVal} />

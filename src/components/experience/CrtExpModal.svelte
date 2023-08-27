@@ -1,153 +1,170 @@
 <script lang="ts">
-    import { config, showCrtExpModal, state } from "../../stores";
-    import { writeConfig } from "../../Utils";
-    import CImageInput from "../universal/create/CImageInput.svelte";
-    import CTextArea from "../universal/create/CTextArea.svelte";
-    import CTextInput from "../universal/create/CTextInput.svelte";
+  import { config, showCrtExpModal, state } from "../../stores";
+  import { writeConfig } from "../../Utils";
+  import CImageInput from "../universal/create/CImageInput.svelte";
+  import CTextArea from "../universal/create/CTextArea.svelte";
+  import CTextInput from "../universal/create/CTextInput.svelte";
 
-    let comp:string;
-    let pos:string;
-    let img:string;
-    let desc:string;
+  let comp: string;
+  let pos: string;
+  let img: string;
+  let desc: string;
 
-    async function close(e:Event) {
-        $showCrtExpModal = false;
+  async function close(e: Event) {
+    $showCrtExpModal = false;
+  }
+
+  function validateFields(): boolean {
+    return comp !== "" && img !== "" && pos !== "" && desc !== "";
+  }
+
+  async function saveNew(e: Event) {
+    if (validateFields()) {
+      const newExp = {
+        company: comp,
+        position: pos,
+        img: img,
+        description: desc,
+      };
+
+      const cfg = $config;
+      const key = comp
+        .toLocaleLowerCase()
+        .concat("-")
+        .concat(pos.toLocaleLowerCase())
+        .replaceAll(" ", "-");
+
+      // @ts-ignore
+      cfg.experience[key] = newExp;
+
+      $config = cfg;
+      await writeConfig(JSON.stringify(cfg, null, "\t"));
+
+      $state.experience = {
+        oExp: pos,
+        key: key,
+        data: {
+          company: comp,
+          img: img,
+          position: pos,
+          description: desc,
+        },
+      };
+
+      $showCrtExpModal = false;
     }
-
-    function validateFields(): boolean {
-        return comp !== "" &&
-            img !== "" &&
-            pos !== "" &&
-            desc !== "";
-    }
-
-    async function saveNew(e:Event) {
-        if (validateFields()) {
-            const newExp = {
-                "company": comp,
-                "position": pos,
-				"img": img,
-				"description": desc
-            }
-
-            const cfg = $config;
-            const key = comp.toLocaleLowerCase().concat("-").concat(pos.toLocaleLowerCase()).replaceAll(" ", "-");
-
-            // @ts-ignore
-            cfg.experience[key] = newExp;
-
-            $config = cfg;
-            await writeConfig(JSON.stringify(cfg, null, '\t'));
-
-            $state.experience = {
-                "oExp": pos,
-                "key": key,
-                "data": {
-                    "company": comp,
-                    "img": img,
-                    "position": pos,
-                    "description": desc
-                }
-            }
-
-            $showCrtExpModal = false;
-        }
-    }
+  }
 </script>
 
-<div class="backdrop" on:click="{close}">
-    <div class="modal" on:click|stopPropagation="{() => {}}">
-        <div class="content">
-            <h2>Create a Experience entry</h2>
-            <div class="input-wrapper">
-                <div class="sub">
-                    <CTextInput fieldName="Company" cVal="something new" bind:value={comp}/>
-                    <CTextInput fieldName="Position" cVal="position held" bind:value={pos}/>
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div class="backdrop" on:click={close}>
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <div class="modal" on:click|stopPropagation={() => {}}>
+    <div class="content">
+      <h2>Create a Experience entry</h2>
+      <div class="input-wrapper">
+        <div class="sub">
+          <CTextInput
+            fieldName="Company"
+            cVal="something new"
+            bind:value={comp}
+          />
+          <CTextInput
+            fieldName="Position"
+            cVal="position held"
+            bind:value={pos}
+          />
 
-                    <CImageInput fieldName="Image" cVal="" bind:value={img}/>
-                </div>
-
-                <CTextArea fieldName="Description" cVal={""} bind:value={desc}/>
-            </div>
-
-            <div class="btns-cont">
-                <div class="btn" on:click="{saveNew}">Create</div>
-            </div>
+          <CImageInput fieldName="Image" cVal="" bind:value={img} />
         </div>
+
+        <CTextArea fieldName="Description" cVal={""} bind:value={desc} />
+      </div>
+
+      <div class="btns-cont">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <div class="btn" on:click={saveNew}>Create</div>
+      </div>
     </div>
+  </div>
 </div>
 
 <style>
-    @import '/theme.css';
+  @import "/theme.css";
 
-    .backdrop {
-        z-index: 10;
+  .backdrop {
+    z-index: 10;
 
-        position: absolute;
-        top: 0;
-        left: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
 
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-    .modal {
-        padding: 14px;
-        max-width: 70vw;
-        border-radius: 8px;
+  .modal {
+    padding: 14px;
+    max-width: 70vw;
+    border-radius: 8px;
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-        background-color: var(--background);
-        border: 1px solid var(--highlight);
-        
-        overflow: hidden;
+    background-color: var(--background);
+    border: 1px solid var(--highlight);
 
-        box-shadow: -2px 2px 8px 1px #000;
-    }
+    overflow: hidden;
 
-    .input-wrapper {
-        width: auto;
+    box-shadow: -2px 2px 8px 1px #000;
+  }
 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+  .input-wrapper {
+    width: auto;
 
-    .sub {
-        width: 100%;
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .content {
-        max-height: 50vh;
-        overflow: auto;
+  .sub {
+    width: 100%;
+  }
 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+  .content {
+    max-height: 50vh;
+    overflow: auto;
 
-    .btns-cont {
-        margin-top: 20px;
-        width: 100%;
-        display: flex;
-        justify-content: space-around;
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .btn {
-        padding: 6px 20px;
-        border-radius: 8px;
-        border: 1px solid var(--highlight);
+  .btns-cont {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
 
-        background-color: var(--foreground);
-    }
-    .btn:hover { background-color: var(--hover); cursor: pointer; }
-    .btn:focus { background-color: var(--highlight); }
+  .btn {
+    padding: 6px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--highlight);
+
+    background-color: var(--foreground);
+  }
+  .btn:hover {
+    background-color: var(--hover);
+    cursor: pointer;
+  }
+  .btn:focus {
+    background-color: var(--highlight);
+  }
 </style>

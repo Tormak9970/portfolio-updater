@@ -57,9 +57,11 @@
         {/each}
     </select>
         
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class="select-selected" on:click|stopPropagation="{aHandleClick}">Add a project</div>
     <div class="select-items select-hide">
         {#each values as val}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <div id="{val.name}" on:click|stopPropagation="{eHandleClick}">{val.name}</div>
         {/each}
     </div>

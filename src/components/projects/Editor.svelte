@@ -19,6 +19,7 @@
 		renderIdx,
 	} from "../../stores";
 	import {
+    addPathToScope,
 		configPath,
 		updateSettings,
 		uploadFile,
@@ -137,15 +138,16 @@
 	async function convertToTauri(data) {
 		if (data) {
 			await Promise.all(
-				data.blocks.map(async (block) => {
+				data.blocks.map(async (block: any) => {
 					if (block.type == "image" && block.data.file.url.indexOf("./") == 0) {
 						block.data.file.webUrl = block.data.file.url;
-						block.data.file.url = tauri.convertFileSrc(
-							await path.join(
-								await path.dirname(configPath),
-								block.data.file.url
-							)
-						);
+
+            const targetPath = await path.join(await path.dirname(configPath), block.data.file.url);
+            
+            const pathAdded = await addPathToScope(targetPath);
+            console.log(pathAdded ? `successfully added ${targetPath} to scope` : `failed to add ${targetPath} to scope`);
+            
+						block.data.file.url = tauri.convertFileSrc(targetPath);
 					}
 					console.log(block.data.file);
 					return block;
@@ -324,9 +326,11 @@
 			<div />
 			<h1>Editing: {$state.projects.oProj}</h1>
 			<div class="btn-cont">
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div class="btn" on:click={archiveProject}>
 					<div>Archive</div>
 				</div>
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div class="btn" on:click={confirmDelete}>
 					<div>Delete</div>
 				</div>

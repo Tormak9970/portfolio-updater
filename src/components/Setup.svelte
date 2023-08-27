@@ -1,38 +1,40 @@
 <script lang="ts">
   import { dialog, fs } from "@tauri-apps/api";
   import { config, renderIdx, selCat } from "../stores";
-  import { updateSettings } from "../Utils";
+  import { getConfig, updateSettings } from "../Utils";
 
   async function click() {
-    await dialog.open({ directory: false, title: "Select the config file", multiple: false, }).then(async (file) => {
-      if (file) {
-        const configFile = file as string;
+    const file = await dialog.open({ directory: false, title: "Select the config file", multiple: false, });
 
-        if (configFile) {
-          const contents = await fs.readTextFile(configFile);
-          const cfg = JSON.parse(contents);
+    if (file) {
+      const configFile = file as string;
 
-          await updateSettings({ prop: "configPath", data: configFile });
+      if (configFile) {
+        const cfg = await getConfig(configFile);
 
-          $config = cfg;
+        await updateSettings({ prop: "configPath", data: configFile });
 
-          switch ($selCat) {
-            case "Experience":
-              $renderIdx = 1;
-              break;
-            case "Projects":
-              $renderIdx = 2;
-              break;
-            case "Organizations":
-              $renderIdx = 3;
-              break;
-            case "Art":
-              $renderIdx = 4;
-              break;
-          }
+        $config = cfg;
+
+        switch ($selCat) {
+          case "Projects":
+            $renderIdx = 1;
+            break;
+          case "Art":
+            $renderIdx = 2;
+            break;
+          case "Experience":
+            $renderIdx = 3;
+            break;
+          case "Organizations":
+            $renderIdx = 4;
+            break;
+          case "Archive":
+            $renderIdx = 5;
+            break;
         }
       }
-    });
+    }
   }
 </script>
 

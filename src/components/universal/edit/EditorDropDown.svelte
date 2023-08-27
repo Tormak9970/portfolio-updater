@@ -71,12 +71,15 @@
             {/each}
         </select>
             
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="select-selected" on:click|stopPropagation="{aHandleClick}">{config.default}</div>
         <div class="select-items select-hide">
             {#each config.values as val}
                 {#if val == config.default}
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <div id="{val}" class="same-as-selected" on:click|stopPropagation="{eHandleClick}">{val}</div>
                 {:else}
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <div id="{val}" on:click|stopPropagation="{eHandleClick}">{val}</div>
                 {/if}
             {/each}

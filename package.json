@@ -22,7 +22,7 @@
     "@types/node": "^20.3.1",
     "@zerodevx/svelte-toast": "^0.7.2",
     "as-toast": "^1.0.0",
-    "svelte": "^3.0.0",
+    "svelte": "^3.59.2",
     "svelte-check": "^2.0.0",
     "svelte-preprocess": "^4.0.0",
     "tslib": "^2.0.0",
@@ -41,5 +41,8 @@
     "@editorjs/paragraph": "^2.8.0",
     "@tauri-apps/cli": "^1.2.2",
     "sirv-cli": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^2.0.0"
   }
 }
