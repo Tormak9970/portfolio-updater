@@ -5,70 +5,68 @@ const scopeCache = [];
 const DEFAULT_SETTINGS = {
   "configPath": "",
   "selectedCategory": "",
-  "state": {
-    "experience": {
-      "original": "",
-      "key": "",
-      "data": {
-        "company": "",
-        "img": "",
-        "position": "",
-        "description": ""
-      }
-    },
-    "projects": {
-      "original": "",
-      "key": "",
-      "data": {
-        "name": "",
-        "category": "",
-        "time": "",
-        "status": "",
-        "difficulty": "",
-        "description": "",
-        "content": {},
-        "link": "",
-        "isRelative": false,
-        "img": "",
-        "org": ""
-      }
-    },
-    "organizations": {
-      "original": "",
-      "key": "",
-      "data": {
-        "name": "",
-        "img": "",
-        "about": "",
-        "description": "",
-        "projects": []
-      }
-    },
-    "art": {
-      "original": "",
-      "key": "",
-      "data": {
-        "name": "",
-        "img": "",
-        "description": ""
-      }
-    },
-    "archive": {
-      "original": "",
-      "key": "",
-      "data": {
-        "name": "",
-        "category": "",
-        "time": "",
-        "status": "",
-        "difficulty": "",
-        "description": "",
-        "content": {},
-        "link": "",
-        "isRelative": false,
-        "img": "",
-        "org": ""
-      }
+  "currentProject": {
+    "original": "",
+    "key": "",
+    "data": {
+      "name": "",
+      "category": "",
+      "time": "",
+      "status": "",
+      "difficulty": "",
+      "description": "",
+      "content": {},
+      "link": "",
+      "isRelative": false,
+      "img": "",
+      "org": ""
+    }
+  },
+  "currentArt": {
+    "original": "",
+    "key": "",
+    "data": {
+      "name": "",
+      "img": "",
+      "description": ""
+    }
+  },
+  "currentExperience": {
+    "original": "",
+    "key": "",
+    "data": {
+      "company": "",
+      "img": "",
+      "position": "",
+      "description": ""
+    }
+  },
+  "currentOrganization": {
+    "original": "",
+    "key": "",
+    "data": {
+      "name": "",
+      "img": "",
+      "about": "",
+      "description": "",
+      "projects": []
+    }
+  },
+  "currentArchive": {
+    "original": "",
+    "key": "",
+    "data": {
+      "name": "",
+      "category": "",
+      "time": "",
+      "status": "",
+      "difficulty": "",
+      "description": "",
+      "content": {},
+      "link": "",
+      "isRelative": false,
+      "img": "",
+      "org": ""
     }
   }
 }

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { config, showCrtExpModal, state } from "../../stores";
-  import { writeConfig } from "../../Utils";
+  import { config, currentExperience, showCrtExpModal } from "../../stores";
+  import { writeConfig } from "../../lib/Utils";
   import ImageInput from "../interactables/ImageInput.svelte";
   import TextArea from "../interactables/TextArea.svelte";
-    import TextInput from "../interactables/TextInput.svelte";
+  import TextInput from "../interactables/TextInput.svelte";
 
   let comp: string;
   let pos: string;
@@ -40,7 +40,7 @@
       $config = cfg;
       await writeConfig(JSON.stringify(cfg, null, "\t"));
 
-      $state.experience = {
+      $currentExperience = {
         original: pos,
         key: key,
         data: {

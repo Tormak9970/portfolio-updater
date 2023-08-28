@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { config, showCrtArtModal, state } from "../../stores";
-  import { writeConfig } from "../../Utils";
+  import { config, currentArt, showCrtArtModal } from "../../stores";
+  import { writeConfig } from "../../lib/Utils";
   import ImageInput from "../interactables/ImageInput.svelte";
   import TextArea from "../interactables/TextArea.svelte";
     import TextInput from "../interactables/TextInput.svelte";
@@ -34,7 +34,7 @@
       $config = cfg;
       await writeConfig(JSON.stringify(cfg, null, "\t"));
 
-      $state.art = {
+      $currentArt = {
         original: name,
         key: key,
         data: {

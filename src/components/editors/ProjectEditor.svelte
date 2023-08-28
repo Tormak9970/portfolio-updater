@@ -11,7 +11,7 @@
 	import {
 		updateSettings,
 		writeConfig,
-	} from "../../Utils";
+	} from "../../lib/Utils";
 	import ImagePreview from "../interactables/ImagePreview.svelte";
 	import ConfirmDelete from "../modals/ConfirmDelete.svelte";
 	import { archList, projsList } from "../../listStores";
@@ -20,71 +20,12 @@
   import EditorJs from "../EditorJS.svelte";
   import Button from "../interactables/Button.svelte";
   import VerticalSpacer from "../utils/VerticalSpacer.svelte";
+  import { categories, difficulties, statusses } from "../../lib/ProjectDropdowns";
 
 	let canSave = false;
 
-  const categories = [
-    {
-      label: "Web Dev",
-      data: "web-dev"
-    },
-    {
-      label: "Software Engineering",
-      data: "software-engineering"
-    },
-    {
-      label: "Web Games",
-      data: "web-games"
-    },
-    {
-      label: "Blender",
-      data: "blender"
-    },
-    {
-      label: "Steam Deck",
-      data: "steam-deck"
-    },
-    {
-      label: "Education",
-      data: "education"
-    },
-    {
-      label: "Miscellaneous",
-      data: "miscellaneous"
-    }
-  ];
 
   const organizations = $config.organizations ?[ { label: "none", data: "none" }, ...Object.keys($config.organizations).map((entry: string) => { return { label: entry, data: entry } }) ] : [];
-
-  const difficulties = [
-    {
-      label: "Simple",
-      data: "Simple"
-    },
-    {
-      label: "Moderate",
-      data: "Moderate"
-    },
-    {
-      label: "Complex",
-      data: "Complex"
-    }
-  ];
-
-  const statusses = [
-    {
-      label: "Not Live / Obsolete",
-      data: "Not Live / Obsolete"
-    },
-    {
-      label: "In Progress",
-      data: "In Progress"
-    },
-    {
-      label: "Complete",
-      data: "Complete"
-    }
-  ];
 
   let category = $state.projects.data.category;
   let organization = $state.projects.data.org;

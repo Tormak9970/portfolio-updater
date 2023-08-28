@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { jSwitchProj, selectedKey } from "../stores";
+  import { selectedKey } from "../stores";
 	import Entry from "./Entry.svelte";
   import OpenCrtModal from "./modals/OpenCrtModal.svelte";
 

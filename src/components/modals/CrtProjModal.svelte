@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { config, jSwitchProj, showCrtProjModal, state } from "../../stores";
-  import { writeConfig } from "../../Utils";
+  import { config, currentProject, jSwitchProj, showCrtProjModal } from "../../stores";
+  import { writeConfig } from "../../lib/Utils";
   import DropDown from "../interactables/DropDown.svelte";
   import TextInput from "../interactables/TextInput.svelte";
   
@@ -86,7 +86,7 @@
     return name !== "" && time !== "" && link !== "" && projectImage !== "";
   }
 
-  async function saveNew(e: Event) {
+  async function saveNew() {
     if (validateFields()) {
       const newProj = {
         category: category,
@@ -112,7 +112,7 @@
       await writeConfig(JSON.stringify(cfg, null, "\t"));
 
       $jSwitchProj = true;
-      $state.projects = {
+      $currentProject = {
         original: name,
         key: key,
         data: {
@@ -127,7 +127,7 @@
           isRelative: false,
           img: projectImage,
           org: organization,
-        },
+        }
       };
 
       $showCrtProjModal = false;

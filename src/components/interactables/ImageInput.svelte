@@ -1,6 +1,6 @@
 <script lang="ts">
   import { dialog, fs, path } from "@tauri-apps/api";
-  import { configPath } from "../../Utils";
+  import { configPath } from "../../lib/Utils";
 
   export let label: string;
   export let placeholder: string;

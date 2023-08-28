@@ -1,7 +1,7 @@
 <script lang="ts">
   import { toast } from "@zerodevx/svelte-toast";
   import { state, config, changedKey } from "../../stores";
-  import { updateSettings, writeConfig } from "../../Utils";
+  import { updateSettings, writeConfig } from "../../lib/Utils";
   import ImagePreview from "../interactables/ImagePreview.svelte";
   import ConfirmDelete from "../modals/ConfirmDelete.svelte";
     import MultiSelect from "../interactables/multi-select/MultiSelect.svelte";

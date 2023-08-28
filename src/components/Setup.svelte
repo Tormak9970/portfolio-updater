@@ -1,7 +1,7 @@
 <script lang="ts">
   import { dialog } from "@tauri-apps/api";
   import { config, showSetup } from "../stores";
-  import { getConfig, updateSettings } from "../Utils";
+  import { getConfig, updateSettings } from "../lib/Utils";
 
   async function click() {
     const file = await dialog.open({ directory: false, title: "Select the config file", multiple: false, });

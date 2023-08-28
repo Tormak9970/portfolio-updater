@@ -10,7 +10,7 @@
 
 	import { onMount } from "svelte";
 	import { path, tauri } from "@tauri-apps/api";
-  import { addPathToScope, configPath, uploadFile, uploadUrl } from "../Utils";
+  import { addPathToScope, configPath, uploadFile, uploadUrl } from "../lib/Utils";
 
   export let onChange: (content: OutputData) => Promise<void> = async () => {};
   export let content: OutputData;
@@ -73,7 +73,7 @@
     shouldRerender = true;
   }
 
-	const renderNewContent = async (data: OutputData) => {
+	async function renderNewContent(data: OutputData) {
     console.log("rendering new content...", data)
     if (editor) {
       if (data.time && data.blocks?.length > 0 && data.version) {

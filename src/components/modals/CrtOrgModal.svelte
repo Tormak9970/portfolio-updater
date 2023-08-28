@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { config, showCrtOrgModal, state } from "../../stores";
-  import { writeConfig } from "../../Utils";
+  import { config, currentOrganization, showCrtOrgModal } from "../../stores";
+  import { writeConfig } from "../../lib/Utils";
   import ImageInput from "../interactables/ImageInput.svelte";
   import MultiSelect from "../interactables/multi-select/MultiSelect.svelte";
   import TextArea from "../interactables/TextArea.svelte";
@@ -54,7 +54,7 @@
       $config = cfg;
       await writeConfig(JSON.stringify(cfg, null, "\t"));
 
-      $state.organizations = {
+      $currentOrganization = {
         original: name,
         key: key,
         data: {

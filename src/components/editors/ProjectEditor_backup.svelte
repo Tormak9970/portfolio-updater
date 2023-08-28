@@ -24,7 +24,7 @@
 		uploadFile,
 		uploadUrl,
 		writeConfig,
-	} from "../../Utils";
+	} from "../../lib/Utils";
 	import { path, tauri } from "@tauri-apps/api";
 	import ImagePreview from "../interactables/ImagePreview.svelte";
 	import ConfirmDelete from "../modals/ConfirmDelete.svelte";

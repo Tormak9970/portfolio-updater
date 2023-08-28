@@ -2,7 +2,7 @@
   import { dialog, fs, path, tauri } from "@tauri-apps/api";
 
   import { afterUpdate, onMount } from "svelte";
-  import { configPath } from "../../Utils";
+  import { configPath } from "../../lib/Utils";
 
   export let label: string;
   export let placeholder: string;

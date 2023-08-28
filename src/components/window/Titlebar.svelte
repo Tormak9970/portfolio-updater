@@ -3,13 +3,13 @@
 
   import { appWindow } from "@tauri-apps/api/window";
   import { afterUpdate, onMount } from "svelte";
-  import { selectedCategory, config, showSetup } from "../../stores";
+  import { selectedCategory, config, showSetup, currentProject, currentArt, currentExperience, currentOrganization, currentArchive } from "../../stores";
   import {
     getConfig,
     setSettingsPath,
     settingsPath,
     updateSettings,
-  } from "../../Utils";
+  } from "../../lib/Utils";
   import SubMenu from "./SubMenu.svelte";
   import { exit } from "@tauri-apps/api/process";
 
@@ -29,7 +29,13 @@
   onMount(async () => {
     await setSettingsPath();
     let settings = JSON.parse(await fs.readTextFile(settingsPath));
-    $selectedCategory = "Projects";
+    $selectedCategory = settings.selectedCategory;
+
+    $currentProject = settings.currentProject;
+    $currentArt = settings.currentArt;
+    $currentExperience = settings.currentExperience;
+    $currentOrganization = settings.currentOrganization;
+    $currentArchive = settings.currentArchive;
 
     const cfg = await getConfig(settings.configPath);
 
@@ -42,6 +48,7 @@
 
     dropVal = $selectedCategory;
     menuConfig.default = $selectedCategory;
+
     minimize.addEventListener("click", () => appWindow.minimize());
     maximize.addEventListener("click", () => {
       appWindow.toggleMaximize();
@@ -57,8 +64,8 @@
       const oldCat = $selectedCategory;
       $selectedCategory = dropVal;
 
-      if (oldCat != $selectedCategory) {
-        await updateSettings({ prop: "selCat", data: dropVal });
+      if (oldCat !== $selectedCategory) {
+        await updateSettings({ prop: "selectedCategory", data: dropVal });
       }
     }
   });

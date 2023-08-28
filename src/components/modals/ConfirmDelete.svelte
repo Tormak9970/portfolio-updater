@@ -1,7 +1,7 @@
 <script lang="ts">
   import { toast } from "@zerodevx/svelte-toast";
-  import { updateSettings, writeConfig } from "../../Utils";
-  import { config, state } from "../../stores";
+  import { updateSettings, writeConfig } from "../../lib/Utils";
+  import { config, currentArchive, currentArt, currentExperience, currentOrganization, currentProject } from "../../stores";
 
   export let toastId: string;
   export let properties: string[];
@@ -13,20 +13,8 @@
     ];
 
     switch (properties[0]) {
-      case "experience":
-        $state[properties[0]] = {
-          original: "",
-          key: "",
-          data: {
-            company: "",
-            img: "",
-            position: "",
-            description: "",
-          },
-        };
-        break;
       case "projects":
-        $state[properties[0]] = {
+        $currentProject = {
           original: "",
           key: "",
           data: {
@@ -43,9 +31,35 @@
             org: "",
           },
         };
+        await updateSettings({ prop: "currentProject", data: $currentProject });
+        break;
+      case "art":
+        $currentArt = {
+          original: "",
+          key: "",
+          data: {
+            name: "",
+            img: "",
+            description: "",
+          },
+        };
+        await updateSettings({ prop: "currentArt", data: $currentArt });
+        break;
+      case "experience":
+        $currentExperience = {
+          original: "",
+          key: "",
+          data: {
+            company: "",
+            img: "",
+            position: "",
+            description: "",
+          },
+        };
+        await updateSettings({ prop: "currentExperience", data: $currentExperience });
         break;
       case "organizations":
-        $state[properties[0]] = {
+        $currentOrganization = {
           original: "",
           key: "",
           data: {
@@ -57,20 +71,10 @@
             link: "",
           },
         };
-        break;
-      case "art":
-        $state[properties[0]] = {
-          original: "",
-          key: "",
-          data: {
-            name: "",
-            img: "",
-            description: "",
-          },
-        };
+        await updateSettings({ prop: "currentOrganization", data: $currentOrganization });
         break;
       case "archive":
-        $state[properties[0]] = {
+        $currentArchive = {
           original: "",
           key: "",
           data: {
@@ -87,9 +91,9 @@
             org: "",
           },
         };
+        await updateSettings({ prop: "currentArchive", data: $currentArchive });
         break;
     }
-    await updateSettings({ prop: "state", data: $state });
 
     console.log("Config before updating file:", { ...$config });
     await writeConfig(JSON.stringify({ ...$config }, null, "\t"));
