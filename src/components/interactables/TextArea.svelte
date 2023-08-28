@@ -13,7 +13,7 @@
 
 <div class="desc-input">
   <div class="field-name">{label}</div>
-  <textarea placeholder={placeholder} value="" on:change={handleInput} />
+  <textarea placeholder={placeholder} bind:value={value} on:change={handleInput} />
 </div>
 
 <style>

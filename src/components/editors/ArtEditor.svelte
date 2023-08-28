@@ -5,7 +5,7 @@
   import ImagePreview from "../interactables/ImagePreview.svelte";
   import ConfirmDelete from "../modals/ConfirmDelete.svelte";
   import TextInput from "../interactables/TextInput.svelte";
-    import TextArea from "../interactables/TextArea.svelte";
+  import TextArea from "../interactables/TextArea.svelte";
 
   async function inputHandler(e: Event) {
     const value = (e.currentTarget as HTMLInputElement).value;
@@ -160,7 +160,7 @@
     justify-content: center;
     align-items: center;
 
-    border-radius: 10px;
+    border-radius: 4px;
 
     margin-right: 10px;
   }
@@ -176,7 +176,7 @@
     padding: 4px;
     border: 1px solid #000;
     box-shadow: 0 0 4px rgb(0 0 0 / 50%);
-    border-radius: 3px;
+    border-radius: 4px;
   }
   #save:hover {
     cursor: pointer;

@@ -51,7 +51,7 @@
     justify-content: center;
     align-items: center;
 
-    border-radius: 8px;
+    border-radius: 4px;
 
     margin-bottom: 7px;
 

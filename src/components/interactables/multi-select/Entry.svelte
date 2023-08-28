@@ -32,7 +32,7 @@
         
         border: 1px solid transparent;
 
-        border-radius: 8px;
+        border-radius: 4px;
 
         display: flex;
         flex-direction: row;

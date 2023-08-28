@@ -166,7 +166,7 @@
     justify-content: center;
     align-items: center;
 
-    border-radius: 10px;
+    border-radius: 4px;
 
     margin-right: 10px;
   }

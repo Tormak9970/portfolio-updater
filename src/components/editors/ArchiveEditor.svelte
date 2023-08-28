@@ -464,7 +464,7 @@
     padding: 4px;
     border: 1px solid #000;
     box-shadow: 0 0 4px rgb(0 0 0 / 50%);
-    border-radius: 3px;
+    border-radius: 4px;
   }
   #save:hover {
     cursor: pointer;
@@ -500,7 +500,7 @@
     justify-content: center;
     align-items: center;
 
-    border-radius: 10px;
+    border-radius: 4px;
 
     margin-right: 10px;
   }
@@ -536,7 +536,7 @@
     width: 300px;
 
     background-color: var(--foreground);
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid black;
 
     display: flex;
@@ -580,7 +580,7 @@
     justify-content: center;
     align-items: center;
 
-    border-radius: 2px;
+    border-radius: 4px;
     border: 1px solid black;
   }
   #editor > .save-modal > .modal > .modal-btns > .modal-btn:hover {

@@ -3,6 +3,7 @@ import { writable } from "svelte/store";
 export const showSetup = writable(true);
 export const config = writable(null);
 export const selectedCategory = writable<PortfolioCategory>("Projects");
+export const selectedKey = writable("");
 export const state = writable({
   "experience": {
     "original": "",

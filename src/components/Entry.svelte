@@ -2,7 +2,7 @@
   import { path, tauri } from "@tauri-apps/api";
 
   import { onMount } from "svelte";
-  import { state } from "../stores";
+  import { selectedKey, state } from "../stores";
   import { addPathToScope, configPath, updateSettings } from "../Utils";
 
   export let data: any;
@@ -15,6 +15,8 @@
     $state[field].original = data.name;
     $state[field].key = key;
     $state[field].data = data;
+
+    $selectedKey = key;
 
     $state = { ...$state };
     await updateSettings({ prop: "state", data: $state });
@@ -64,7 +66,7 @@
     justify-content: space-between;
     align-items: center;
 
-    border-radius: 8px;
+    border-radius: 4px;
 
     margin-bottom: 7px;
   }
@@ -100,7 +102,7 @@
     justify-content: center;
     align-items: center;
 
-    border-radius: 10px;
+    border-radius: 4px;
   }
   .entry > .btn-cont > .btn:hover {
     background-color: var(--highlight-hover);

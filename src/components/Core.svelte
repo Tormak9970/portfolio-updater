@@ -4,7 +4,7 @@
 
 	import { config, selectedCategory } from "../stores";
 
-	import EditorPage from "./EditorPage.svelte";
+	import Layout from "./Layout.svelte";
 
 	import ProjectEditor from "./editors/ProjectEditor.svelte";
   import ArtEditor from "./editors/ArtEditor.svelte";
@@ -64,14 +64,14 @@
 	onMount(() => { handleListUpdate(); });
 </script>
 
-<div>
-	<EditorPage editor={editor} field={field} data={list}/>
+<div class="core">
+	<Layout editor={editor} field={field} data={list}/>
 </div>
 
 <style>
 	@import "/theme.css";
 
-	div {
+	.core {
 		width: 100%;
 		height: 100%;
 

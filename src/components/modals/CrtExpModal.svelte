@@ -111,7 +111,7 @@
   .modal {
     padding: 14px;
     max-width: 70vw;
-    border-radius: 8px;
+    border-radius: 4px;
 
     display: flex;
     justify-content: center;
@@ -155,7 +155,7 @@
 
   .btn {
     padding: 6px 20px;
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid var(--highlight);
 
     background-color: var(--foreground);

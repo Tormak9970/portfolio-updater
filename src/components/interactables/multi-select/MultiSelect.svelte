@@ -45,7 +45,7 @@
 
     background-color: var(--foreground);
 
-    border-radius: 8px;
+    border-radius: 4px;
   }
 
   .sel-cont {

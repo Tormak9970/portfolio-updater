@@ -110,7 +110,7 @@
 
     border: 1px solid transparent;
 
-    border-radius: 8px;
+    border-radius: 4px;
     cursor: pointer;
   }
   .select-selected::after {
@@ -141,7 +141,7 @@
     right: 0;
     z-index: 99;
 
-    border-radius: 8px;
+    border-radius: 4px;
 
     box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.85);
   }

@@ -168,7 +168,7 @@
     justify-content: center;
     align-items: center;
 
-    border-radius: 10px;
+    border-radius: 4px;
 
     margin-right: 10px;
   }
@@ -184,7 +184,7 @@
     padding: 4px;
     border: 1px solid #000;
     box-shadow: 0 0 4px rgb(0 0 0 / 50%);
-    border-radius: 3px;
+    border-radius: 4px;
   }
   #save:hover {
     cursor: pointer;
