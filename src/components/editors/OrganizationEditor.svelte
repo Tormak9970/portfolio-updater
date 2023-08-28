@@ -137,7 +137,7 @@
       <ImagePreview
         label="Image"
         placeholder={$state.organizations.data.img}
-        handler={imageHandler}
+        onChange={imageHandler}
       />
       <TextInput
         label="Link"

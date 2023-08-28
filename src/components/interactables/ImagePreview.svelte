@@ -6,14 +6,15 @@
 
   export let label: string;
   export let placeholder: string;
-  export let handler: (e: Event, fieldName: string) => Promise<void>;
+  export let value: string;
+  export let onChange: (path: string) => Promise<void> = async () => {};
 
   let input: HTMLInputElement;
 
   const changeEvnt = new Event("change");
 
   async function wrapper(e: Event) {
-    await handler(e, label.toLowerCase());
+    await onChange((e.target as HTMLInputElement).value);
   }
 
   async function selectImage(e: Event) {
@@ -66,7 +67,7 @@
     <input
       type="text"
       placeholder={placeholder}
-      value={placeholder}
+      bind:value={value}
       on:change={wrapper}
       bind:this={input}
     />

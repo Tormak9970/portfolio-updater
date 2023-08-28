@@ -74,7 +74,7 @@
   }
 
 	async function renderNewContent(data: OutputData) {
-    console.log("rendering new content...", data)
+    console.log("rendering new content...", data);
     if (editor) {
       if (data.time && data.blocks?.length > 0 && data.version) {
         const transformedDat = await convertToTauri(data);

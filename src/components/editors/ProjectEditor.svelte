@@ -3,10 +3,11 @@
 	import type { OutputData } from "@editorjs/editorjs";
 
 	import {
-		state,
 		config,
 		changedKey,
-		selectedCategory
+		selectedCategory,
+    currentProject,
+    currentArchive
 	} from "../../stores";
 	import {
 		updateSettings,
@@ -21,18 +22,24 @@
   import Button from "../interactables/Button.svelte";
   import VerticalSpacer from "../utils/VerticalSpacer.svelte";
   import { categories, difficulties, statusses } from "../../lib/ProjectDropdowns";
+  import type { ProjectEntry } from "src/types/ConfigTypes";
 
 	let canSave = false;
 
 
   const organizations = $config.organizations ?[ { label: "none", data: "none" }, ...Object.keys($config.organizations).map((entry: string) => { return { label: entry, data: entry } }) ] : [];
 
-  let category = $state.projects.data.category;
-  let organization = $state.projects.data.org;
-  let status = $state.projects.data.status;
-  let difficulty = $state.projects.data.difficulty;
+  let image = $currentProject.data.img;
+  let name = $currentProject.data.name;
+  let time = $currentProject.data.time;
+  let link = $currentProject.data.link;
 
-  let content = $state.projects.data.content as OutputData;
+  let category = $currentProject.data.category;
+  let organization = $currentProject.data.org;
+  let status = $currentProject.data.status;
+  let difficulty = $currentProject.data.difficulty;
+
+  let content = $currentProject.data.content as OutputData;
   $: if (content) console.log("content:", content)
 
 	async function onEditorChange(editorContent: OutputData) {
@@ -44,41 +51,16 @@
     canSave = true;
   }
 
-	async function inputHandler(e: Event, fieldName: string) {
-		const value = (e.currentTarget as HTMLInputElement).value;
-		if (fieldName == "Name" && $state.projects.original != value) {
-			$state.projects.original = value;
-			$changedKey = value.replace(" ", "-").toLowerCase();
-		}
+  async function allowSave() {
+    canSave = true;
+  }
 
-		$state.projects.data[fieldName.toLowerCase()] = value;
-
-		$state = $state;
-		await updateSettings({ prop: "state", data: $state });
-	}
-	async function dropDownHandler(value: string, fieldName: string) {
-		$state.projects.data[
-			fieldName == "Organization" ? "org" : fieldName.toLowerCase()
-		] = value;
-
-		$state = $state;
-		await updateSettings({ prop: "state", data: $state });
-	}
-	async function imageHandler(e: Event) {
-		const value = (e.currentTarget as HTMLInputElement).value;
-
-		$state.projects.data.img = value;
-
-		$state = $state;
-		await updateSettings({ prop: "state", data: $state });
-	}
-
-	function confirmDelete(e: Event) {
+	function confirmDelete() {
 		toast.push({
 			component: {
 				src: ConfirmDelete,
 				props: {
-					properties: ["projects", $state.projects.data.name],
+					properties: ["projects", $currentProject.data.name],
 				},
 				sendIdTo: "toastId",
 			},
@@ -94,16 +76,19 @@
 		});
 	}
 
-	async function archiveProject(e: Event) {
+	async function archiveProject() {
 		const cfg = $config;
 
-		cfg["archive"][$state.projects.key] = $state.projects.data;
-		$state.archive.original = $state.projects.original;
-		$state.archive.key = $state.projects.key;
-		$state.archive.data = $state.projects.data;
+		cfg["archive"][$currentProject.key] = $currentProject.data;
 
-		delete cfg["projects"][$state.projects.key];
-		$state.projects = {
+    $currentArchive = {
+      "original": $currentProject.original,
+      "key": $currentProject.key,
+      "data": $currentProject.data
+    }
+
+		delete cfg["projects"][$currentProject.key];
+		$currentProject = {
 			original: "",
 			key: "",
 			data: {
@@ -124,7 +109,8 @@
 
 		$config = cfg;
 		await writeConfig(JSON.stringify(cfg, null, "\t"));
-		await updateSettings({ prop: "state", data: $state });
+		await updateSettings({ prop: "currentProject", data: $currentProject });
+		await updateSettings({ prop: "currentArchive", data: $currentArchive });
 
 		$projsList = [];
 		for (const proj of Object.entries($config.projects)) {
@@ -155,20 +141,38 @@
 
 		if ($changedKey) {
 			// @ts-ignore
-			cfg.projects[$changedKey] = cfg.projects[$state.projects.key];
+			cfg.projects[$changedKey] = cfg.projects[$currentProject.key];
 
 			// @ts-ignore
-			delete cfg.projects[$state.projects.key];
+			delete cfg.projects[$currentProject.key];
 
-			$state.projects.key = $changedKey;
+			$currentProject.key = $changedKey;
 			$changedKey = null;
 		}
 
-		$state.projects.data.content = content;
-		$state.projects.data.description = content.blocks[1].data.text;
-		await updateSettings({ prop: "state", data: $state });
+    const changedProject: ProjectEntry = {
+      category: category,
+      name: name,
+      time: time,
+      status: status,
+      difficulty: difficulty,
+      description: content.blocks[1].data.text,
+      content: content,
+      link: link,
+      isRelative: $currentProject.data.isRelative,
+      img: image,
+      org: organization
+    }
+
+		$currentProject = {
+      "original": $currentProject.original,
+      "key": $currentProject.key,
+      "data": changedProject
+    };
+
+		await updateSettings({ prop: "currentProject", data: $currentProject });
 		// @ts-ignore
-		cfg.projects[$state.projects.key] = $state.projects.data;
+		cfg.projects[$currentProject.key] = changedProject;
 
 		await writeConfig(JSON.stringify(cfg, null, "\t"));
 
@@ -179,8 +183,8 @@
 
 <div class="project-editor">
 	<div class="header">
-    <h1>{$state.projects.original !== "" ? `Editing: ${$state.projects.original}` : "Select an Project to get started"}</h1>
-    <div class="btn-cont" class:hide={$state.projects.original === ""}>
+    <h1>{$currentProject.original !== "" ? `Editing: ${$currentProject.original}` : "Select an Project to get started"}</h1>
+    <div class="btn-cont" class:hide={$currentProject.original === ""}>
       {#if canSave}
         <Button label="Save" width="90px" height="30px" highlight onClick={saveChanges} />
         <div style="height: 1px; width: 10px" />
@@ -190,49 +194,50 @@
       <Button label="Delete" width="90px" height="30px" warn onClick={confirmDelete} />
     </div>
   </div>
-  <div class="content" class:hide={$state.projects.original === ""}>
+  <div class="content" class:hide={$currentProject.original === ""}>
     <div class="fields">
       <h3>Fields</h3>
       <ImagePreview
         label={"Project"}
-        placeholder={$state.projects.data.img}
-        handler={imageHandler}
+        placeholder={"The project image"}
+        bind:value={image}
+        onChange={allowSave}
       />
 
       <TextInput
         label={"Name"}
-        placeholder={$state.projects.data.name}
-        value={$state.projects.data.name}
-        onInput={(e) => inputHandler(e, "Name")}
+        placeholder={"The project name"}
+        bind:value={name}
+        onChange={allowSave}
       />
       <VerticalSpacer />
 
       <TextInput
         label={"Time"}
-        placeholder={$state.projects.data.time}
-        value={$state.projects.data.time}
-        onInput={(e) => inputHandler(e, "Time")}
+        placeholder={"# hours"}
+        bind:value={time}
+        onChange={allowSave}
       />
       <VerticalSpacer />
 
       <TextInput
         label={"Link"}
-        placeholder={$state.projects.data.link}
-        value={$state.projects.data.link}
-        onInput={(e) => inputHandler(e, "Link")}
+        placeholder={"A link to the project"}
+        bind:value={link}
+        onChange={allowSave}
       />
       <VerticalSpacer />
       
-      <DropDown label={"Category"} options={categories} value={category} onChange={(selected) => dropDownHandler(selected, "Category")} />
+      <DropDown label={"Category"} options={categories} bind:value={category} onChange={allowSave} />
       <VerticalSpacer />
 
-      <DropDown label={"Organization"} options={organizations} value={organization} onChange={(selected) => dropDownHandler(selected, "Organization")} />
+      <DropDown label={"Organization"} options={organizations} bind:value={organization} onChange={allowSave} />
       <VerticalSpacer />
 
-      <DropDown label={"Difficulty"} options={difficulties} value={difficulty} onChange={(selected) => dropDownHandler(selected, "Difficulty")} />
+      <DropDown label={"Difficulty"} options={difficulties} bind:value={difficulty} onChange={allowSave} />
       <VerticalSpacer />
 
-      <DropDown label={"Status"} options={statusses} value={status} onChange={(selected) => dropDownHandler(selected, "Status")} />
+      <DropDown label={"Status"} options={statusses} bind:value={status} onChange={allowSave} />
     </div>
     <div class="editor">
       <h3>Writeup</h3>

@@ -114,7 +114,7 @@
       <ImagePreview
         label={"Image"}
         placeholder={$state.experience.data.img}
-        handler={imageHandler}
+        onChange={imageHandler}
       />
       <TextArea
         label={"Description"}

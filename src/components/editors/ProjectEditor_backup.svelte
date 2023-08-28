@@ -406,7 +406,7 @@
 				<ImagePreview
 					label={"Project"}
 					placeholder={$state.projects.data.img}
-					handler={imageHandler}
+					onChange={imageHandler}
 				/>
 			</div>
 		</div>
