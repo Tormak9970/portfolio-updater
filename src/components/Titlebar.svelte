@@ -3,7 +3,7 @@
 
   import { appWindow } from "@tauri-apps/api/window";
   import { afterUpdate, onMount } from "svelte";
-  import { selectedCategory, config, showSetup, currentProject, currentArt, currentExperience, currentOrganization, currentArchive } from "../stores";
+  import { selectedCategory, config, showSetup, currentProject, currentArt, currentExperience, currentOrganization, currentArchive, canSave, showUnsavedChangesModal } from "../stores";
   import {
     getConfig,
     setSettingsPath,
@@ -72,7 +72,11 @@
       isMaxed = !isMaxed;
     });
     close.addEventListener("click", async () => {
-      const success = await exit(0);
+      if (!$canSave) {
+        await exit(0);
+      } else {
+        $showUnsavedChangesModal = true;
+      }
     });
   });
 

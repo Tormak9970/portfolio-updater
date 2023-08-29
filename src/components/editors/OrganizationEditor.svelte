@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { config, currentOrganization } from "../../stores";
+  import { config, currentOrganization, canSave } from "../../stores";
   import { getKeyFromName, updateSettings, writeConfig } from "../../lib/Utils";
   import ImagePreview from "../interactables/ImagePreview.svelte";
   import MultiSelect from "../interactables/multi-select/MultiSelect.svelte";
@@ -18,8 +18,6 @@
       linkId: proj[0],
     });
   }
-  
-	let canSave = false;
 
   let name = $currentOrganization.data.name;
   let image = $currentOrganization.data.img;
@@ -29,7 +27,7 @@
   let selectedProjects = $currentOrganization.data.projects;
 
   async function allowSave() {
-    canSave = true;
+    $canSave = true;
   }
 
   async function saveChanges() {
@@ -66,11 +64,11 @@
 		await writeConfig(JSON.stringify(cfg, null, "\t"));
 
 		$config = cfg;
-		canSave = false;
+		$canSave = false;
   }
 </script>
 
-<EditorTemplate saveChanges={saveChanges} emptyMessage="Select an Organization to get started" curretStore={currentOrganization} bind:canSave={canSave}>
+<EditorTemplate saveChanges={saveChanges} emptyMessage="Select an Organization to get started" curretStore={currentOrganization}>
   <div slot="fields">
     <TextInput
       label={"Name"}

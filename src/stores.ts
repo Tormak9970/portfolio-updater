@@ -1,6 +1,8 @@
 import { writable } from "svelte/store";
 import type { ArtEntry, Config, EntryState, ExperienceEntry, OrganizationEntry, ProjectEntry } from "./types/ConfigTypes";
 
+export const canSave = writable(false);
+
 export const showSetup = writable(true);
 export const config = writable<Config>(null);
 export const selectedCategory = writable<PortfolioCategory>("Projects");
@@ -78,6 +80,7 @@ export const experienceList = writable([]);
 export const organizationsList = writable([]);
 export const archiveList = writable([]);
 
+export const showUnsavedChangesModal = writable(false);
 export const showConfirmDeleteModal = writable(false);
 export const showCrtProjModal = writable(false);
 export const showCrtArtModal = writable(false);

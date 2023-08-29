@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { selectedCategory, showConfirmDeleteModal } from "../../stores";
+  import { canSave, selectedCategory, showConfirmDeleteModal } from "../../stores";
   import type { Writable } from "svelte/store";
   import type { EntryState, ProjectEntry, ArtEntry, ExperienceEntry, OrganizationEntry } from "../../types/ConfigTypes";
   import Button from "../interactables/Button.svelte";
@@ -8,14 +8,13 @@
   export let emptyMessage: string;
   export let curretStore: Writable<EntryState<ProjectEntry | ArtEntry | ExperienceEntry | OrganizationEntry>>;
   export let archiveFunction: () => Promise<void> | undefined = undefined;
-  export let canSave: boolean;
 </script>
 
 <div class="editor-template">
 	<div class="header">
     <h1>{$curretStore.original !== "" ? `Editing: ${$curretStore.original}` : emptyMessage}</h1>
     <div class="btn-cont" class:hide={$curretStore.original === ""}>
-      {#if canSave}
+      {#if $canSave}
         <Button label="Save" width="90px" height="30px" highlight onClick={saveChanges} />
         <div style="height: 1px; width: 10px" />
       {/if}

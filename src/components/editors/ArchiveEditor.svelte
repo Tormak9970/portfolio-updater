@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { OutputData } from "@editorjs/editorjs";
-  import { config, currentArchive, currentProject, archiveList, projectsList, showConfirmDeleteModal } from "../../stores";
+  import { config, currentArchive, currentProject, archiveList, projectsList, canSave } from "../../stores";
   import {
     getKeyFromName,
     updateSettings,
@@ -15,11 +15,7 @@
   import type { ProjectEntry } from "../../types/ConfigTypes";
   import EditorTemplate from "./EditorTemplate.svelte";
 
-  let canSave = false;
-
   const organizations = $config.organizations ?[ { label: "none", data: "none" }, ...Object.keys($config.organizations).map((entry: string) => { return { label: entry, data: entry } }) ] : [];
-
-  $: console.log($currentArchive)
 
   let image = $currentArchive.data.img;
   let name = $currentArchive.data.name;
@@ -34,7 +30,7 @@
   let content = $currentArchive.data.content as OutputData;
 
   async function allowSave() {
-    canSave = true;
+    $canSave = true;
   }
 
   async function unarchiveProject() {
@@ -136,11 +132,11 @@
 		await writeConfig(JSON.stringify(cfg, null, "\t"));
 
 		$config = cfg;
-		canSave = false;
+		$canSave = false;
   }
 </script>
 
-<EditorTemplate saveChanges={saveChanges} curretStore={currentArchive} archiveFunction={unarchiveProject} emptyMessage="Select an Archived Project to get started" bind:canSave={canSave}>
+<EditorTemplate saveChanges={saveChanges} curretStore={currentArchive} archiveFunction={unarchiveProject} emptyMessage="Select an Archived Project to get started">
   <div slot="fields">
     <TextInput
       label={"Name"}

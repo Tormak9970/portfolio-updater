@@ -3,6 +3,7 @@
 
 	import {
 		config,
+    canSave,
 		selectedCategory,
     currentProject,
     currentArchive,
@@ -21,9 +22,7 @@
   import VerticalSpacer from "../utils/VerticalSpacer.svelte";
   import { categories, difficulties, statusOptions } from "../../lib/ProjectDropdowns";
   import type { ProjectEntry } from "src/types/ConfigTypes";
-    import EditorTemplate from "./EditorTemplate.svelte";
-
-	let canSave = false;
+  import EditorTemplate from "./EditorTemplate.svelte";
 
   const organizations = $config.organizations ?[ { label: "none", data: "none" }, ...Object.keys($config.organizations).map((entry: string) => { return { label: entry, data: entry } }) ] : [];
 
@@ -40,7 +39,7 @@
   let content = $currentProject.data.content as OutputData;
 
   async function allowSave() {
-    canSave = true;
+    $canSave = true;
   }
 
 	async function archiveProject() {
@@ -143,11 +142,11 @@
 		await writeConfig(JSON.stringify(cfg, null, "\t"));
 
 		$config = cfg;
-		canSave = false;
+		$canSave = false;
   }
 </script>
 
-<EditorTemplate saveChanges={saveChanges} curretStore={currentProject} archiveFunction={archiveProject} emptyMessage="Select a Project to get started" bind:canSave={canSave}>
+<EditorTemplate saveChanges={saveChanges} curretStore={currentProject} archiveFunction={archiveProject} emptyMessage="Select a Project to get started">
   <div slot="fields">
     <TextInput
       label={"Name"}

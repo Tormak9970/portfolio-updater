@@ -1,7 +1,7 @@
 <script lang="ts">
   export let label: string;
   export let placeholder: string;
-  export let onChange: (value: string) => void = () => {};
+  export let onChange: (value: string) => Promise<void> = async () => {};
 
   export let value = "";
   

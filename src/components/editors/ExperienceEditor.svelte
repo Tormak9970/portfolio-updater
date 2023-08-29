@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { config, currentExperience } from "../../stores";
+  import { config, currentExperience, canSave } from "../../stores";
   import { getKeyFromName, updateSettings, writeConfig } from "../../lib/Utils";
   import ImagePreview from "../interactables/ImagePreview.svelte";
   import TextArea from "../interactables/TextArea.svelte";
@@ -8,15 +8,13 @@
   import VerticalSpacer from "../utils/VerticalSpacer.svelte";
   import type { ExperienceEntry } from "../../types/ConfigTypes";
 
-  let canSave = false;
-
   let company = $currentExperience.data.company;
   let position = $currentExperience.data.position;
   let image = $currentExperience.data.img;
   let description = $currentExperience.data.description;
 
   async function allowSave() {
-    canSave = true;
+    $canSave = true;
   }
 
   function genExperienceKey(company: string, position: string): string {
@@ -55,11 +53,11 @@
 		await writeConfig(JSON.stringify(cfg, null, "\t"));
 
 		$config = cfg;
-		canSave = false;
+		$canSave = false;
   }
 </script>
 
-<EditorTemplate saveChanges={saveChanges} emptyMessage="Select an Experience entry to get started" curretStore={currentExperience} bind:canSave={canSave}>
+<EditorTemplate saveChanges={saveChanges} emptyMessage="Select an Experience entry to get started" curretStore={currentExperience}>
   <div slot="fields">
     <TextInput
       label={"Company"}

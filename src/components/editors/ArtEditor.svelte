@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { config, currentArt } from "../../stores";
+  import { config, currentArt, canSave } from "../../stores";
   import { getKeyFromName, updateSettings, writeConfig } from "../../lib/Utils";
   import ImagePreview from "../interactables/ImagePreview.svelte";
   import TextInput from "../interactables/TextInput.svelte";
@@ -7,15 +7,13 @@
   import VerticalSpacer from "../utils/VerticalSpacer.svelte";
   import EditorTemplate from "./EditorTemplate.svelte";
   import type { ArtEntry } from "../../types/ConfigTypes";
-  
-	let canSave = false;
 
   let name = $currentArt.data.name;
   let image = $currentArt.data.img;
   let description = $currentArt.data.description;
 
   async function allowSave() {
-    canSave = true;
+    $canSave = true;
   }
 
   async function saveChanges() {
@@ -49,11 +47,11 @@
 		await writeConfig(JSON.stringify(cfg, null, "\t"));
 
 		$config = cfg;
-		canSave = false;
+		$canSave = false;
   }
 </script>
 
-<EditorTemplate saveChanges={saveChanges} emptyMessage="Select an Art Piece to get started" curretStore={currentArt} bind:canSave={canSave}>
+<EditorTemplate saveChanges={saveChanges} curretStore={currentArt} emptyMessage="Select an Art Piece to get started">
   <div slot="fields">
     <TextInput
         label={"Name"}

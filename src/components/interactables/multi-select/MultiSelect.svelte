@@ -5,7 +5,7 @@
   export let label: string;
   export let options: { name: string, linkId: string }[];
   export let values: { name: string, linkId: string }[] = [];
-  export let onChange: (values: { name: string, linkId: string }[]) => void = () => {};
+  export let onChange: (values: { name: string, linkId: string }[]) => Promise<void> = async () => {};
 
   $: available = options.filter((o) => !values.includes(o)).map(({ name, linkId }) => { return { label: name, data: linkId } });
 
