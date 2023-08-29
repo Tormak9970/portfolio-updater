@@ -26,10 +26,7 @@
 
 	let canSave = false;
 
-
   const organizations = $config.organizations ?[ { label: "none", data: "none" }, ...Object.keys($config.organizations).map((entry: string) => { return { label: entry, data: entry } }) ] : [];
-
-  $: console.log("currentProject:", $currentProject)
 
   let image = $currentProject.data.img;
   let name = $currentProject.data.name;
