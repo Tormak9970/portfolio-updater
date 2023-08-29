@@ -162,4 +162,7 @@
   .titlebar-button:hover {
     background: var(--foreground-hover);
   }
+  #titlebar-close:hover {
+    background: var(--warning);
+  }
 </style>

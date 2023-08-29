@@ -2,8 +2,9 @@
   import { dialog } from "@tauri-apps/api";
   import { config, showSetup } from "../stores";
   import { getConfig, updateSettings } from "../lib/Utils";
+  import Button from "./interactables/Button.svelte";
 
-  async function click() {
+  async function onClick() {
     const file = await dialog.open({ directory: false, title: "Select the config file", multiple: false, });
 
     if (file) {
@@ -22,7 +23,7 @@
 </script>
 
 <div id="setup">
-  <button id="configPath" on:click={click}>Select Config File</button>
+  <Button label="Choose Config" onClick={onClick} width="200px" height="30px"/>
 </div>
 
 <style>
@@ -38,26 +39,5 @@
     align-items: center;
 
     color: var(--font-color);
-  }
-
-  #configPath {
-    font-family: "Source Sans Pro", sans-serif;
-    font-size: 16px;
-    color: var(--font-color);
-    background-color: var(--foreground);
-    padding: 4px;
-    border: 1px solid #000;
-    box-shadow: 0 0 4px rgb(0 0 0 / 50%);
-    border-radius: 4px;
-    cursor: pointer;
-    
-    transition: background 0.2s ease-in-out;
-  }
-
-  #configPath:hover {
-    background-color: var(--hover);
-  }
-  #configPath:focus {
-    outline: 1px solid var(--highlight);
   }
 </style>

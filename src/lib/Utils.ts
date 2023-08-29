@@ -4,7 +4,7 @@ const scopeCache = [];
 
 const DEFAULT_SETTINGS = {
   "configPath": "",
-  "selectedCategory": "",
+  "selectedCategory": "Projects",
   "currentProject": {
     "original": "",
     "key": "",

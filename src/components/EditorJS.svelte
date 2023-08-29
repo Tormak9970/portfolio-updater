@@ -119,8 +119,6 @@
 
 <!-- svelte-ignore css-unused-selector -->
 <style>
-	@import "/theme.css";
-
 	.editorjs-container {
 		margin: 0px 20px;
 		padding-bottom: 7px;
@@ -133,18 +131,18 @@
 
 		position: relative;
 	}
-
 	.editorjs-container > div {
 		width: 100%;
 		background-color: transparent;
 	}
+
 	:global(.codex-editor) {
 		width: 100%;
 	}
 	:global(.codex-editor__redactor) {
 		padding-bottom: 60px !important;
 	}
-	:global(.ce-block__content) {
+	/* :global(.ce-block__content) {
 		max-width: calc(100% - 20px);
 		background-color: transparent;
 	}
@@ -167,9 +165,7 @@
 		background-color: var(--foreground);
 	}
 
-	:global(.cdx-settings-button) {
-		background-color: transparent;
-	}
+	:global(.cdx-settings-button) { background-color: transparent; }
 	:global(.cdx-settings-button:hover) {
 		background-color: var(--hover) !important;
 	}
@@ -313,7 +309,6 @@
 		color: var(--font-color) !important;
 	}
 
-	/* new editorJS styles */
 	:global(.ce-popover) {
 		color: var(--font-color);
 		background-color: var(--foreground);
@@ -339,10 +334,5 @@
 	:global(.ce-popover__item-icon) {
 		background-color: var(--hover);
 		border: 1px solid black;
-	}
-
-	#editor > div > .welcome-msg {
-		color: var(--font-color);
-		font-size: 30px;
-	}
+	} */
 </style>
