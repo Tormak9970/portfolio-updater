@@ -1,33 +1,88 @@
 <script lang="ts">
+    import { updateSettings } from "src/lib/Utils";
   import {
-    showCrtArtModal,
-    showCrtExpModal,
-    showCrtOrgModal,
-    showCrtProjModal,
+    currentArt,
+    currentExperience,
+    currentOrganization,
+    currentProject,
+    projectsList,
+    selectedCategory,
+
+    selectedKey
+
   } from "../../stores";
 
-  export let modal: string;
-
-  function showModal(e) {
-    switch (modal) {
-      case "projects":
-        $showCrtProjModal = true;
+  async function createNewEntry() {
+    switch ($selectedCategory) {
+      case "Projects":
+        const newData = {
+          "category": "web-dev",
+          "name": "New Project",
+          "time": "",
+          "status": "In Progress",
+          "difficulty": "Intermediate",
+          "description": "",
+          "content": {},
+          "link": "",
+          "isRelative": false,
+          "img": "",
+          "org": "None"
+        };
+        $currentProject = {
+          "original": "New Project",
+          "key": "new-project",
+          "data": newData
+        }
+        $selectedKey = "new-project";
+        $projectsList.unshift({
+          "key": "new-project",
+          "data": newData
+        });
+        await updateSettings({ prop: "currentProject", data: $currentProject });
         break;
-      case "art":
-        $showCrtArtModal = true;
+      case "Art":
+        $currentArt = {
+          "original": "",
+          "key": "",
+          "data": {
+            "name": "",
+            "img": "",
+            "description": ""
+          }
+        }
         break;
-      case "experience":
-        $showCrtExpModal = true;
+      case "Experience":
+        $currentExperience = {
+          "original": "",
+          "key": "",
+          "data": {
+            "company": "",
+            "position": "",
+            "img": "",
+            "description": ""
+          }
+        }
         break;
-      case "organizations":
-        $showCrtOrgModal = true;
+      case "Organizations":
+        $currentOrganization = {
+          "original": "",
+          "key": "",
+          "data": {
+            "name": "",
+            "about": "",
+            "description": "",
+            "img": "",
+            "link": "",
+            "projects": []
+          }
+        }
         break;
     }
   }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div id="createNew" on:click={showModal}>
+<div id="createNew" on:click={createNewEntry}>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
     <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
     <path

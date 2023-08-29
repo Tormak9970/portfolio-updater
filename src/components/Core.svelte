@@ -49,12 +49,8 @@
 
 		for (const entry of Object.entries($config[field])) {
 			list.push({
-				props: {
-					data: entry[1],
-					// @ts-ignore
-					category: entry[1].category,
-					key: entry[0]
-				}
+				data: entry[1],
+        key: entry[0]
 			});
 		}
   }

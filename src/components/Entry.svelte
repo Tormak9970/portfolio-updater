@@ -4,7 +4,7 @@
   import { onMount } from "svelte";
   import { currentArchive, currentArt, currentExperience, currentOrganization, currentProject, selectedCategory, selectedKey } from "../stores";
   import { addPathToScope, configPath, updateSettings } from "../lib/Utils";
-    import Button from "./interactables/Button.svelte";
+  import Button from "./interactables/Button.svelte";
 
   export let data: any;
   export let field: LowercaseCategory;

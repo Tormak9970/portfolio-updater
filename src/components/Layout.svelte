@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { selectedKey } from "../stores";
+  import { selectedCategory, selectedKey } from "../stores";
 	import Entry from "./Entry.svelte";
   import OpenCrtModal from "./modals/OpenCrtModal.svelte";
 
 	type Data = {
-		props:any
+    key: string,
+		data:any
 	}
 
 	export let field: LowercaseCategory;
@@ -15,12 +16,12 @@
 <div class="layout">
 	<div class="entries-container">
 		<div class="entries">
-      {#if field != "archive"}
-        <OpenCrtModal modal={field}/>
+      {#if $selectedCategory !== "Archive"}
+        <OpenCrtModal />
       {/if}
 
       {#each data as datEntr}
-        <Entry data={datEntr.props.data} key={datEntr.props.key} field={field} />
+        <Entry data={datEntr.data} key={datEntr.key} field={field} />
       {/each}
     </div>
 	</div>
