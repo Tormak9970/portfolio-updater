@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { archList, artList, expList, orgsList, projsList } from "../listStores";
 	import { afterUpdate, onMount } from "svelte";
 
-	import { config, selectedCategory } from "../stores";
+	import { config, selectedCategory, archiveList, artList, experienceList, organizationsList, projectsList } from "../stores";
 
 	import Layout from "./Layout.svelte";
 
@@ -14,7 +13,7 @@
 
   const configs = {
     "Projects": {
-      "list": $projsList,
+      "list": $projectsList,
       "field": "projects",
       "editor": ProjectEditor
     },
@@ -24,17 +23,17 @@
       "editor": ArtEditor
     },
     "Experience": {
-      "list": $expList,
+      "list": $experienceList,
       "field": "experience",
       "editor": ExperienceEditor
     },
     "Organizations": {
-      "list": $orgsList,
+      "list": $organizationsList,
       "field": "organizations",
       "editor": OrganizationEditor
     },
     "Archive": {
-      "list": $archList,
+      "list": $archiveList,
       "field": "archive",
       "editor": ArchiveEditor
     }

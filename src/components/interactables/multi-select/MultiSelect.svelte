@@ -1,16 +1,16 @@
 <script lang="ts">
-  import DropDown from "./DropDown.svelte";
+  import StaticLabelDropDown from "./StaticLabelDropDown.svelte";
   import Entry from "./Entry.svelte";
 
   export let label: string;
-  export let options: { name: string; linkId: string }[];
-  export let values: { name: string; linkId: string }[] = [];
-  export let handler: (values: { name: string; linkId: string }[]) => void = () => {};
+  export let options: { name: string, linkId: string }[];
+  export let values: { name: string, linkId: string }[] = [];
+  export let handler: (values: { name: string, linkId: string }[]) => void = () => {};
 
-  $: available = options.filter((o) => !values.includes(o));
+  $: available = options.filter((o) => !values.includes(o)).map(({ name, linkId }) => { return { label: name, data: linkId } });
 
-  function projectAdded(event: { detail: { name: string; linkId: string } }) {
-    values.push(event.detail);
+  function projectAdded(linkId: string) {
+    values.push(options.find((entry) => entry.linkId === linkId));
     values = [...values];
     handler(values);
   }
@@ -29,7 +29,7 @@
       <Entry value={sel} on:removeProj={projectRemoved} />
     {/each}
   </div>
-  <DropDown values={available} on:addedProject={projectAdded} />
+  <StaticLabelDropDown options={available} onChange={projectAdded} />
 </div>
 
 <style>

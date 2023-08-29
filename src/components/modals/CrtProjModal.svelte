@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { config, currentProject, jSwitchProj, showCrtProjModal } from "../../stores";
+  import { config, currentProject, showCrtProjModal } from "../../stores";
   import { writeConfig } from "../../lib/Utils";
   import DropDown from "../interactables/DropDown.svelte";
   import TextInput from "../interactables/TextInput.svelte";

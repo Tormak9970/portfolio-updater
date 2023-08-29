@@ -6,7 +6,9 @@
 		config,
 		selectedCategory,
     currentProject,
-    currentArchive
+    currentArchive,
+    archiveList,
+    projectsList
 	} from "../../stores";
 	import {
     getKeyFromName,
@@ -15,7 +17,6 @@
 	} from "../../lib/Utils";
 	import ImagePreview from "../interactables/ImagePreview.svelte";
 	import ConfirmDelete from "../modals/ConfirmDelete.svelte";
-	import { archList, projsList } from "../../listStores";
   import TextInput from "../interactables/TextInput.svelte";
   import DropDown from "../interactables/DropDown.svelte";
   import EditorJs from "../EditorJS.svelte";
@@ -101,9 +102,9 @@
 		await updateSettings({ prop: "currentProject", data: $currentProject });
 		await updateSettings({ prop: "currentArchive", data: $currentArchive });
 
-		$projsList = [];
+		$projectsList = [];
 		for (const proj of Object.entries($config.projects)) {
-			$projsList.push({
+			$projectsList.push({
 				props: {
 					data: proj[1],
 					// @ts-ignore
@@ -113,9 +114,9 @@
 			});
 		}
 
-		$archList = [];
+		$archiveList = [];
 		for (const proj of Object.entries($config.archive)) {
-			$archList.push({
+			$archiveList.push({
 				props: {
 					data: proj[1],
 					// @ts-ignore
@@ -275,10 +276,6 @@
     width: 290px;
 	}
 
-	.hide {
-		display: none;
-	}
-
   .content {
     width: 100%;
     height: calc(100% - 93px);
@@ -316,5 +313,9 @@
   .scroll-container {
     height: calc(100% - 25px);
     overflow-y: scroll;
+  }
+
+  .hide {
+    display: none !important;
   }
 </style>

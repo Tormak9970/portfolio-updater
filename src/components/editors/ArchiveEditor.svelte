@@ -1,7 +1,7 @@
 <script lang="ts">
   import { toast } from "@zerodevx/svelte-toast";
   import type { OutputData } from "@editorjs/editorjs";
-  import { state, config, currentArchive, currentProject } from "../../stores";
+  import { config, currentArchive, currentProject, archiveList, projectsList } from "../../stores";
   import {
     getKeyFromName,
     updateSettings,
@@ -14,13 +14,14 @@
   import TextInput from "../interactables/TextInput.svelte";
   import ImagePreview from "../interactables/ImagePreview.svelte";
   import Button from "../interactables/Button.svelte";
-  import { archList, projsList } from "../../listStores";
   import ConfirmDelete from "../modals/ConfirmDelete.svelte";
   import type { ProjectEntry } from "../../types/ConfigTypes";
 
   let canSave = false;
 
   const organizations = $config.organizations ?[ { label: "none", data: "none" }, ...Object.keys($config.organizations).map((entry: string) => { return { label: entry, data: entry } }) ] : [];
+
+  $: console.log($currentArchive)
 
   let image = $currentArchive.data.img;
   let name = $currentArchive.data.name;
@@ -43,7 +44,7 @@
       component: {
         src: ConfirmDelete,
         props: {
-          properties: ["archive", $state.archive.data.name],
+          properties: ["archive", $currentArchive.data.name],
         },
         sendIdTo: "toastId",
       },
@@ -62,7 +63,7 @@
   async function unarchiveProject() {
     const cfg = $config;
 
-    cfg["projects"][$state.archive.key] = $currentArchive.data;
+    cfg["projects"][$currentArchive.key] = $currentArchive.data;
 
     $currentProject = {
       "original": $currentArchive.original,
@@ -94,9 +95,9 @@
 		await updateSettings({ prop: "currentProject", data: $currentProject });
 		await updateSettings({ prop: "currentArchive", data: $currentArchive });
 
-    $archList = [];
+    $archiveList = [];
     for (const proj of Object.entries($config.archive)) {
-      $archList.push({
+      $archiveList.push({
         props: {
           data: proj[1],
           // @ts-ignore
@@ -106,9 +107,9 @@
       });
     }
 
-    $projsList = [];
+    $projectsList = [];
     for (const proj of Object.entries($config.projects)) {
-      $projsList.push({
+      $projectsList.push({
         props: {
           data: proj[1],
           // @ts-ignore
@@ -268,10 +269,6 @@
     width: 290px;
 	}
 
-	.hide {
-		display: none;
-	}
-
   .content {
     width: 100%;
     height: calc(100% - 93px);
@@ -309,5 +306,9 @@
   .scroll-container {
     height: calc(100% - 25px);
     overflow-y: scroll;
+  }
+
+  .hide {
+    display: none !important;
   }
 </style>

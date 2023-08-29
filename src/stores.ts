@@ -72,76 +72,11 @@ export const currentArchive = writable<EntryState<ProjectEntry>>({
   }
 });
 
-export const state = writable({
-  "experience": {
-    "original": "",
-    "key": "",
-    "data": {
-      "company": "",
-      "img": "",
-      "position": "",
-      "description": ""
-    }
-  },
-  "projects": {
-    "original": "",
-    "key": "",
-    "data": {
-      "category": "",
-      "name": "",
-      "time": "",
-      "status": "",
-      "difficulty": "",
-      "description": "",
-      "content": {},
-      "link": "",
-      "isRelative": false,
-      "img": "",
-      "org": ""
-    }
-  },
-  "organizations": {
-    "original": "",
-    "key": "",
-    "data": {
-      "name": "",
-      "img": "",
-      "about": "",
-      "description": "",
-      "projects": [],
-      "link": ""
-    }
-  },
-  "art": {
-    "original": "",
-    "key": "",
-    "data": {
-      "name": "",
-      "img": "",
-      "description": ""
-    }
-  },
-  "archive": {
-    "original": "",
-    "key": "",
-    "data": {
-      "category": "",
-      "name": "",
-      "time": "",
-      "status": "",
-      "difficulty": "",
-      "description": "",
-      "content": {},
-      "link": "",
-      "isRelative": false,
-      "img": "",
-      "org": ""
-    }
-  }
-});
-export const changedKey = writable(null);
-
-export const jSwitchProj = writable(false);
+export const projectsList = writable([]);
+export const artList = writable([]);
+export const experienceList = writable([]);
+export const organizationsList = writable([]);
+export const archiveList = writable([]);
 
 export const showCrtProjModal = writable(false);
 export const showCrtArtModal = writable(false);

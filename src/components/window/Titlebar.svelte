@@ -12,6 +12,7 @@
   } from "../../lib/Utils";
   import SubMenu from "./SubMenu.svelte";
   import { exit } from "@tauri-apps/api/process";
+    import DropDown from "../interactables/DropDown.svelte";
 
   let minimize: HTMLDivElement;
   let maximize: HTMLDivElement;
@@ -19,10 +20,28 @@
 
   let isMaxed = false;
 
-  let menuConfig = {
-    default: $selectedCategory,
-    values: ["Projects", "Art", "Experience", "Organizations", "Archive"],
-  };
+  let categories = [
+    {
+      label: "Projects",
+      data: "Projects"
+    },
+    {
+      label: "Art",
+      data: "Art"
+    },
+    {
+      label: "Experience",
+      data: "Experience"
+    },
+    {
+      label: "Organizations",
+      data: "Organizations"
+    },
+    {
+      label: "Archive",
+      data: "Archive"
+    }
+  ];
 
   let dropVal: PortfolioCategory = "Projects";
 
@@ -47,7 +66,6 @@
     }
 
     dropVal = $selectedCategory;
-    menuConfig.default = $selectedCategory;
 
     minimize.addEventListener("click", () => appWindow.minimize());
     maximize.addEventListener("click", () => {
@@ -76,7 +94,7 @@
     <img src="/logo.svg" alt="logo" height="15px" style="margin-left: 10px;" />
     <div style="margin-left: 10px; margin-right: 30px;">Portfolio Updater</div>
     {#if !$showSetup}
-      <SubMenu config={menuConfig} bind:value={dropVal} />
+      <DropDown options={categories} bind:value={dropVal} width={"120px"} />
     {/if}
   </div>
   <div class="btns">
