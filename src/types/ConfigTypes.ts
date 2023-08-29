@@ -41,3 +41,21 @@ export type EntryState<T extends ProjectEntry | ArtEntry | ExperienceEntry | Org
   key: string,
   data: T
 }
+
+export type Config = {
+  projects: {
+    [id: string]: ProjectEntry
+  },
+  art: {
+    [id: string]: ArtEntry
+  },
+  experience: {
+    [id: string]: ExperienceEntry
+  },
+  organizations: {
+    [id: string]: OrganizationEntry
+  },
+  archive: {
+    [id: string]: ProjectEntry
+  }
+}

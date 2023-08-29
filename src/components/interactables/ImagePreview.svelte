@@ -3,6 +3,8 @@
 
   import { afterUpdate, onMount } from "svelte";
   import { configPath } from "../../lib/Utils";
+  import TextInput from "./TextInput.svelte";
+  import FileButton from "./FileButton.svelte";
 
   export let label: string;
   export let placeholder: string;
@@ -43,48 +45,40 @@
   let imgPath = "";
 
   onMount(async () => {
-    const tmpPath = await path.join(
-      await path.dirname(configPath),
-      (input.value != "" ? input.value : placeholder).substring(2)
-    );
-
-    if (input.value != "" || placeholder != "") imgPath = tmpPath;
+    const tmpPath = await path.join(await path.dirname(configPath), value.substring(2));
+    if (value !== "") imgPath = tmpPath;
   });
 
   afterUpdate(async () => {
-    const tmpPath = await path.join(
-      await path.dirname(configPath),
-      (input.value != "" ? input.value : placeholder).substring(2)
-    );
-
-    if (input.value != "" || placeholder != "") imgPath = tmpPath;
+    const tmpPath = await path.join(await path.dirname(configPath), value.substring(2));
+    if (value !== "") imgPath = tmpPath;
   });
 </script>
 
 <div class="img-preview">
   <div class="info">
-    <div class="field-name">{label}:</div>
-    <input
-      type="text"
-      placeholder={placeholder}
-      bind:value={value}
-      on:change={wrapper}
-      bind:this={input}
-    />
-    <button class="upload-file" on:click={selectImage}>select</button>
+    {#if label !== ""}
+      <!-- svelte-ignore a11y-label-has-associated-control -->
+      <label style="margin-bottom: 2px; font-size: 16px; user-select: none;">{label}</label>
+      <div style="height: 2px; width: 1px;" />
+    {/if}
+    <div class="inputs">
+      <TextInput placeholder={placeholder} onChange={wrapper} width="{188}" bind:value={value} />
+      <div style="height: 1px; width: 7px;"/>
+      <FileButton onChange={onChange} />
+    </div>
   </div>
   <div class="prev" style="margin-top: 7px;">
     <img src={imgPath && imgPath !== "" ? tauri.convertFileSrc(imgPath) : ""} alt="" style="max-width: 100%;" />
   </div>
 </div>
 
-<!-- svelte-ignore css-unused-selector -->
 <style>
   @import "/theme.css";
 
   .img-preview {
     width: 300px;
-    margin: 5px;
+    margin-bottom: 7px;
 
     display: flex;
     flex-direction: column;
@@ -93,39 +87,14 @@
     color: var(--font-color);
   }
   .img-preview > .info {
+    width: 100%;
+  }
+
+  .inputs {
+    width: 100%;
+
     display: flex;
-  }
-  .img-preview > .info > .field-name {
-    margin-right: 10px;
-  }
-
-  .img-preview > .info > input {
-    color: var(--font-color);
-    background-color: var(--foreground);
-    border-radius: 4px;
-    outline: none;
-    border: 1px solid black;
-    padding: 4px;
-
-    pointer-events: none;
-  }
-
-  .img-preview > .info > .upload-file {
-    color: var(--font-color);
-    background-color: var(--foreground);
-    border-radius: 4px;
-    outline: none;
-    border: 1px solid black;
-    padding: 4px;
-
-    margin-left: 7px;
-  }
-  .img-preview > .info > .upload-file:hover {
-    background-color: var(--hover);
-    cursor: pointer;
-  }
-  .img-preview > .info > .upload-file:focus {
-    outline: 1px solid var(--highlight);
+    flex-direction: row;
   }
 
   .img-preview > .prev {

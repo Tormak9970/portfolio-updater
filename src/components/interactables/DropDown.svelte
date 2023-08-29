@@ -28,7 +28,6 @@
    */
   function toggleDropdown(): void {
     active = !active;
-    console.log("active:", active)
   }
 
   /**
@@ -53,7 +52,7 @@
 
 <div class="wrapper">
   {#if label != ""}
-    <div style="margin-right: 7px; font-size: 14px; user-select: none;">{label}:</div>
+    <div style="margin-bottom: 3px; font-size: 16px; user-select: none;">{label}:</div>
   {/if}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div class="custom-select" style="width: calc({width} - 8px); min-width: calc({width} - 8px);" on:click|stopPropagation={toggleDropdown} bind:this={customSelectElemWrapper}>
@@ -81,8 +80,7 @@
     margin: 0px;
 
 		display: flex;
-		flex-direction: row;
-		align-items: center;
+		flex-direction: column;
 
 		color: var(--font-color);
 

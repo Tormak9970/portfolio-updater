@@ -27,7 +27,7 @@
 <div class="input">
   <!-- svelte-ignore a11y-label-has-associated-control -->
   {#if label != ""}
-    <label style="margin-right: 13px; font-size: 14px; user-select: none;">{label}:</label>
+    <label style="margin-bottom: 2px; font-size: 16px; user-select: none;">{label}</label>
   {/if}
   <input style="width: {width}px;" type="text" placeholder="{placeholder != "" ? placeholder : value}" bind:value={value} on:change="{changeWrapper}" on:input={inputWrapper}>
 </div>
@@ -37,8 +37,7 @@
     margin: 0px;
 
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
 
     color: var(--font-color);
 

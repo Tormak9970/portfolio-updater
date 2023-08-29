@@ -4,12 +4,12 @@
 
 	import {
 		config,
-		changedKey,
 		selectedCategory,
     currentProject,
     currentArchive
 	} from "../../stores";
 	import {
+    getKeyFromName,
 		updateSettings,
 		writeConfig,
 	} from "../../lib/Utils";
@@ -21,7 +21,7 @@
   import EditorJs from "../EditorJS.svelte";
   import Button from "../interactables/Button.svelte";
   import VerticalSpacer from "../utils/VerticalSpacer.svelte";
-  import { categories, difficulties, statusses } from "../../lib/ProjectDropdowns";
+  import { categories, difficulties, statusOptions } from "../../lib/ProjectDropdowns";
   import type { ProjectEntry } from "src/types/ConfigTypes";
 
 	let canSave = false;
@@ -112,6 +112,7 @@
 				},
 			});
 		}
+
 		$archList = [];
 		for (const proj of Object.entries($config.archive)) {
 			$archList.push({
@@ -128,15 +129,13 @@
   async function saveChanges() {
     const cfg = $config;
 
-		if ($changedKey) {
-			// @ts-ignore
-			cfg.projects[$changedKey] = cfg.projects[$currentProject.key];
+		if (name !== $currentProject.data.name) {
+      const newKey = getKeyFromName(name);
 
-			// @ts-ignore
+			cfg.projects[newKey] = cfg.projects[$currentProject.key];
 			delete cfg.projects[$currentProject.key];
 
-			$currentProject.key = $changedKey;
-			$changedKey = null;
+			$currentProject.key = newKey;
 		}
 
     const changedProject: ProjectEntry = {
@@ -160,7 +159,7 @@
     };
 
 		await updateSettings({ prop: "currentProject", data: $currentProject });
-		// @ts-ignore
+    
 		cfg.projects[$currentProject.key] = changedProject;
 
 		await writeConfig(JSON.stringify(cfg, null, "\t"));
@@ -186,51 +185,53 @@
   <div class="content" class:hide={$currentProject.original === ""}>
     <div class="fields">
       <h3>Fields</h3>
-      <ImagePreview
-        label={"Project"}
-        placeholder={"The project image"}
-        bind:value={image}
-        onChange={allowSave}
-      />
+      <div class="scroll-container">
+        <ImagePreview
+          label={"Project Image"}
+          placeholder={"The project image"}
+          bind:value={image}
+          onChange={allowSave}
+        />
 
-      <TextInput
-        label={"Name"}
-        placeholder={"The project name"}
-        bind:value={name}
-        onChange={allowSave}
-      />
-      <VerticalSpacer />
+        <TextInput
+          label={"Name"}
+          placeholder={"The project name"}
+          bind:value={name}
+          onChange={allowSave}
+        />
+        <VerticalSpacer />
 
-      <TextInput
-        label={"Time"}
-        placeholder={"# hours"}
-        bind:value={time}
-        onChange={allowSave}
-      />
-      <VerticalSpacer />
+        <TextInput
+          label={"Time"}
+          placeholder={"# hours"}
+          bind:value={time}
+          onChange={allowSave}
+        />
+        <VerticalSpacer />
 
-      <TextInput
-        label={"Link"}
-        placeholder={"A link to the project"}
-        bind:value={link}
-        onChange={allowSave}
-      />
-      <VerticalSpacer />
-      
-      <DropDown label={"Category"} options={categories} bind:value={category} onChange={allowSave} />
-      <VerticalSpacer />
+        <TextInput
+          label={"Link"}
+          placeholder={"A link to the project"}
+          bind:value={link}
+          onChange={allowSave}
+        />
+        <VerticalSpacer />
+        
+        <DropDown label={"Category"} options={categories} width={"148px"} bind:value={category} onChange={allowSave} />
+        <VerticalSpacer />
 
-      <DropDown label={"Organization"} options={organizations} bind:value={organization} onChange={allowSave} />
-      <VerticalSpacer />
+        <DropDown label={"Organization"} options={organizations} width={"148px"} bind:value={organization} onChange={allowSave} />
+        <VerticalSpacer />
 
-      <DropDown label={"Difficulty"} options={difficulties} bind:value={difficulty} onChange={allowSave} />
-      <VerticalSpacer />
+        <DropDown label={"Difficulty"} options={difficulties} width={"148px"} bind:value={difficulty} onChange={allowSave} />
+        <VerticalSpacer />
 
-      <DropDown label={"Status"} options={statusses} bind:value={status} onChange={allowSave} />
+        <DropDown label={"Status"} options={statusOptions} width={"148px"} bind:value={status} onChange={allowSave} />
+      </div>
     </div>
     <div class="editor">
       <h3>Writeup</h3>
-      <div class="editor-scroll-container">
+      <div class="scroll-container">
         <EditorJs onChange={allowSave} bind:content={content} />
       </div>
     </div>
@@ -238,8 +239,6 @@
 </div>
 
 <style>
-	@import "/theme.css";
-
 	.project-editor {
 		width: 100%;
 		height: 100%;
@@ -291,11 +290,11 @@
 
   .content h3 {
     margin: 0px;
-    margin-left: 3px;
   }
 
   .fields {
     padding: 7px;
+    padding-left: 10px;
     height: calc(100% - 14px);
     margin-right: 10px;
 
@@ -305,6 +304,7 @@
 
   .editor {
     padding: 7px;
+    padding-left: 10px;
     height: calc(100% - 14px);
 
     flex-grow: 1;
@@ -313,8 +313,8 @@
     background-color: var(--foreground-dark);
   }
 
-  .editor-scroll-container {
-    height: calc(100% - 60px);
+  .scroll-container {
+    height: calc(100% - 25px);
     overflow-y: scroll;
   }
 </style>

@@ -44,7 +44,7 @@ export const difficulties = [
   }
 ];
 
-export const statusses = [
+export const statusOptions = [
   {
     label: "Not Live / Obsolete",
     data: "Not Live / Obsolete"

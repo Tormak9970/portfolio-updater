@@ -155,3 +155,7 @@ export async function addPathToScope(filePath: string) {
   if (res) scopeCache.push(filePath);
   return res;
 }
+
+export function getKeyFromName(name: string): string {
+  return name.toLowerCase().replaceAll(" ", "-").replaceAll("'", "");
+}

@@ -1,8 +1,8 @@
 import { writable } from "svelte/store";
-import type { ArtEntry, EntryState, ExperienceEntry, OrganizationEntry, ProjectEntry } from "./types/ConfigTypes";
+import type { ArtEntry, Config, EntryState, ExperienceEntry, OrganizationEntry, ProjectEntry } from "./types/ConfigTypes";
 
 export const showSetup = writable(true);
-export const config = writable(null);
+export const config = writable<Config>(null);
 export const selectedCategory = writable<PortfolioCategory>("Projects");
 export const selectedKey = writable("");
 
