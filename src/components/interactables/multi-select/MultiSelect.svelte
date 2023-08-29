@@ -1,6 +1,7 @@
 <script lang="ts">
   import StaticLabelDropDown from "./StaticLabelDropDown.svelte";
   import Entry from "./Entry.svelte";
+  import VerticalSpacer from "../../utils/VerticalSpacer.svelte";
 
   export let label: string;
   export let options: { name: string, linkId: string }[];
@@ -22,22 +23,24 @@
   }
 </script>
 
-<div class="multi-select">
-  <div>{label}</div>
-  <div class="sel-cont">
-    {#each values as sel}
-      <Entry value={sel} on:removeProj={projectRemoved} />
-    {/each}
+<div class="multi-select-wrapper">
+  <div style="margin-bottom: 2px;">{label}</div>
+  <div class="multi-select">
+    <div class="selection-cont">
+      {#each values as sel}
+        <Entry value={sel} on:removeProj={projectRemoved} />
+      {/each}
+    </div>
+    <StaticLabelDropDown options={available} onChange={projectAdded} width="calc(100% - 23px)" direction="UP" />
+    <VerticalSpacer />
   </div>
-  <StaticLabelDropDown options={available} onChange={projectAdded} />
 </div>
 
 <style>
   @import "/theme.css";
 
   .multi-select {
-    width: 80%;
-    margin: 5px;
+    width: 100%;
 
     display: flex;
     flex-direction: column;
@@ -48,9 +51,13 @@
     border-radius: 4px;
   }
 
-  .sel-cont {
-    width: 90%;
+  .selection-cont {
+    width: 100%;
 
     margin-top: 14px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 </style>

@@ -19,27 +19,17 @@
     await onChange((e.target as HTMLInputElement).value);
   }
 
-  async function selectImage(e: Event) {
-    await dialog
-      .open({
-        title: `Choose the ${label.toLowerCase()}`,
-        directory: false,
-      })
-      .then(async (file: string) => {
-        const relPath = await path.join(
-          "./img",
-          "projs",
-          await path.basename(file)
-        );
-        const tarPath = await path.join(
-          await path.dirname(configPath),
-          relPath
-        );
-        await fs.copyFile(file, tarPath);
-        input.value = `./${relPath.replaceAll("\\", "/")}`;
-        input.dispatchEvent(changeEvnt);
-        imgPath = tarPath;
-      });
+  async function processPath(filePath: string) {
+    const relPath = await path.join(
+      "./img",
+      "projs",
+      await path.basename(filePath)
+    );
+    const tarPath = await path.join(await path.dirname(configPath), relPath);
+    await fs.copyFile(filePath, tarPath);
+
+    value = `./${relPath.replaceAll("\\", "/")}`;
+    imgPath = tarPath;
   }
 
   let imgPath = "";
@@ -68,7 +58,7 @@
       <FileButton onChange={onChange} />
     </div>
   </div>
-  <div class="prev" style="margin-top: 7px;">
+  <div class="prev" style="margin-top: 7px; max-width: 100%;">
     <img src={imgPath && imgPath !== "" ? tauri.convertFileSrc(imgPath) : ""} alt="" style="max-width: 100%;" />
   </div>
 </div>
@@ -77,7 +67,7 @@
   @import "/theme.css";
 
   .img-preview {
-    width: 300px;
+    max-width: 300px;
     margin-bottom: 7px;
 
     display: flex;

@@ -10,7 +10,7 @@
   }
 </script>
 
-<div class="mul-sel-entr">
+<div class="multi-select-entry">
   <div class="field">{value.name}</div>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div class="clear" on:click="{remove}">
@@ -22,9 +22,9 @@
 </div>
 
 <style>
-  .mul-sel-entr {
-    background-color: var(--foreground-hover);
-    width: calc(100% - 10px);
+  .multi-select-entry {
+    background-color: var(--foreground-light);
+    width: calc(100% - 34px);
     height: 20px;
     padding: 7px 4px;
     

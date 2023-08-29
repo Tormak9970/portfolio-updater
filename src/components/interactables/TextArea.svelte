@@ -14,7 +14,7 @@
   }
 </script>
 
-<div class="textarea-input" style="width: calc({width} - 2px); height: {height}; min-height: 100px">
+<div class="textarea-input" style="width: {width}; height: {height}; min-height: 100px">
   <div style="margin-bottom: 2px;">{label}</div>
   <!-- svelte-ignore a11y-interactive-supports-focus -->
   <span role="textbox" contenteditable on:keyup={handleInput}>{value ?? placeholder}</span>
@@ -31,7 +31,7 @@
   }
 
   span {
-    width: calc(100% - 8px);
+    width: 100%;
     height: calc(100% - 22px);
     box-sizing: border-box;
     

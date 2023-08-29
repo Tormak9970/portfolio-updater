@@ -39,12 +39,12 @@
   }
 </script>
 
-<div class="wrapper">
+<div class="wrapper" style="width: {width};">
   {#if label != ""}
     <div style="margin-bottom: 3px; font-size: 16px; user-select: none;">{label}:</div>
   {/if}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <div class="custom-select" style="width: calc({width} - 8px); min-width: calc({width} - 8px);" on:click|stopPropagation={toggleDropdown} bind:this={customSelectElemWrapper}>
+  <div class="custom-select" style="width: calc(100% - 8px);" on:click|stopPropagation={toggleDropdown} bind:this={customSelectElemWrapper}>
     <select>
       {#each options as opt}
         <option value={opt.data}>{opt.label}</option>
@@ -52,7 +52,7 @@
     </select>
   
     <div class="select-selected" class:select-arrow-active={active} bind:this={customSelectElem}>Choose an Option</div>
-    <div class="select-items" class:open-up={direction=="UP"} style="--top-percentage: -{(options.length + 1) * 100 - 35 }%;" class:select-hide={!active}>
+    <div class="select-items" class:open-up={direction=="UP"} style="--top-percentage: -{(options.length + 1) * 100 - 90 }%;" class:select-hide={!active}>
       {#each options as opt}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div id={opt.data} on:click|stopPropagation={selectOption}>{opt.label}</div>
