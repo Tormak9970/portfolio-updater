@@ -72,10 +72,5 @@
 	.layout > .editor-container {
 		height: 100%;
 		flex-grow: 1;
-
-    /* padding: 7px; */
-
-    border-radius: 4px;
-    /* background-color: var(--foreground-dark); */
 	}
 </style>

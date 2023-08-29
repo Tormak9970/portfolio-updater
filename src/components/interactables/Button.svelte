@@ -48,8 +48,8 @@
     opacity: 0.7;
   }
 
-  .highlight { background-color: var(--save); }
-  .highlight:hover { background-color: var(--save-hover); }
+  .highlight { background-color: var(--highlight); }
+  .highlight:hover { background-color: var(--highlight-hover); }
 
   .warn { background-color: var(--warning); }
   .warn:hover { background-color: var(--warning-hover); }

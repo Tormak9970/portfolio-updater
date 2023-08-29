@@ -4,6 +4,7 @@
   import { onMount } from "svelte";
   import { currentArchive, currentArt, currentExperience, currentOrganization, currentProject, selectedCategory, selectedKey } from "../stores";
   import { addPathToScope, configPath, updateSettings } from "../lib/Utils";
+    import Button from "./interactables/Button.svelte";
 
   export let data: any;
   export let field: LowercaseCategory;
@@ -73,9 +74,7 @@
   </div>
   <div class="btn-cont">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="btn" on:click={setState}>
-      <div>Edit</div>
-    </div>
+    <Button label="Edit" onClick={setState} highlight height="30px" width="60px" />
   </div>
 </div>
 
@@ -117,22 +116,5 @@
 
   .entry > .btn-cont {
     margin-right: 7px;
-  }
-  .entry > .btn-cont > .btn {
-    height: 30px;
-    width: 60px;
-
-    cursor: pointer;
-    background-color: var(--highlight);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    border-radius: 4px;
-  }
-  .entry > .btn-cont > .btn:hover {
-    background-color: var(--highlight-hover);
   }
 </style>

@@ -139,6 +139,7 @@
     user-select: none;
     display: inline-flex;
     justify-content: space-between;
+    
   }
   .info {
     display: flex;
@@ -153,8 +154,12 @@
     align-items: center;
     width: 47px;
     height: 30px;
+
+    cursor: pointer;
+    
+    transition: background 0.2s ease-in-out;
   }
   .titlebar-button:hover {
-    background: var(--hover);
+    background: var(--foreground-hover);
   }
 </style>

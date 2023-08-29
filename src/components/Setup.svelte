@@ -50,6 +50,8 @@
     box-shadow: 0 0 4px rgb(0 0 0 / 50%);
     border-radius: 4px;
     cursor: pointer;
+    
+    transition: background 0.2s ease-in-out;
   }
 
   #configPath:hover {
