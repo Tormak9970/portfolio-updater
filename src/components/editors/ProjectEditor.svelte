@@ -29,6 +29,8 @@
 
   const organizations = $config.organizations ?[ { label: "none", data: "none" }, ...Object.keys($config.organizations).map((entry: string) => { return { label: entry, data: entry } }) ] : [];
 
+  $: console.log("currentProject:", $currentProject)
+
   let image = $currentProject.data.img;
   let name = $currentProject.data.name;
   let time = $currentProject.data.time;
@@ -40,16 +42,6 @@
   let difficulty = $currentProject.data.difficulty;
 
   let content = $currentProject.data.content as OutputData;
-  $: if (content) console.log("content:", content)
-
-	async function onEditorChange(editorContent: OutputData) {
-    setTimeout(() => {
-      console.log("content:", content);
-      console.log("editorContent:", {...editorContent});
-    }, 100);
-    console.log("ran on change");
-    canSave = true;
-  }
 
   async function allowSave() {
     canSave = true;
@@ -242,7 +234,7 @@
     <div class="editor">
       <h3>Writeup</h3>
       <div class="editor-scroll-container">
-        <EditorJs onChange={onEditorChange} bind:content={content} />
+        <EditorJs onChange={allowSave} bind:content={content} />
       </div>
     </div>
   </div>
@@ -317,6 +309,8 @@
   .editor {
     padding: 7px;
     height: calc(100% - 14px);
+
+    flex-grow: 1;
     
     border-radius: 4px;
     background-color: var(--foreground-dark);

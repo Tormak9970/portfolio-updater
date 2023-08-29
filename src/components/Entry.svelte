@@ -2,7 +2,7 @@
   import { path, tauri } from "@tauri-apps/api";
 
   import { onMount } from "svelte";
-  import { currentArchive, currentArt, currentExperience, currentOrganization, currentProject, selectedKey } from "../stores";
+  import { currentArchive, currentArt, currentExperience, currentOrganization, currentProject, selectedCategory, selectedKey } from "../stores";
   import { addPathToScope, configPath, updateSettings } from "../lib/Utils";
 
   export let data: any;
@@ -12,39 +12,42 @@
   let imgPath: string;
 
   const fieldStateLUT = {
-    "projects": {
-      "store": $currentProject,
-      "key": "currentProject"
-    },
-    "art": {
-      "store": $currentArt,
-      "key": "currentArt"
-    },
-    "experience": {
-      "store": $currentExperience,
-      "key": "currentExperience"
-    },
-    "organizations": {
-      "store": $currentOrganization,
-      "key": "currentOrganization"
-    },
-    "archive": {
-      "store": $currentArchive,
-      "key": "currentArchive"
-    }
+    "projects": "currentProject",
+    "art": "currentArt",
+    "experience": "currentExperience",
+    "organizations": "currentOrganization",
+    "archive": "currentArchive"
   }
 
   async function setState() {
     const lutEntry = fieldStateLUT[field];
 
-    lutEntry.store = {
+    const newData = {
       "original": data.name,
       "key": key,
       "data": data
     }
+    
+    switch($selectedCategory) {
+      case "Projects":
+        $currentProject = newData;
+        break;
+      case "Art":
+        $currentArt = newData;
+        break;
+      case "Experience":
+        $currentExperience = newData;
+        break;
+      case "Organizations":
+        $currentOrganization = newData;
+        break;
+      case "Archive":
+        $currentArchive = newData;
+        break;
+    }
 
     $selectedKey = key;
-    await updateSettings({ prop: lutEntry.key, data: lutEntry.store });
+    await updateSettings({ prop: lutEntry, data: newData });
   }
 
   onMount(async () => {

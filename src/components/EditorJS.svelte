@@ -1,5 +1,5 @@
 <script lang="ts">
-	import EditorJs, { OutputData } from "@editorjs/editorjs";
+	import type { OutputData } from "@editorjs/editorjs";
 	import Header from "@editorjs/header";
 	import Code from "@editorjs/code";
 	import List from "@editorjs/nested-list";
@@ -8,82 +8,60 @@
 	import Paragraph from "@editorjs/paragraph";
 	import Embed from "@editorjs/embed";
 
-	import { onMount } from "svelte";
+  import { createEditor } from 'svelte-editorjs';
+
 	import { path, tauri } from "@tauri-apps/api";
   import { addPathToScope, configPath, uploadFile, uploadUrl } from "../lib/Utils";
 
   export let onChange: (content: OutputData) => Promise<void> = async () => {};
   export let content: OutputData;
 
-	let editor: EditorJs;
-  let shouldRerender = true;
+  let hasReadiedOnce = false;
 
-	onMount(() => {
-		editor = new EditorJs({
-			holder: "editorjs",
-			// @ts-ignore
-			logLevel: "ERROR",
-			tools: {
-				header: { class: Header, inlineToolbar: true },
-				code: { class: Code, inlineToolbar: true },
-				image: {
-					class: ImageTool,
-					config: {
-						uploader: {
-							uploadByFile: async (file: File) => {
-								const uploadRes = await uploadFile(
-									file.name,
-									await file.arrayBuffer()
-								);
-								return JSON.parse(uploadRes);
-							},
-							uploadByUrl: async (url) => {
-								const uploadRes = await uploadUrl(url);
-								return JSON.parse(uploadRes);
-							},
-						},
-					},
-				},
-				list: { class: List, inlineToolbar: true },
-				delimiter: { class: Delimiter, inlineToolbar: true },
-				paragraph: { class: Paragraph, inlineToolbar: true },
-				embed: { class: Embed, inlineToolbar: true },
-			},
-			onChange: () => {
-        editor.save().then(async (editorContent) => {
-          content = editorContent;
-          shouldRerender = false;
-          await onChange(content);
-        });
-			},
-			onReady: async () => {
-				// @ts-ignore
-				if (content?.blocks) {
-          editor.render(
-						await convertToTauri(content)
-					);
-				}
-			},
-		});
-	});
-
-	$: if (editor && content && shouldRerender) {
-		renderNewContent(content);
-	} else {
-    shouldRerender = true;
-  }
-
-	async function renderNewContent(data: OutputData) {
-    console.log("rendering new content...", data);
-    if (editor) {
-      if (data.time && data.blocks?.length > 0 && data.version) {
-        const transformedDat = await convertToTauri(data);
-        editor.render(transformedDat);
-      } else {
-        editor.blocks.clear();
-      }
+  const { editor, data: editorData, isReady } = createEditor({
+    // @ts-ignore
+    logLevel: "ERROR",
+    tools: {
+      header: { class: Header, inlineToolbar: true },
+      code: { class: Code, inlineToolbar: true },
+      image: {
+        class: ImageTool,
+        config: {
+          uploader: {
+            uploadByFile: async (file: File) => {
+              const uploadRes = await uploadFile(
+                file.name,
+                await file.arrayBuffer()
+              );
+              return JSON.parse(uploadRes);
+            },
+            uploadByUrl: async (url) => {
+              const uploadRes = await uploadUrl(url);
+              return JSON.parse(uploadRes);
+            },
+          },
+        },
+      },
+      list: { class: List, inlineToolbar: true },
+      delimiter: { class: Delimiter, inlineToolbar: true },
+      paragraph: { class: Paragraph, inlineToolbar: true },
+      embed: { class: Embed, inlineToolbar: true },
+    },
+    onChange: () => {
+      $editor.save();
+      content = cleanEditorContent($editorData);
+      onChange(content);
     }
-	};
+  });
+
+  $: if ($isReady && !hasReadiedOnce) {
+    hasReadiedOnce = true;
+    if (content.blocks) {
+      convertToTauri(content).then((parsedContent) => {
+        $editor.render(parsedContent);
+      });
+    }
+  }
 
 	async function convertToTauri(data: any) {
 		if (data) {
@@ -122,10 +100,8 @@
 		return data;
 	}
 
-	async function getEditorContent() {
-		const content = await editor.save().then((outputData) => {
-			return convertToWeb(outputData);
-		});
+	function cleanEditorContent(outputData: OutputData) {
+		const content = convertToWeb(outputData);
 		const contentStr = JSON.stringify(content);
 
 		return JSON.parse(
@@ -138,7 +114,7 @@
 </script>
 
 <div class="editorjs-container">
-	<div id="editorjs" />
+	<div use:editor />
 </div>
 
 <!-- svelte-ignore css-unused-selector -->
@@ -158,7 +134,7 @@
 		position: relative;
 	}
 
-	.editorjs-container > #editorjs {
+	.editorjs-container > div {
 		width: 100%;
 		background-color: transparent;
 	}
