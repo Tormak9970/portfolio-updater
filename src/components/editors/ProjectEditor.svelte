@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { toast } from "@zerodevx/svelte-toast";
 	import type { OutputData } from "@editorjs/editorjs";
 
 	import {
@@ -16,14 +15,13 @@
 		writeConfig,
 	} from "../../lib/Utils";
 	import ImagePreview from "../interactables/ImagePreview.svelte";
-	import ConfirmDelete from "../modals/ConfirmDelete.svelte";
   import TextInput from "../interactables/TextInput.svelte";
   import DropDown from "../interactables/DropDown.svelte";
   import EditorJs from "../EditorJS.svelte";
-  import Button from "../interactables/Button.svelte";
   import VerticalSpacer from "../utils/VerticalSpacer.svelte";
   import { categories, difficulties, statusOptions } from "../../lib/ProjectDropdowns";
   import type { ProjectEntry } from "src/types/ConfigTypes";
+    import EditorTemplate from "./EditorTemplate.svelte";
 
 	let canSave = false;
 
@@ -44,27 +42,6 @@
   async function allowSave() {
     canSave = true;
   }
-
-	function confirmDelete() {
-		toast.push({
-			component: {
-				src: ConfirmDelete,
-				props: {
-					properties: ["projects", $currentProject.data.name],
-				},
-				sendIdTo: "toastId",
-			},
-			target: "top",
-			dismissable: false,
-			initial: 0,
-			intro: { y: -192 },
-			theme: {
-				"--toastPadding": "0",
-				"--toastBackground": "transparent",
-				"--toastMsgPadding": "0",
-			},
-		});
-	}
 
 	async function archiveProject() {
 		const cfg = $config;
@@ -170,152 +147,51 @@
   }
 </script>
 
-<div class="project-editor">
-	<div class="header">
-    <h1>{$currentProject.original !== "" ? `Editing: ${$currentProject.original}` : "Select an Project to get started"}</h1>
-    <div class="btn-cont" class:hide={$currentProject.original === ""}>
-      {#if canSave}
-        <Button label="Save" width="90px" height="30px" highlight onClick={saveChanges} />
-        <div style="height: 1px; width: 10px" />
-      {/if}
-      <Button label="Archive" width="90px" height="30px" warn onClick={archiveProject} />
-      <div style="height: 1px; width: 10px" />
-      <Button label="Delete" width="90px" height="30px" warn onClick={confirmDelete} />
-    </div>
-  </div>
-  <div class="content" class:hide={$currentProject.original === ""}>
-    <div class="fields">
-      <h3>Fields</h3>
-      <div class="scroll-container">
-        <ImagePreview
-          label={"Project Image"}
-          placeholder={"The project image"}
-          bind:value={image}
-          onChange={allowSave}
-        />
+<EditorTemplate saveChanges={saveChanges} curretStore={currentProject} archiveFunction={archiveProject} emptyMessage="Select a Project to get started" bind:canSave={canSave}>
+  <div slot="fields">
+    <TextInput
+      label={"Name"}
+      placeholder={"The project name"}
+      bind:value={name}
+      onChange={allowSave}
+    />
+    <VerticalSpacer />
 
-        <TextInput
-          label={"Name"}
-          placeholder={"The project name"}
-          bind:value={name}
-          onChange={allowSave}
-        />
-        <VerticalSpacer />
+    <ImagePreview
+      label={"Project Image"}
+      placeholder={"The project image"}
+      bind:value={image}
+      onChange={allowSave}
+    />
 
-        <TextInput
-          label={"Time"}
-          placeholder={"# hours"}
-          bind:value={time}
-          onChange={allowSave}
-        />
-        <VerticalSpacer />
+    <TextInput
+      label={"Time"}
+      placeholder={"# hours"}
+      bind:value={time}
+      onChange={allowSave}
+    />
+    <VerticalSpacer />
 
-        <TextInput
-          label={"Link"}
-          placeholder={"A link to the project"}
-          bind:value={link}
-          onChange={allowSave}
-        />
-        <VerticalSpacer />
-        
-        <DropDown label={"Category"} options={categories} width={"148px"} bind:value={category} onChange={allowSave} />
-        <VerticalSpacer />
-
-        <DropDown label={"Organization"} options={organizations} width={"148px"} bind:value={organization} onChange={allowSave} />
-        <VerticalSpacer />
-
-        <DropDown label={"Difficulty"} options={difficulties} width={"148px"} bind:value={difficulty} onChange={allowSave} />
-        <VerticalSpacer />
-
-        <DropDown label={"Status"} options={statusOptions} width={"148px"} bind:value={status} onChange={allowSave} />
-      </div>
-    </div>
-    <div class="editor">
-      <h3>Writeup</h3>
-      <div class="scroll-container">
-        <EditorJs onChange={allowSave} bind:content={content} />
-      </div>
-    </div>
-  </div>
-</div>
-
-<style>
-	.project-editor {
-		width: 100%;
-		height: 100%;
-
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-
-		color: var(--font-color);
-
-		position: relative;
-	}
-
-	.header {
-		width: calc(100% - 40px);
-
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-
-    padding: 0px 20px;
-
-    margin-bottom: 10px;
+    <TextInput
+      label={"Link"}
+      placeholder={"A link to the project"}
+      bind:value={link}
+      onChange={allowSave}
+    />
+    <VerticalSpacer />
     
-    border-radius: 4px;
-    background-color: var(--foreground-dark);
-	}
+    <DropDown label={"Category"} options={categories} width={"148px"} bind:value={category} onChange={allowSave} />
+    <VerticalSpacer />
 
-	.header > .btn-cont {
-		display: flex;
-		flex-direction: row;
-    justify-content: flex-end;
-    width: 290px;
-	}
+    <DropDown label={"Organization"} options={organizations} width={"148px"} bind:value={organization} onChange={allowSave} />
+    <VerticalSpacer />
 
-  .content {
-    width: 100%;
-    height: calc(100% - 93px);
+    <DropDown label={"Difficulty"} options={difficulties} width={"148px"} bind:value={difficulty} onChange={allowSave} />
+    <VerticalSpacer />
 
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  .content h3 {
-    margin: 0px;
-  }
-
-  .fields {
-    padding: 7px;
-    padding-left: 10px;
-    height: calc(100% - 14px);
-    margin-right: 10px;
-
-    border-radius: 4px;
-    background-color: var(--foreground-dark);
-  }
-
-  .editor {
-    padding: 7px;
-    padding-left: 10px;
-    height: calc(100% - 14px);
-
-    flex-grow: 1;
-    
-    border-radius: 4px;
-    background-color: var(--foreground-dark);
-  }
-
-  .scroll-container {
-    height: calc(100% - 25px);
-    overflow-y: scroll;
-  }
-
-  .hide {
-    display: none !important;
-  }
-</style>
+    <DropDown label={"Status"} options={statusOptions} width={"148px"} bind:value={status} onChange={allowSave} />
+  </div>
+  <div slot="editor">
+    <EditorJs onChange={allowSave} bind:content={content} />
+  </div>
+</EditorTemplate>

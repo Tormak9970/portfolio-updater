@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { SvelteToast } from "@zerodevx/svelte-toast";
-	import { showCrtArtModal, showCrtExpModal, showCrtOrgModal, showCrtProjModal, showSetup } from "./stores";
+	import { showConfirmDeleteModal, showCrtArtModal, showCrtExpModal, showCrtOrgModal, showCrtProjModal, showSetup } from "./stores";
 
-	import Titlebar from "./components/window/Titlebar.svelte";
+	import Titlebar from "./components/Titlebar.svelte";
 	import Setup from "./components/Setup.svelte";
   import Core from "./components/Core.svelte";
 
@@ -10,6 +10,7 @@
 	import CrtArtModal from "./components/modals/CrtArtModal.svelte";
 	import CrtExpModal from "./components/modals/CrtExpModal.svelte";
 	import CrtOrgModal from "./components/modals/CrtOrgModal.svelte";
+    import ConfirmDelete from "./components/modals/ConfirmDelete.svelte";
 </script>
 
 <div class="wrap">
@@ -20,6 +21,9 @@
 	<div class="content">
 		<svelte:component this={$showSetup ? Setup : Core}/>
 	
+    {#if $showConfirmDeleteModal}
+      <ConfirmDelete />
+    {/if}
 		{#if $showCrtProjModal}
 			<CrtProjModal />
 		{/if}

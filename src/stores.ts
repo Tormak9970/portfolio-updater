@@ -78,6 +78,7 @@ export const experienceList = writable([]);
 export const organizationsList = writable([]);
 export const archiveList = writable([]);
 
+export const showConfirmDeleteModal = writable(false);
 export const showCrtProjModal = writable(false);
 export const showCrtArtModal = writable(false);
 export const showCrtExpModal = writable(false);

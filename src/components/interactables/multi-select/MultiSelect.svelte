@@ -5,20 +5,20 @@
   export let label: string;
   export let options: { name: string, linkId: string }[];
   export let values: { name: string, linkId: string }[] = [];
-  export let handler: (values: { name: string, linkId: string }[]) => void = () => {};
+  export let onChange: (values: { name: string, linkId: string }[]) => void = () => {};
 
   $: available = options.filter((o) => !values.includes(o)).map(({ name, linkId }) => { return { label: name, data: linkId } });
 
   function projectAdded(linkId: string) {
     values.push(options.find((entry) => entry.linkId === linkId));
     values = [...values];
-    handler(values);
+    onChange(values);
   }
 
   function projectRemoved(event: { detail: { name: string; linkId: string } }) {
     values.splice(values.indexOf(event.detail), 1);
     values = [...values];
-    handler(values);
+    onChange(values);
   }
 </script>
 

@@ -1,19 +1,13 @@
 <script lang="ts">
-  import { toast } from "@zerodevx/svelte-toast";
   import { updateSettings, writeConfig } from "../../lib/Utils";
-  import { config, currentArchive, currentArt, currentExperience, currentOrganization, currentProject } from "../../stores";
-
-  export let toastId: string;
-  export let properties: string[];
+  import { config, currentArchive, currentArt, currentExperience, currentOrganization, currentProject, selectedCategory, showConfirmDeleteModal } from "../../stores";
+  import ModalBody from "./ModalBody.svelte";
+  import Button from "../interactables/Button.svelte";
 
   async function onConfirm() {
-    console.log("Props:", properties);
-    delete $config[properties[0]][
-      properties[1].toLowerCase().replaceAll(" ", "-").replaceAll("'", "")
-    ];
-
-    switch (properties[0]) {
-      case "projects":
+    switch ($selectedCategory) {
+      case "Projects":
+        delete $config[$selectedCategory.toLowerCase()][$currentProject.key];
         $currentProject = {
           original: "",
           key: "",
@@ -33,7 +27,8 @@
         };
         await updateSettings({ prop: "currentProject", data: $currentProject });
         break;
-      case "art":
+      case "Art":
+        delete $config[$selectedCategory.toLowerCase()][$currentArt.key];
         $currentArt = {
           original: "",
           key: "",
@@ -45,7 +40,8 @@
         };
         await updateSettings({ prop: "currentArt", data: $currentArt });
         break;
-      case "experience":
+      case "Experience":
+        delete $config[$selectedCategory.toLowerCase()][$currentExperience.key];
         $currentExperience = {
           original: "",
           key: "",
@@ -58,7 +54,8 @@
         };
         await updateSettings({ prop: "currentExperience", data: $currentExperience });
         break;
-      case "organizations":
+      case "Organizations":
+        delete $config[$selectedCategory.toLowerCase()][$currentOrganization.key];
         $currentOrganization = {
           original: "",
           key: "",
@@ -73,7 +70,8 @@
         };
         await updateSettings({ prop: "currentOrganization", data: $currentOrganization });
         break;
-      case "archive":
+      case "Archive":
+        delete $config[$selectedCategory.toLowerCase()][$currentArchive.key];
         $currentArchive = {
           original: "",
           key: "",
@@ -95,92 +93,61 @@
         break;
     }
 
-    console.log("Config before updating file:", { ...$config });
     await writeConfig(JSON.stringify({ ...$config }, null, "\t"));
+
+    closeModal();
   }
 
-  const clicked = (canceled: boolean) => {
-    toast.pop(toastId);
-    toast.push({
-      msg: canceled ? "Canceled!" : "Deleted!",
-      theme: {
-        "--toastBackground": canceled ? "#82b74b" : "#e24a4a",
-        "--toastBarBackground": canceled ? "#405d27" : "#e13525",
-      },
-    });
-    if (!canceled) onConfirm();
-  };
-  const canceled = () => clicked(true);
-  const deleted = () => clicked(false);
+  function closeModal() {
+    $showConfirmDeleteModal = false;
+  }
 </script>
 
-<div id="confirmDelete">
-  <div>
-    Are you sure you want to delete this entry? You can't undo this action!
-  </div>
-  <div class="btn-cont">
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="btn" on:click={canceled}>
-      <div>Cancel</div>
+<ModalBody title={"Are you sure you want to delete this?"} canClose={false}>
+  <div class="content">
+    <div class="info">
+      <div class="type-cont">
+        <svg xmlns="http://www.w3.org/2000/svg" height="3em" viewBox="0 0 512 512" fill="#ffee04">
+          <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+          <path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/>
+        </svg>
+      </div>
+      <div class="message">Are you sure you want to delete this entry? You can't undo this action!</div>
     </div>
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div class="btn warn" on:click={deleted}>
-      <div>Delete</div>
+    <div class="buttons">
+      <Button label={"Yes"} onClick={onConfirm} width={"47.5%"} />
+      <Button label={"No"} onClick={closeModal} width={"47.5%"} />
     </div>
   </div>
-</div>
+</ModalBody>
 
 <style>
-  @import "/theme.css";
-
-  #confirmDelete {
-    width: 80%;
-    padding: 10px;
-    border-radius: 4px;
-
-    background-color: var(--foreground);
-    box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.85);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    margin: 20px;
+  .content {
+    max-width: 400px;
   }
 
-  .btn-cont {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
+  .info {
+    margin: 0px 10px;
+    margin-top: 7px;
+    font-size: 14px;
 
+    display: flex;
+    align-items: center;
+  }
+
+  .message {
+    margin-left: 15px;
+  }
+
+  .buttons {
     margin-top: 14px;
-  }
-
-  .btn {
-    height: 30px;
-    width: 60px;
-
-    cursor: pointer;
-    background-color: var(--highlight);
-
+    margin-bottom: 7px;
+    margin-left: 7px;
+    margin-right: 7px;
+    width: calc(100% - 14px);
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    border-radius: 4px;
-
-    margin-right: 10px;
-  }
-  .btn:hover {
-    background-color: var(--highlight-hover);
-  }
-  .warn {
-    background-color: var(--warning);
-  }
-  .btn:hover {
-    background-color: var(--warning-hover);
+    justify-content: space-around;
+    justify-self: flex-end;
   }
 </style>
+

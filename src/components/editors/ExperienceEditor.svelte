@@ -1,225 +1,95 @@
 <script lang="ts">
-  import { toast } from "@zerodevx/svelte-toast";
-  import { config } from "../../stores";
-  import { updateSettings, writeConfig } from "../../lib/Utils";
+  import { config, currentExperience } from "../../stores";
+  import { getKeyFromName, updateSettings, writeConfig } from "../../lib/Utils";
   import ImagePreview from "../interactables/ImagePreview.svelte";
-  import ConfirmDelete from "../modals/ConfirmDelete.svelte";
   import TextArea from "../interactables/TextArea.svelte";
-    import TextInput from "../interactables/TextInput.svelte";
+  import TextInput from "../interactables/TextInput.svelte";
+  import EditorTemplate from "./EditorTemplate.svelte";
+  import VerticalSpacer from "../utils/VerticalSpacer.svelte";
+  import type { ExperienceEntry } from "../../types/ConfigTypes";
 
-  async function inputHandler(e: Event, fieldName: string) {
-    const value = (e.currentTarget as HTMLInputElement).value;
+  let canSave = false;
 
-    $state.experience.data[fieldName.toLowerCase()] = value;
-    $changedKey = $state.experience.data.company
-      .toLocaleLowerCase()
-      .concat("-")
-      .concat($state.experience.data.position.toLocaleLowerCase())
-      .replaceAll(" ", "-");
-    $state.experience.original = $state.experience.data.position;
+  let company = $currentExperience.data.company;
+  let position = $currentExperience.data.position;
+  let image = $currentExperience.data.img;
+  let description = $currentExperience.data.description;
 
-    $state.experience.data.company = value;
-
-    $state = $state;
-    await updateSettings({ prop: "state", data: $state });
+  async function allowSave() {
+    canSave = true;
   }
 
-  async function descHandler(value: string) {
-    $state.experience.data.description = value;
-
-    $state = $state;
-    await updateSettings({ prop: "state", data: $state });
+  function genExperienceKey(company: string, position: string): string {
+    return [getKeyFromName(company), getKeyFromName(position)].join("-");
   }
 
-  async function imageHandler(e: Event) {
-    const value = (e.currentTarget as HTMLInputElement).value;
-
-    $state.experience.data.img = value;
-
-    $state = $state;
-    await updateSettings({ prop: "state", data: $state });
-  }
-
-  async function save() {
+  async function saveChanges() {
     const cfg = $config;
 
-    if ($changedKey) {
-      // @ts-ignore
-      cfg.experience[$changedKey] = cfg.experience[$state.experience.key];
+		if (company !== $currentExperience.data.company || position !== $currentExperience.data.position) {
+      const newKey = genExperienceKey(company, position);
 
-      // @ts-ignore
-      delete cfg.experience[$state.experience.key];
+			cfg.experience[newKey] = cfg.experience[$currentExperience.key];
+			delete cfg.experience[$currentExperience.key];
 
-      $state.experience.key = $changedKey;
-      await updateSettings({ prop: "state", data: $state });
-      $changedKey = null;
+			$currentExperience.key = newKey;
+		}
+
+    const changedExperience: ExperienceEntry = {
+      company: company,
+      position: position,
+      img: image,
+      description: description
     }
 
-    // @ts-ignore
-    cfg.experience[$state.experience.key] = $state.experience.data;
+		$currentExperience = {
+      "original": $currentExperience.original,
+      "key": $currentExperience.key,
+      "data": changedExperience
+    };
 
-    await writeConfig(JSON.stringify(cfg, null, "\t"));
+		await updateSettings({ prop: "currentExperience", data: $currentExperience });
+    
+		cfg.experience[$currentExperience.key] = changedExperience;
 
-    $config = cfg;
-  }
+		await writeConfig(JSON.stringify(cfg, null, "\t"));
 
-  function confirmDelete(e: Event) {
-    toast.push({
-      component: {
-        src: ConfirmDelete,
-        props: {
-          properties: ["experience", $state.experience.data.position],
-        },
-        sendIdTo: "toastId",
-      },
-      target: "top",
-      dismissable: false,
-      initial: 0,
-      intro: { y: -192 },
-      theme: {
-        "--toastPadding": "0",
-        "--toastBackground": "transparent",
-        "--toastMsgPadding": "0",
-      },
-    });
+		$config = cfg;
+		canSave = false;
   }
 </script>
 
-<div id="editor">
-  <div
-    class:hide={$state.experience.original == ""}
-    style="overflow: scroll; min-height: 100%;"
-  >
-    <div class="header">
-      <div />
-      <h1>Editing: {$state.experience.original}</h1>
-      <div class="btn-cont">
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="btn" on:click={confirmDelete}>
-          <div>Delete</div>
-        </div>
-      </div>
-    </div>
-    <div class="info-cont">
-      <TextInput
-        label={"Company"}
-        value={$state.experience.data.company}
-        onInput={(value) => inputHandler(value, "Company")}
-      />
-      <TextInput
-        label={"Position"}
-        value={$state.experience.data.position}
-        onInput={(value) => inputHandler(value, "Position")}
-      />
-      <ImagePreview
-        label={"Image"}
-        placeholder={$state.experience.data.img}
-        onChange={imageHandler}
-      />
-      <TextArea
-        label={"Description"}
-        placeholder=""
-        value={$state.experience.data.description}
-        handler={descHandler}
-      />
-    </div>
-    <button id="save" on:click={save}>Save Content</button>
+<EditorTemplate saveChanges={saveChanges} emptyMessage="Select an Experience entry to get started" curretStore={currentExperience} bind:canSave={canSave}>
+  <div slot="fields">
+    <TextInput
+      label={"Company"}
+      placeholder={"The company name"}
+      bind:value={company}
+      onChange={allowSave}
+    />
+    <VerticalSpacer />
+
+    <TextInput
+      label={"Position"}
+      placeholder={"The position name"}
+      bind:value={position}
+      onChange={allowSave}
+    />
+    <VerticalSpacer />
+
+    <ImagePreview
+      label={"Image"}
+      placeholder={"The company logo"}
+      bind:value={image}
+      onChange={allowSave}
+    />
   </div>
-  <div class:hide={$state.experience.original != ""}>
-    <div class="welcome-msg">Select an Experience entry to get started</div>
+  <div slot="editor">
+    <TextArea
+      label={"Description"}
+      placeholder=""
+      bind:value={description}
+      onChange={allowSave}
+    />
   </div>
-</div>
-
-<style>
-  @import "/theme.css";
-
-  #editor {
-    width: calc(100% - 325px - 2em - 40px);
-    margin: 0px 20px;
-    height: 100%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    color: var(--font-color);
-
-    position: relative;
-  }
-
-  .header {
-    width: 100%;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .header > .btn-cont > .btn {
-    height: 30px;
-    width: 60px;
-
-    cursor: pointer;
-    background-color: var(--warning);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    border-radius: 4px;
-
-    margin-right: 10px;
-  }
-  .header > .btn-cont > .btn:hover {
-    background-color: var(--warning-hover);
-  }
-
-  #save {
-    font-family: "Source Sans Pro", sans-serif;
-    font-size: 16px;
-    color: var(--font-color);
-    background-color: var(--foreground);
-    padding: 4px;
-    border: 1px solid #000;
-    box-shadow: 0 0 4px rgb(0 0 0 / 50%);
-    border-radius: 4px;
-  }
-  #save:hover {
-    cursor: pointer;
-    background-color: var(--hover);
-  }
-  #save:focus {
-    outline: 1px solid var(--highlight);
-  }
-
-  .info-cont {
-    width: fit-content;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  #editor > .hide {
-    display: none;
-  }
-
-  #editor > div {
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    color: var(--font-color);
-
-    position: relative;
-  }
-
-  #editor > div > .welcome-msg {
-    color: var(--font-color);
-    font-size: 30px;
-  }
-</style>
+</EditorTemplate>

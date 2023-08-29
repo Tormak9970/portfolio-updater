@@ -3,16 +3,15 @@
 
   import { appWindow } from "@tauri-apps/api/window";
   import { afterUpdate, onMount } from "svelte";
-  import { selectedCategory, config, showSetup, currentProject, currentArt, currentExperience, currentOrganization, currentArchive } from "../../stores";
+  import { selectedCategory, config, showSetup, currentProject, currentArt, currentExperience, currentOrganization, currentArchive } from "../stores";
   import {
     getConfig,
     setSettingsPath,
     settingsPath,
     updateSettings,
-  } from "../../lib/Utils";
-  import SubMenu from "./SubMenu.svelte";
+  } from "../lib/Utils";
   import { exit } from "@tauri-apps/api/process";
-    import DropDown from "../interactables/DropDown.svelte";
+  import DropDown from "./interactables/DropDown.svelte";
 
   let minimize: HTMLDivElement;
   let maximize: HTMLDivElement;
