@@ -12,6 +12,7 @@
           original: "",
           key: "",
           data: {
+            index: 0,
             category: "",
             name: "",
             time: "",
@@ -33,6 +34,7 @@
           original: "",
           key: "",
           data: {
+            index: 0,
             name: "",
             image: "",
             description: "",
@@ -46,6 +48,7 @@
           original: "",
           key: "",
           data: {
+            index: 0,
             company: "",
             image: "",
             position: "",
@@ -60,6 +63,7 @@
           original: "",
           key: "",
           data: {
+            index: 0,
             name: "",
             image: "",
             about: "",
@@ -76,6 +80,7 @@
           original: "",
           key: "",
           data: {
+            index: 0,
             category: "",
             name: "",
             time: "",

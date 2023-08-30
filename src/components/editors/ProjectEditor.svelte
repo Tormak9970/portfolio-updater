@@ -58,6 +58,7 @@
 			original: "",
 			key: "",
 			data: {
+        index: 0,
 				category: "",
 				name: "",
 				time: "",
@@ -106,6 +107,7 @@
 		}
 
     const changedProject: ProjectEntry = {
+      index: 0,
       category: category,
       name: name,
       time: time,

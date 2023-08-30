@@ -43,6 +43,7 @@
 		}
 
     const changedOrganization: OrganizationEntry = {
+      index: 0,
       name: name,
       image: image,
       link: link,

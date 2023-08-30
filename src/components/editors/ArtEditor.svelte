@@ -29,6 +29,7 @@
 		}
 
     const changedArt: ArtEntry = {
+      index: 0,
       name: name,
       image: image,
       description: description

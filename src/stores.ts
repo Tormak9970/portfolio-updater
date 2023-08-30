@@ -12,6 +12,7 @@ export const currentProject = writable<EntryState<ProjectEntry>>({
   "original": "",
   "key": "",
   "data": {
+    "index": 0,
     "category": "",
     "name": "",
     "time": "",
@@ -29,6 +30,7 @@ export const currentArt = writable<EntryState<ArtEntry>>({
   "original": "",
   "key": "",
   "data": {
+    "index": 0,
     "name": "",
     "image": "",
     "description": ""
@@ -38,6 +40,7 @@ export const currentExperience = writable<EntryState<ExperienceEntry>>({
   "original": "",
   "key": "",
   "data": {
+    "index": 0,
     "company": "",
     "image": "",
     "position": "",
@@ -48,6 +51,7 @@ export const currentOrganization = writable<EntryState<OrganizationEntry>>({
   "original": "",
   "key": "",
   "data": {
+    "index": 0,
     "name": "",
     "image": "",
     "about": "",
@@ -60,6 +64,7 @@ export const currentArchive = writable<EntryState<ProjectEntry>>({
   "original": "",
   "key": "",
   "data": {
+    "index": 0,
     "category": "",
     "name": "",
     "time": "",

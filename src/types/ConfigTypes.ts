@@ -1,6 +1,7 @@
 import type { OutputData } from "@editorjs/editorjs";
 
 export type ProjectEntry = {
+  index: number,
   category: string,
   name: string,
   time: string,
@@ -15,12 +16,14 @@ export type ProjectEntry = {
 }
 
 export type ArtEntry = {
+  index: number,
   name: string,
   image: string,
   description: string
 }
 
 export type ExperienceEntry = {
+  index: number,
   company: string,
   image: string,
   position: string,
@@ -28,6 +31,7 @@ export type ExperienceEntry = {
 }
 
 export type OrganizationEntry = {
+  index: number,
   name: string,
   image: string,
   about: string,

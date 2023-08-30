@@ -49,6 +49,7 @@
       original: "",
       key: "",
       data: {
+        index: 0,
         category: "",
         name: "",
         time: "",
@@ -96,6 +97,7 @@
 		}
 
     const changedArchivedProject: ProjectEntry = {
+      index: 0,
       category: category,
       name: name,
       time: time,
