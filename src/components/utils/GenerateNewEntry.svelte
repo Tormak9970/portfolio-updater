@@ -1,88 +1,94 @@
 <script lang="ts">
-    import { updateSettings } from "src/lib/Utils";
+  import { updateSettings } from "../../lib/Utils";
   import {
+    artList,
     currentArt,
     currentExperience,
     currentOrganization,
     currentProject,
+    experienceList,
+    organizationsList,
     projectsList,
     selectedCategory,
-
     selectedKey
-
   } from "../../stores";
 
   async function createNewEntry() {
     switch ($selectedCategory) {
       case "Projects":
-        const newData = {
+        const newProject = {
           "category": "web-dev",
           "name": "New Project",
           "time": "",
           "status": "In Progress",
-          "difficulty": "Intermediate",
+          "difficulty": "Moderate",
           "description": "",
           "content": {},
           "link": "",
           "isRelative": false,
           "img": "",
-          "org": "None"
+          "org": "none"
         };
         $currentProject = {
           "original": "New Project",
           "key": "new-project",
-          "data": newData
+          "data": newProject
         }
+        $projectsList = [{ "key": "new-project", "data": newProject }, ...$projectsList];
         $selectedKey = "new-project";
-        $projectsList.unshift({
-          "key": "new-project",
-          "data": newData
-        });
-        await updateSettings({ prop: "currentProject", data: $currentProject });
         break;
       case "Art":
-        $currentArt = {
-          "original": "",
-          "key": "",
-          "data": {
-            "name": "",
-            "img": "",
-            "description": ""
-          }
+        const newArt = {
+          "name": "New Art",
+          "img": "",
+          "description": ""
         }
+        $currentArt = {
+          "original": "New Art",
+          "key": "new-art",
+          "data": newArt
+        }
+        $artList = [{ "key": "new-art", "data": newArt }, ...$artList];
+        $selectedKey = "new-art";
         break;
       case "Experience":
-        $currentExperience = {
-          "original": "",
-          "key": "",
-          "data": {
-            "company": "",
-            "position": "",
-            "img": "",
-            "description": ""
-          }
+        const newExperience = {
+          "company": "new",
+          "position": "experience",
+          "img": "",
+          "description": ""
         }
+        $currentExperience = {
+          "original": "New Experience",
+          "key": "new-experience",
+          "data": newExperience
+        }
+        $experienceList = [{ "key": "new-experience", "data": newExperience }, ...$experienceList];
+        $selectedKey = "new-experience";
         break;
       case "Organizations":
-        $currentOrganization = {
-          "original": "",
-          "key": "",
-          "data": {
-            "name": "",
-            "about": "",
-            "description": "",
-            "img": "",
-            "link": "",
-            "projects": []
-          }
+        const newOrganization = {
+          "name": "New Organization",
+          "about": "",
+          "description": "",
+          "img": "",
+          "link": "",
+          "projects": []
         }
+        $currentOrganization = {
+          "original": "New Organization",
+          "key": "new-organization",
+          "data": newOrganization
+        }
+        $organizationsList = [{ "key": "new-organization", "data": newExperience }, ...$organizationsList];
+        $selectedKey = "new-organization";
         break;
     }
   }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div id="createNew" on:click={createNewEntry}>
+<div class="gen-new-entry" on:click={createNewEntry}>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
     <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
     <path
@@ -94,7 +100,7 @@
 <style>
   @import "/theme.css";
 
-  #createNew {
+  .gen-new-entry {
     height: 60px;
     min-width: 300px;
 
@@ -110,12 +116,10 @@
 
     margin-bottom: 7px;
 
-    border: 1px dashed var(--highlight);
+    transition: background-color 0.2s ease-in-out;
   }
-  #createNew:hover {
-    background-color: var(--hover);
-
-    border-color: var(--highlight-hover);
+  .gen-new-entry:hover {
+    background-color: var(--foreground-hover);
 
     cursor: pointer;
   }

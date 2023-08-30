@@ -13,27 +13,27 @@
 
   const configs = {
     "Projects": {
-      "list": $projectsList,
+      "list": projectsList,
       "field": "projects",
       "editor": ProjectEditor
     },
     "Art": {
-      "list": $artList,
+      "list": artList,
       "field": "art",
       "editor": ArtEditor
     },
     "Experience": {
-      "list": $experienceList,
+      "list": experienceList,
       "field": "experience",
       "editor": ExperienceEditor
     },
     "Organizations": {
-      "list": $organizationsList,
+      "list": organizationsList,
       "field": "organizations",
       "editor": OrganizationEditor
     },
     "Archive": {
-      "list": $archiveList,
+      "list": archiveList,
       "field": "archive",
       "editor": ArchiveEditor
     }
@@ -45,14 +45,12 @@
   $: field = currentConfig.field as LowercaseCategory;
 
   function handleListUpdate() {
-    list = [];
-
-		for (const entry of Object.entries($config[field])) {
-			list.push({
-				data: entry[1],
-        key: entry[0]
-			});
-		}
+    $list = $list.length === 0 ? Object.entries($config[field]).map(([key, data]) => {
+      return {
+        key: key,
+				data: data,
+			}
+    }) : $list;
   }
 
 	afterUpdate(() => { handleListUpdate(); });
@@ -60,7 +58,7 @@
 </script>
 
 <div class="core">
-	<Layout editor={editor} field={field} data={list}/>
+	<Layout editor={editor} field={field} data={$list}/>
 </div>
 
 <style>

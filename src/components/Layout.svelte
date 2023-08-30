@@ -1,7 +1,7 @@
 <script lang="ts">
   import { selectedCategory, selectedKey } from "../stores";
 	import Entry from "./Entry.svelte";
-  import OpenCrtModal from "./modals/OpenCrtModal.svelte";
+  import GenerateNewEntry from "./utils/GenerateNewEntry.svelte";
 
 	type Data = {
     key: string,
@@ -17,11 +17,11 @@
 	<div class="entries-container">
 		<div class="entries">
       {#if $selectedCategory !== "Archive"}
-        <OpenCrtModal />
+        <GenerateNewEntry />
       {/if}
 
-      {#each data as datEntr}
-        <Entry data={datEntr.data} key={datEntr.key} field={field} />
+      {#each data as entry, i (`${entry.key}|${i}`)}
+        <Entry data={entry.data} key={entry.key} field={field} />
       {/each}
     </div>
 	</div>

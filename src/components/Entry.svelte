@@ -70,7 +70,7 @@
     style="width: 40px; margin: 0px 7px;"
   />
   <div class="info">
-    <div class="field">{data.name}</div>
+    <div class="field">{$selectedCategory === "Experience" ? data.position : data.name}</div>
   </div>
   <div class="btn-cont">
     <!-- svelte-ignore a11y-click-events-have-key-events -->

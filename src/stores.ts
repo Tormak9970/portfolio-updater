@@ -82,7 +82,3 @@ export const archiveList = writable([]);
 
 export const showUnsavedChangesModal = writable(false);
 export const showConfirmDeleteModal = writable(false);
-export const showCrtProjModal = writable(false);
-export const showCrtArtModal = writable(false);
-export const showCrtExpModal = writable(false);
-export const showCrtOrgModal = writable(false);

@@ -1,15 +1,11 @@
 <script lang="ts">
 	import { SvelteToast } from "@zerodevx/svelte-toast";
-	import { showConfirmDeleteModal, showCrtArtModal, showCrtExpModal, showCrtOrgModal, showCrtProjModal, showSetup, showUnsavedChangesModal } from "./stores";
+	import { showConfirmDeleteModal, showSetup, showUnsavedChangesModal } from "./stores";
 
 	import Titlebar from "./components/Titlebar.svelte";
 	import Setup from "./components/Setup.svelte";
   import Core from "./components/Core.svelte";
 
-	import CrtProjModal from "./components/modals/CrtProjModal.svelte";
-	import CrtArtModal from "./components/modals/CrtArtModal.svelte";
-	import CrtExpModal from "./components/modals/CrtExpModal.svelte";
-	import CrtOrgModal from "./components/modals/CrtOrgModal.svelte";
   import ConfirmDeleteModal from "./components/modals/ConfirmDeleteModal.svelte";
   import UnsavedChangesModal from "./components/modals/UnsavedChangesModal.svelte";
 </script>
@@ -28,18 +24,6 @@
     {#if $showConfirmDeleteModal}
       <ConfirmDeleteModal />
     {/if}
-		{#if $showCrtProjModal}
-			<CrtProjModal />
-		{/if}
-		{#if $showCrtArtModal}
-			<CrtArtModal />
-		{/if}
-		{#if $showCrtExpModal}
-			<CrtExpModal />
-		{/if}
-		{#if $showCrtOrgModal}
-			<CrtOrgModal />
-		{/if}
 	</div>
 </main>
 <SvelteToast />
