@@ -1,5 +1,5 @@
 import { fs, invoke, path, tauri } from "@tauri-apps/api";
-import { selectedCategory } from "src/stores";
+import { selectedCategory } from "../stores";
 import { get } from "svelte/store";
 
 const scopeCache = [];
