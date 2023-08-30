@@ -1,11 +1,12 @@
 <script lang="ts">
-  import type { EntryUnion } from "src/types/ConfigTypes";
-  import { selectedCategory, selectedKey } from "../stores";
+  import type { EntryUnion } from "../types/ConfigTypes";
+  import { config, selectedCategory, selectedKey } from "../stores";
 	import Entry from "./Entry.svelte";
   import GenerateNewEntry from "./utils/GenerateNewEntry.svelte";
 
   import { flip } from "svelte/animate";
   import { dndzone } from "svelte-dnd-action";
+  import { writeConfig } from "../lib/Utils";
 
 	type EntryData<T extends EntryUnion> = {
     key: string,
@@ -22,12 +23,18 @@
   }
   function handleDndFinalize(e) {
     data = e.detail.items;
-    console.log("orderedItems:", data.map((entry, i) => {
-      return {
-        key: entry.key,
-        index: i
-      }
-    }));
+
+    const newData = {};
+
+    for (let i = 0; i < data.length; i++) {
+      const entry = data[i];
+      entry.data.index = i;
+
+      newData[entry.key] = entry.data;
+    }
+
+    $config[field] = newData;
+    writeConfig(JSON.stringify($config, null, '\t'));
   }
 </script>
 

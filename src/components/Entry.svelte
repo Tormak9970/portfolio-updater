@@ -54,7 +54,7 @@
   onMount(async () => {
     const tmpPath = await path.join(
       await path.dirname(configPath),
-      data.img.substring(2)
+      data.image.substring(2)
     );
 
     if (tmpPath && tmpPath != "") await addPathToScope(tmpPath);
