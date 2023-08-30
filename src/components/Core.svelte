@@ -45,12 +45,14 @@
   $: field = currentConfig.field as LowercaseCategory;
 
   function handleListUpdate() {
-    $list = $list.length === 0 ? Object.entries($config[field]).map(([key, data]) => {
-      return {
-        key: key,
-				data: data,
-			}
-    }) : $list;
+    if ($list.length === 0) {
+      $list = Object.entries($config[field]).map(([key, data]) => {
+        return {
+          key: key,
+          data: data,
+        }
+      }).sort((a, b) => a.data.index - b.data.index);
+    }
   }
 
 	afterUpdate(() => { handleListUpdate(); });
