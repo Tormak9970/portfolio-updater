@@ -80,7 +80,7 @@
           "key": "new-organization",
           "data": newOrganization
         }
-        $organizationsList = [{ "key": "new-organization", "data": newExperience }, ...$organizationsList];
+        $organizationsList = [{ "key": "new-organization", "data": newOrganization }, ...$organizationsList];
         $selectedKey = "new-organization";
         break;
     }

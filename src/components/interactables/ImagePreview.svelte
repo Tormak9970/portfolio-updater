@@ -16,7 +16,7 @@
   const changeEvnt = new Event("change");
 
   async function wrapper(e: Event) {
-    await onChange((e.target as HTMLInputElement).value);
+    await processPath((e.target as HTMLInputElement).value);
   }
 
   async function processPath(filePath: string) {
@@ -30,6 +30,8 @@
 
     value = `./${relPath.replaceAll("\\", "/")}`;
     imgPath = tarPath;
+
+    await onChange(value);
   }
 
   let imgPath = "";
@@ -53,9 +55,9 @@
       <div style="height: 2px; width: 1px;" />
     {/if}
     <div class="inputs">
-      <TextInput placeholder={placeholder} onChange={wrapper} width="{188}" bind:value={value} />
+      <TextInput placeholder={placeholder} onChange={wrapper} width="{188}" value={value} />
       <div style="height: 1px; width: 7px;"/>
-      <FileButton onChange={onChange} />
+      <FileButton onChange={async (path) => await processPath(path)} />
     </div>
   </div>
   <div class="prev" style="margin-top: 7px; max-width: 100%;">

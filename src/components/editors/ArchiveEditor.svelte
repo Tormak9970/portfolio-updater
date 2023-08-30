@@ -68,29 +68,19 @@
 		await updateSettings({ prop: "currentProject", data: $currentProject });
 		await updateSettings({ prop: "currentArchive", data: $currentArchive });
 
-    $archiveList = [];
-    for (const proj of Object.entries($config.archive)) {
-      $archiveList.push({
-        props: {
-          data: proj[1],
-          // @ts-ignore
-          category: proj[1].category,
-          key: proj[0],
-        },
-      });
-    }
+		$archiveList = Object.entries($config.archive).map(([key, data]) => {
+      return {
+        key: key,
+				data: data,
+			}
+    });
 
-    $projectsList = [];
-    for (const proj of Object.entries($config.projects)) {
-      $projectsList.push({
-        props: {
-          data: proj[1],
-          // @ts-ignore
-          category: proj[1].category,
-          key: proj[0],
-        },
-      });
-    }
+    $projectsList = Object.entries($config.projects).map(([key, data]) => {
+      return {
+        key: key,
+				data: data,
+			}
+    });
   }
   
   async function saveChanges() {

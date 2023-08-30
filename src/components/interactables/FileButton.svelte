@@ -11,8 +11,8 @@
 
   async function onClick(e: MouseEvent) {
     const path = await dialog.open({
-      title: "Select your steam install",
-      directory: true,
+      title: "Select a file",
+      directory: false,
       multiple: false
     });
     if (path && path != "") onChange(path as string);
