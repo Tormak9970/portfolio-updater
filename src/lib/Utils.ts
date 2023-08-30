@@ -1,4 +1,6 @@
 import { fs, invoke, path, tauri } from "@tauri-apps/api";
+import { selectedCategory } from "src/stores";
+import { get } from "svelte/store";
 
 const scopeCache = [];
 
@@ -124,7 +126,8 @@ export async function uploadUrl(url: string) {
   const response = await fetch(url);
   const buffer = await response.arrayBuffer();
 
-  const imagesWebsiteDir = await path.join('img', 'projs');
+  const selectedCat = get(selectedCategory);
+  const imagesWebsiteDir = await path.join('images', selectedCat === 'Archive' ? "projects" : selectedCat.toLowerCase());
   const preFinalPath = await path.join(imagesWebsiteDir, name);
   const finalPath = await path.join(await path.dirname(configPath), preFinalPath);
 
@@ -136,7 +139,8 @@ export async function uploadUrl(url: string) {
   return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath), webUrl: "./" + preFinalPath.replaceAll("\\", "/") } });
 }
 export async function uploadFile(name:string, buffer: ArrayBuffer) {
-  const imagesWebsiteDir = await path.join('img', 'projs');
+  const selectedCat = get(selectedCategory);
+  const imagesWebsiteDir = await path.join('images', selectedCat === 'Archive' ? "projects" : selectedCat.toLowerCase());
   const preFinalPath = await path.join(imagesWebsiteDir, name);
   const finalPath = await path.join(await path.dirname(configPath), preFinalPath);
 
