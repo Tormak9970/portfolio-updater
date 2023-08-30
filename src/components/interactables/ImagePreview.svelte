@@ -1,19 +1,16 @@
 <script lang="ts">
-  import { dialog, fs, path, tauri } from "@tauri-apps/api";
+  import { fs, path, tauri } from "@tauri-apps/api";
 
   import { afterUpdate, onMount } from "svelte";
   import { configPath } from "../../lib/Utils";
   import TextInput from "./TextInput.svelte";
   import FileButton from "./FileButton.svelte";
+  import { selectedCategory } from "../../stores";
 
   export let label: string;
   export let placeholder: string;
   export let value: string;
   export let onChange: (path: string) => Promise<void> = async () => {};
-
-  let input: HTMLInputElement;
-
-  const changeEvnt = new Event("change");
 
   async function wrapper(e: Event) {
     await processPath((e.target as HTMLInputElement).value);
@@ -22,7 +19,7 @@
   async function processPath(filePath: string) {
     const relPath = await path.join(
       "./img",
-      "projs",
+      $selectedCategory === 'Archive' ? "projects" : $selectedCategory.toLowerCase(),
       await path.basename(filePath)
     );
     const tarPath = await path.join(await path.dirname(configPath), relPath);
