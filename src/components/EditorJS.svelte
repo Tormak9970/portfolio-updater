@@ -67,18 +67,25 @@
 		if (data) {
 			await Promise.all(
 				data.blocks.map(async (block: any) => {
-					if (block.type == "image" && block.data.file.url.indexOf("./") == 0) {
-						block.data.file.webUrl = block.data.file.url;
+					if (block.type === "image") {
+            if (block.data.file.url.indexOf("./") === 0) {
+              block.data.file.webUrl = block.data.file.url;
 
-            const targetPath = await path.join(await path.dirname(configPath), block.data.file.url);
-            
-            await addPathToScope(targetPath);
-            
-						block.data.file.url = tauri.convertFileSrc(targetPath);
-					}
+              const targetPath = await path.join(await path.dirname(configPath), block.data.file.url);
+              
+              await addPathToScope(targetPath);
+              console.log(`added ${targetPath} to scope.`)
+              
+              block.data.file.url = tauri.convertFileSrc(targetPath);
+            } else {
+              const targetPath = await path.join(await path.dirname(configPath), block.data.file.webUrl);
+                
+              await addPathToScope(targetPath);
+            }
 
-					return block;
-				})
+            return block;
+          }
+        })
 			);
 		}
 
