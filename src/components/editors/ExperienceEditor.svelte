@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { config, currentExperience, canSave } from "../../stores";
+  import { config, currentExperience, canSave, experienceList } from "../../stores";
   import { getKeyFromName, updateSettings, writeConfig } from "../../lib/Utils";
   import ImagePreview from "../interactables/ImagePreview.svelte";
   import TextArea from "../interactables/TextArea.svelte";
@@ -54,6 +54,13 @@
 
 		$config = cfg;
 		$canSave = false;
+
+    $experienceList = Object.entries($config.experience).map(([key, data]) => {
+      return {
+        key: key,
+				data: data,
+			}
+    });
   }
 </script>
 

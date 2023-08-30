@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { config, currentArt, canSave } from "../../stores";
+  import { config, currentArt, canSave, artList } from "../../stores";
   import { getKeyFromName, updateSettings, writeConfig } from "../../lib/Utils";
   import ImagePreview from "../interactables/ImagePreview.svelte";
   import TextInput from "../interactables/TextInput.svelte";
@@ -48,6 +48,13 @@
 
 		$config = cfg;
 		$canSave = false;
+    
+		$artList = Object.entries($config.art).map(([key, data]) => {
+      return {
+        key: key,
+				data: data,
+			}
+    });
   }
 </script>
 

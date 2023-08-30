@@ -123,6 +123,13 @@
 
 		$config = cfg;
 		$canSave = false;
+
+    $archiveList = Object.entries($config.archive).map(([key, data]) => {
+      return {
+        key: key,
+				data: data,
+			}
+    });
   }
 </script>
 

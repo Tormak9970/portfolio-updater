@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { config, currentOrganization, canSave } from "../../stores";
+  import { config, currentOrganization, canSave, organizationsList } from "../../stores";
   import { getKeyFromName, updateSettings, writeConfig } from "../../lib/Utils";
   import ImagePreview from "../interactables/ImagePreview.svelte";
   import MultiSelect from "../interactables/multi-select/MultiSelect.svelte";
@@ -65,6 +65,13 @@
 
 		$config = cfg;
 		$canSave = false;
+
+    $organizationsList = Object.entries($config.organizations).map(([key, data]) => {
+      return {
+        key: key,
+				data: data,
+			}
+    });
   }
 </script>
 

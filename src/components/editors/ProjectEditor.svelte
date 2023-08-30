@@ -133,6 +133,13 @@
 
 		$config = cfg;
 		$canSave = false;
+    
+		$projectsList = Object.entries($config.projects).map(([key, data]) => {
+      return {
+        key: key,
+				data: data,
+			}
+    });
   }
 </script>
 
