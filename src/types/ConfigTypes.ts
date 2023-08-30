@@ -36,7 +36,9 @@ export type OrganizationEntry = {
   link: string
 }
 
-export type EntryState<T extends ProjectEntry | ArtEntry | ExperienceEntry | OrganizationEntry> = {
+export type EntryUnion = ProjectEntry | ArtEntry | ExperienceEntry | OrganizationEntry;
+
+export type EntryState<T extends EntryUnion> = {
   original: string,
   key: string,
   data: T

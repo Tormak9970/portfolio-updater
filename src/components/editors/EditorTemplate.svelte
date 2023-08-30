@@ -1,12 +1,12 @@
 <script lang="ts">
   import { canSave, selectedCategory, showConfirmDeleteModal } from "../../stores";
   import type { Writable } from "svelte/store";
-  import type { EntryState, ProjectEntry, ArtEntry, ExperienceEntry, OrganizationEntry } from "../../types/ConfigTypes";
+  import type { EntryState, EntryUnion } from "../../types/ConfigTypes";
   import Button from "../interactables/Button.svelte";
   
   export let saveChanges: () => Promise<void>;
   export let emptyMessage: string;
-  export let curretStore: Writable<EntryState<ProjectEntry | ArtEntry | ExperienceEntry | OrganizationEntry>>;
+  export let curretStore: Writable<EntryState<EntryUnion>>;
   export let archiveFunction: () => Promise<void> | undefined = undefined;
 </script>
 

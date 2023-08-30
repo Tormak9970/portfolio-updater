@@ -63,7 +63,7 @@
   });
 </script>
 
-<div id="entry-{data.name}" class="entry">
+<div class="entry">
   <img
     src={imgPath && imgPath != "" ? tauri.convertFileSrc(imgPath) : ""}
     alt=""
@@ -94,8 +94,6 @@
     align-items: center;
 
     border-radius: 4px;
-
-    margin-bottom: 7px;
   }
 
   .entry > .info {

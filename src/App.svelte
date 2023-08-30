@@ -8,6 +8,9 @@
 
   import ConfirmDeleteModal from "./components/modals/ConfirmDeleteModal.svelte";
   import UnsavedChangesModal from "./components/modals/UnsavedChangesModal.svelte";
+
+  import {overrideItemIdKeyNameBeforeInitialisingDndZones as overrideSvelteDndKey} from "svelte-dnd-action";
+  overrideSvelteDndKey("key");
 </script>
 
 <div class="wrap">

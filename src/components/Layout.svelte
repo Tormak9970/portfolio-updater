@@ -1,16 +1,30 @@
 <script lang="ts">
+  import type { EntryUnion } from "src/types/ConfigTypes";
   import { selectedCategory, selectedKey } from "../stores";
 	import Entry from "./Entry.svelte";
   import GenerateNewEntry from "./utils/GenerateNewEntry.svelte";
 
-	type Data = {
+  import { flip } from "svelte/animate";
+  import { fade } from "svelte/transition";
+	import { cubicIn } from 'svelte/easing';
+  import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from "svelte-dnd-action";
+
+	type EntryData<T extends EntryUnion> = {
     key: string,
-		data:any
+		data: T
 	}
 
 	export let field: LowercaseCategory;
 	export let editor:any;
-	export let data:Data[];
+	export let data:EntryData<EntryUnion>[];
+
+  const animateDurationMS = 300;
+  function handleDndConsider(e) {
+    data = e.detail.items;
+  }
+  function handleDndFinalize(e) {
+    data = e.detail.items;
+  }
 </script>
 
 <div class="layout">
@@ -20,9 +34,13 @@
         <GenerateNewEntry />
       {/if}
 
-      {#each data as entry, i (`${entry.key}|${i}`)}
-        <Entry data={entry.data} key={entry.key} field={field} />
-      {/each}
+      <div class="dnd-zone" use:dndzone={{ items: data, flipDurationMs: animateDurationMS, dropTargetStyle: {} }} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>
+        {#each data as entry (entry.key)}
+          <div class="entry-wrapper" animate:flip={{ duration:animateDurationMS }}>
+            <Entry data={entry.data} key={entry.key} field={field} />
+          </div>
+        {/each}
+      </div>
     </div>
 	</div>
 	<div class="editor-container">
@@ -68,6 +86,16 @@
 
   .entries {
     height: auto;
+  }
+  .dnd-zone {
+    width: 100%;
+    min-height: 60px;
+  }
+  .entry-wrapper {
+    height: 60px;
+    min-width: 300px;
+    margin-bottom: 7px;
+    position: relative;
   }
 
 	.layout > .editor-container {

@@ -67,6 +67,9 @@ devDependencies:
   svelte-check:
     specifier: ^2.0.0
     version: 2.0.0(svelte@3.59.2)
+  svelte-dnd-action:
+    specifier: ^0.9.26
+    version: 0.9.26(svelte@3.59.2)
   svelte-preprocess:
     specifier: ^4.0.0
     version: 4.0.0(svelte@3.59.2)(typescript@4.7.2)
@@ -969,6 +972,14 @@ packages:
       - pug
       - sass
       - stylus
+    dev: true
+
+  /svelte-dnd-action@0.9.26(svelte@3.59.2):
+    resolution: {integrity: sha512-tTRiURPX4SHM3NDcnHniMu3LeLVWhfajgODZLmukBuBWpMmMHskLlCjEZGc91bzqaHr95agWWuvcpoSMmLbbRg==}
+    peerDependencies:
+      svelte: '>=3.23.0'
+    dependencies:
+      svelte: 3.59.2
     dev: true
 
   /svelte-editorjs@0.1.0(@editorjs/editorjs@2.22.2)(svelte@3.59.2):
