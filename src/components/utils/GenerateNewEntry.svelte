@@ -26,8 +26,8 @@
           "content": {},
           "link": "",
           "isRelative": false,
-          "img": "",
-          "org": "none"
+          "image": "",
+          "organization": "none"
         };
         $currentProject = {
           "original": "New Project",
@@ -40,7 +40,7 @@
       case "Art":
         const newArt = {
           "name": "New Art",
-          "img": "",
+          "image": "",
           "description": ""
         }
         $currentArt = {
@@ -55,7 +55,7 @@
         const newExperience = {
           "company": "new",
           "position": "experience",
-          "img": "",
+          "image": "",
           "description": ""
         }
         $currentExperience = {
@@ -71,7 +71,7 @@
           "name": "New Organization",
           "about": "",
           "description": "",
-          "img": "",
+          "image": "",
           "link": "",
           "projects": []
         }

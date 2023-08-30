@@ -18,7 +18,7 @@ const DEFAULT_SETTINGS = {
       "content": {},
       "link": "",
       "isRelative": false,
-      "img": "",
+      "image": "",
       "org": ""
     }
   },
@@ -27,7 +27,7 @@ const DEFAULT_SETTINGS = {
     "key": "",
     "data": {
       "name": "",
-      "img": "",
+      "image": "",
       "description": ""
     }
   },
@@ -36,7 +36,7 @@ const DEFAULT_SETTINGS = {
     "key": "",
     "data": {
       "company": "",
-      "img": "",
+      "image": "",
       "position": "",
       "description": ""
     }
@@ -46,7 +46,7 @@ const DEFAULT_SETTINGS = {
     "key": "",
     "data": {
       "name": "",
-      "img": "",
+      "image": "",
       "about": "",
       "description": "",
       "projects": []
@@ -65,7 +65,7 @@ const DEFAULT_SETTINGS = {
       "content": {},
       "link": "",
       "isRelative": false,
-      "img": "",
+      "image": "",
       "org": ""
     }
   }

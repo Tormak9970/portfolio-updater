@@ -21,8 +21,8 @@ export const currentProject = writable<EntryState<ProjectEntry>>({
     "content": {},
     "link": "",
     "isRelative": false,
-    "img": "",
-    "org": ""
+    "image": "",
+    "organization": ""
   }
 });
 export const currentArt = writable<EntryState<ArtEntry>>({
@@ -30,7 +30,7 @@ export const currentArt = writable<EntryState<ArtEntry>>({
   "key": "",
   "data": {
     "name": "",
-    "img": "",
+    "image": "",
     "description": ""
   }
 });
@@ -39,7 +39,7 @@ export const currentExperience = writable<EntryState<ExperienceEntry>>({
   "key": "",
   "data": {
     "company": "",
-    "img": "",
+    "image": "",
     "position": "",
     "description": ""
   }
@@ -49,7 +49,7 @@ export const currentOrganization = writable<EntryState<OrganizationEntry>>({
   "key": "",
   "data": {
     "name": "",
-    "img": "",
+    "image": "",
     "about": "",
     "description": "",
     "projects": [],
@@ -69,8 +69,8 @@ export const currentArchive = writable<EntryState<ProjectEntry>>({
     "content": {},
     "link": "",
     "isRelative": false,
-    "img": "",
-    "org": ""
+    "image": "",
+    "organization": ""
   }
 });
 

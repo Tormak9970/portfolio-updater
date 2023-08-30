@@ -5,9 +5,7 @@
   import GenerateNewEntry from "./utils/GenerateNewEntry.svelte";
 
   import { flip } from "svelte/animate";
-  import { fade } from "svelte/transition";
-	import { cubicIn } from 'svelte/easing';
-  import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from "svelte-dnd-action";
+  import { dndzone } from "svelte-dnd-action";
 
 	type EntryData<T extends EntryUnion> = {
     key: string,
@@ -24,6 +22,12 @@
   }
   function handleDndFinalize(e) {
     data = e.detail.items;
+    console.log("orderedItems:", data.map((entry, i) => {
+      return {
+        key: entry.key,
+        index: i
+      }
+    }));
   }
 </script>
 

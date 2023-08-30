@@ -10,26 +10,26 @@ export type ProjectEntry = {
   content: OutputData | any,
   link: string,
   isRelative: boolean,
-  img: string,
-  org: string
+  image: string,
+  organization: string
 }
 
 export type ArtEntry = {
   name: string,
-  img: string,
+  image: string,
   description: string
 }
 
 export type ExperienceEntry = {
   company: string,
-  img: string,
+  image: string,
   position: string,
   description: string
 }
 
 export type OrganizationEntry = {
   name: string,
-  img: string,
+  image: string,
   about: string,
   description: string,
   projects: { name: string, linkId: string }[],

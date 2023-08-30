@@ -17,13 +17,13 @@
 
   const organizations = $config.organizations ?[ { label: "none", data: "none" }, ...Object.keys($config.organizations).map((entry: string) => { return { label: entry, data: entry } }) ] : [];
 
-  let image = $currentArchive.data.img;
+  let image = $currentArchive.data.image;
   let name = $currentArchive.data.name;
   let time = $currentArchive.data.time;
   let link = $currentArchive.data.link;
 
   let category = $currentArchive.data.category;
-  let organization = $currentArchive.data.org;
+  let organization = $currentArchive.data.organization;
   let status = $currentArchive.data.status;
   let difficulty = $currentArchive.data.difficulty;
 
@@ -58,8 +58,8 @@
         content: {},
         link: "",
         isRelative: false,
-        img: "",
-        org: "",
+        image: "",
+        organization: "",
       },
     };
 
@@ -105,8 +105,8 @@
       content: content,
       link: link,
       isRelative: $currentProject.data.isRelative,
-      img: image,
-      org: organization
+      image: image,
+      organization: organization
     }
 
 		$currentArchive = {

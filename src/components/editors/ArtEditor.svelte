@@ -9,7 +9,7 @@
   import type { ArtEntry } from "../../types/ConfigTypes";
 
   let name = $currentArt.data.name;
-  let image = $currentArt.data.img;
+  let image = $currentArt.data.image;
   let description = $currentArt.data.description;
 
   async function allowSave() {
@@ -30,7 +30,7 @@
 
     const changedArt: ArtEntry = {
       name: name,
-      img: image,
+      image: image,
       description: description
     }
 

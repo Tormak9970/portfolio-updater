@@ -10,7 +10,7 @@
 
   let company = $currentExperience.data.company;
   let position = $currentExperience.data.position;
-  let image = $currentExperience.data.img;
+  let image = $currentExperience.data.image;
   let description = $currentExperience.data.description;
 
   async function allowSave() {
@@ -36,7 +36,7 @@
     const changedExperience: ExperienceEntry = {
       company: company,
       position: position,
-      img: image,
+      image: image,
       description: description
     }
 

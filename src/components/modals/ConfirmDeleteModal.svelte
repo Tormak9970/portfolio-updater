@@ -21,8 +21,8 @@
             content: {},
             link: "",
             isRelative: false,
-            img: "",
-            org: "",
+            image: "",
+            organization: "",
           },
         };
         await updateSettings({ prop: "currentProject", data: $currentProject });
@@ -34,7 +34,7 @@
           key: "",
           data: {
             name: "",
-            img: "",
+            image: "",
             description: "",
           },
         };
@@ -47,7 +47,7 @@
           key: "",
           data: {
             company: "",
-            img: "",
+            image: "",
             position: "",
             description: "",
           },
@@ -61,7 +61,7 @@
           key: "",
           data: {
             name: "",
-            img: "",
+            image: "",
             about: "",
             description: "",
             projects: [],
@@ -85,8 +85,8 @@
             content: {},
             link: "",
             isRelative: false,
-            img: "",
-            org: "",
+            image: "",
+            organization: "",
           },
         };
         await updateSettings({ prop: "currentArchive", data: $currentArchive });

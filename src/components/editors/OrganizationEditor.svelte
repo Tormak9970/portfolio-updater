@@ -20,7 +20,7 @@
   }
 
   let name = $currentOrganization.data.name;
-  let image = $currentOrganization.data.img;
+  let image = $currentOrganization.data.image;
   let link = $currentOrganization.data.link;
   let about = $currentOrganization.data.about;
   let description = $currentOrganization.data.description;
@@ -44,7 +44,7 @@
 
     const changedOrganization: OrganizationEntry = {
       name: name,
-      img: image,
+      image: image,
       link: link,
       about: about,
       description: description,
