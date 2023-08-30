@@ -67,8 +67,8 @@
 
 
   --font-color: var(--srcery-bright-white);
-  --link-color: var(--srcery-blue);
-  --link-color_clicked: #005eff;
+  --link-color: var(--srcery-light-blue);
+  --link-color-clicked: #3395f0;
 
   --warning: #e24a4a;
   --warning-hover: #e61d1d;

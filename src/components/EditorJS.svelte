@@ -143,6 +143,13 @@
 		background-color: transparent;
 	}
 
+  :global(a) {
+    color: var(--srcery-bright-blue);
+  }
+  :global(a:hover, a:visited) {
+    color: var(--link-color-clicked);
+  }
+
   :global(::selection) {
     background-color: #4f6e85;
   }
