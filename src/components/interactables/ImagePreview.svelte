@@ -6,6 +6,7 @@
   import TextInput from "./TextInput.svelte";
   import FileButton from "./FileButton.svelte";
   import { selectedCategory } from "../../stores";
+    import { toast } from "@zerodevx/svelte-toast";
 
   export let label: string;
   export let placeholder: string;
@@ -18,17 +19,22 @@
 
   async function processPath(filePath: string) {
     const relPath = await path.join(
-      "./img",
+      "./images",
       $selectedCategory === 'Archive' ? "projects" : $selectedCategory.toLowerCase(),
       await path.basename(filePath)
     );
     const tarPath = await path.join(await path.dirname(configPath), relPath);
-    await fs.copyFile(filePath, tarPath);
 
-    value = `./${relPath.replaceAll("\\", "/")}`;
-    imgPath = tarPath;
+    if (await fs.exists(tarPath)) {
+      toast.push("image with that name already exists!");
+    } else {
+      await fs.copyFile(filePath, tarPath);
 
-    await onChange(value);
+      value = `./${relPath.replaceAll("\\", "/")}`;
+      imgPath = tarPath;
+
+      await onChange(value);
+    }
   }
 
   let imgPath = "";
