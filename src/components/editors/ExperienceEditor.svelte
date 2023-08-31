@@ -34,7 +34,7 @@
 		}
 
     const changedExperience: ExperienceEntry = {
-      index: 0,
+      index: $currentExperience.data.index,
       company: company,
       position: position,
       image: image,

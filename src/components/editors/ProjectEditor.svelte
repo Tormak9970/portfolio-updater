@@ -107,7 +107,7 @@
 		}
 
     const changedProject: ProjectEntry = {
-      index: 0,
+      index: $currentProject.data.index,
       category: category,
       name: name,
       time: time,

@@ -43,7 +43,7 @@
 		}
 
     const changedOrganization: OrganizationEntry = {
-      index: 0,
+      index: $currentOrganization.data.index,
       name: name,
       image: image,
       link: link,

@@ -29,7 +29,7 @@
 		}
 
     const changedArt: ArtEntry = {
-      index: 0,
+      index: $currentArt.data.index,
       name: name,
       image: image,
       description: description

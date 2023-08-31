@@ -97,7 +97,7 @@
 		}
 
     const changedArchivedProject: ProjectEntry = {
-      index: 0,
+      index: $currentArchive.data.index,
       category: category,
       name: name,
       time: time,
