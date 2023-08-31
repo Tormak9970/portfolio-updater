@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { dialog } from "@tauri-apps/api";
+  import { dialog, path } from "@tauri-apps/api";
   import { config, showSetup } from "../stores";
-  import { getConfig, updateSettings } from "../lib/Utils";
+  import { addPathToScope, getConfig, updateSettings } from "../lib/Utils";
   import Button from "./interactables/Button.svelte";
 
   async function onClick() {
@@ -12,6 +12,8 @@
 
       if (configFile) {
         const cfg = await getConfig(configFile);
+
+        await addPathToScope(await path.dirname(configFile));
 
         await updateSettings({ prop: "configPath", data: configFile });
 

@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { fs } from "@tauri-apps/api";
+  import { fs, path } from "@tauri-apps/api";
 
   import { appWindow } from "@tauri-apps/api/window";
   import { afterUpdate, onMount } from "svelte";
   import { selectedCategory, config, showSetup, currentProject, currentArt, currentExperience, currentOrganization, currentArchive, canSave, showUnsavedChangesModal } from "../stores";
   import {
+    addPathToScope,
     getConfig,
     setSettingsPath,
     settingsPath,
@@ -56,6 +57,7 @@
     $currentArchive = settings.currentArchive;
 
     const cfg = await getConfig(settings.configPath);
+    await addPathToScope(await path.dirname(settings.configPath));
 
     if (!cfg) {
       $showSetup = true;

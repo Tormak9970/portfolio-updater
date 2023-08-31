@@ -6,7 +6,7 @@
   import TextInput from "./TextInput.svelte";
   import FileButton from "./FileButton.svelte";
   import { selectedCategory } from "../../stores";
-    import { toast } from "@zerodevx/svelte-toast";
+  import { toast } from "@zerodevx/svelte-toast";
 
   export let label: string;
   export let placeholder: string;
