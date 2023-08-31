@@ -1,6 +1,6 @@
 <script lang="ts">
   import { updateSettings, writeConfig } from "../../lib/Utils";
-  import { config, currentArchive, currentArt, currentExperience, currentOrganization, currentProject, selectedCategory, showConfirmDeleteModal } from "../../stores";
+  import { archiveList, artList, config, currentArchive, currentArt, currentExperience, currentOrganization, currentProject, experienceList, organizationsList, projectsList, selectedCategory, showConfirmDeleteModal } from "../../stores";
   import ModalBody from "./ModalBody.svelte";
   import Button from "../interactables/Button.svelte";
 
@@ -27,6 +27,12 @@
           },
         };
         await updateSettings({ prop: "currentProject", data: $currentProject });
+        $projectsList = Object.entries($config.projects).map(([key, data]) => {
+          return {
+            key: key,
+            data: data,
+          }
+        });
         break;
       case "Art":
         delete $config[$selectedCategory.toLowerCase()][$currentArt.key];
@@ -41,6 +47,12 @@
           },
         };
         await updateSettings({ prop: "currentArt", data: $currentArt });
+        $artList = Object.entries($config.art).map(([key, data]) => {
+          return {
+            key: key,
+            data: data,
+          }
+        });
         break;
       case "Experience":
         delete $config[$selectedCategory.toLowerCase()][$currentExperience.key];
@@ -56,6 +68,12 @@
           },
         };
         await updateSettings({ prop: "currentExperience", data: $currentExperience });
+        $experienceList = Object.entries($config.experience).map(([key, data]) => {
+          return {
+            key: key,
+            data: data,
+          }
+        });
         break;
       case "Organizations":
         delete $config[$selectedCategory.toLowerCase()][$currentOrganization.key];
@@ -73,6 +91,12 @@
           },
         };
         await updateSettings({ prop: "currentOrganization", data: $currentOrganization });
+        $organizationsList = Object.entries($config.organizations).map(([key, data]) => {
+          return {
+            key: key,
+            data: data,
+          }
+        });
         break;
       case "Archive":
         delete $config[$selectedCategory.toLowerCase()][$currentArchive.key];
@@ -95,6 +119,12 @@
           },
         };
         await updateSettings({ prop: "currentArchive", data: $currentArchive });
+        $archiveList = Object.entries($config.archive).map(([key, data]) => {
+          return {
+            key: key,
+            data: data,
+          }
+        });
         break;
     }
 
