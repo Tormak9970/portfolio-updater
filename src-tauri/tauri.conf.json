@@ -17,40 +17,14 @@
 			"fs": {
 				"all": true,
 				"scope": [
-					"$APP",
-					"$APP/**",
-					"$DESKTOP",
-					"$DESKTOP/**",
-					"$RESOURCE",
-					"$RESOURCE/**",
-					"$APPCONFIG",
-					"$APPCONFIG/**",
-					"$DATA",
-					"$DATA/**",
-					"$APPLOG",
-					"$APPLOG/**",
-					"$APPCACHE",
-					"$APPCACHE/**"
+					"*"
 				]
 			},
 			"protocol": {
 				"all": true,
 				"asset": true,
 				"assetScope": [
-					"$APP",
-					"$APP/**",
-					"$DESKTOP",
-					"$DESKTOP/**",
-					"$RESOURCE",
-					"$RESOURCE/**",
-					"$APPCONFIG",
-					"$APPCONFIG/**",
-					"$DATA",
-					"$DATA/**",
-					"$APPLOG",
-					"$APPLOG/**",
-					"$APPCACHE",
-					"$APPCACHE/**"
+					"*"
 				]
 			},
 			"window": {
@@ -98,7 +72,7 @@
         "fullscreen": false,
         "height": 750,
         "resizable": true,
-        "title": "Portfolio Updater",
+        "title": "Portfolio Editor",
         "width": 1500,
         "decorations": false,
         "center": true

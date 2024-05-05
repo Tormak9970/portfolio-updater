@@ -1,15 +1,12 @@
 <script lang="ts">
 	import { afterUpdate, onMount } from "svelte";
 
-	import { config, selectedCategory, archiveList, artList, experienceList, organizationsList, projectsList } from "../stores";
+	import { config, selectedCategory, experienceList, projectsList } from "../stores";
 
 	import Layout from "./Layout.svelte";
 
 	import ProjectEditor from "./editors/ProjectEditor.svelte";
-  import ArtEditor from "./editors/ArtEditor.svelte";
   import ExperienceEditor from "./editors/ExperienceEditor.svelte";
-  import OrganizationEditor from "./editors/OrganizationEditor.svelte";
-  import ArchiveEditor from "./editors/ArchiveEditor.svelte";
 
   const configs = {
     "Projects": {
