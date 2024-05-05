@@ -19,7 +19,7 @@
   import VerticalSpacer from "../utils/VerticalSpacer.svelte";
   import type { ProjectEntry } from "src/types/ConfigTypes";
   import EditorTemplate from "./EditorTemplate.svelte";
-    import Tags from "../interactables/Tags.svelte";
+  import TagsInput from "../interactables/tags/TagsInput.svelte";
 
   let image = $currentProject.data.image;
   let name = $currentProject.data.name;
@@ -103,11 +103,12 @@
       placeholder={"A link to the project"}
       bind:value={link}
       onChange={allowSave}
+      width={200}
     />
 
     <VerticalSpacer />
     
-    <Tags
+    <TagsInput
       label="Tech"
       bind:value={tech}
       onChange={allowSave}
