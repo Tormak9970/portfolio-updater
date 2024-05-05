@@ -1,4 +1,4 @@
-import { fs, invoke, path, tauri } from "@tauri-apps/api";
+import { fs, path, tauri } from "@tauri-apps/api";
 
 const DEFAULT_SETTINGS = {
   "configPath": "",
@@ -110,4 +110,8 @@ export async function uploadFile(name:string, buffer: ArrayBuffer) {
 
 export function getKeyFromName(name: string): string {
   return name.toLowerCase().replaceAll(" ", "-").replaceAll("'", "");
+}
+
+export function genExperienceKey(company: string, position: string): string {
+  return [getKeyFromName(company), getKeyFromName(position)].join("-");
 }

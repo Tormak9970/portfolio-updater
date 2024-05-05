@@ -3,7 +3,7 @@
 
   import { onMount } from "svelte";
   import { currentExperience, currentProject, selectedCategory, selectedKey } from "../stores";
-  import { configPath, updateSettings } from "../lib/Utils";
+  import { configPath, genExperienceKey, updateSettings } from "../lib/Utils";
   import Button from "./interactables/Button.svelte";
 
   export let data: any;
@@ -21,16 +21,18 @@
     const lutEntry = fieldStateLUT[field];
 
     const newData = {
-      "original": data.name,
+      "original": "",
       "key": key,
       "data": data
     }
     
     switch($selectedCategory) {
       case "Projects":
+        newData.original = data.name;
         $currentProject = newData;
         break;
       case "Experience":
+        newData.original = genExperienceKey(data.company, data.position);
         $currentExperience = newData;
         break;
     }
@@ -40,22 +42,26 @@
   }
 
   onMount(async () => {
-    const tmpPath = await path.join(
-      await path.dirname(configPath),
-      data.image.substring(2)
-    );
+    if ($selectedCategory === "Projects") {
+      const tmpPath = await path.join(
+        await path.dirname(configPath),
+        data.image.substring(2)
+      );
 
-    imgPath = tmpPath;
+      imgPath = tmpPath;
+    }
   });
 </script>
 
 <div class="entry">
-  <img
-    src={imgPath && imgPath != "" ? tauri.convertFileSrc(imgPath) : ""}
-    alt=""
-    style="width: 40px; margin: 0px 7px;"
-  />
-  <div class="info">
+  {#if imgPath}
+    <img
+      src={imgPath && imgPath != "" ? tauri.convertFileSrc(imgPath) : ""}
+      alt=""
+      style="width: 40px; margin: 0px 7px;"
+    />
+  {/if}
+  <div class="info" style="{$selectedCategory === "Experience" ? "margin-left: 10px" : ""}">
     <div class="field">{$selectedCategory === "Experience" ? data.position : data.name}</div>
   </div>
   <div class="btn-cont">

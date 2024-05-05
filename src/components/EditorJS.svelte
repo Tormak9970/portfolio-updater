@@ -131,10 +131,13 @@
 	}
 
   :global(a) {
-    color: var(--srcery-bright-blue);
+    color: var(--link-color);
+    font-weight: bold;
+    text-decoration: none;
   }
   :global(a:hover, a:visited) {
     color: var(--link-color-clicked);
+    text-decoration: underline;
   }
 
   :global(::selection) {
@@ -146,6 +149,7 @@
 	}
 	:global(.codex-editor__redactor) {
 		padding-bottom: 60px !important;
+    margin-right: 20px !important;
 	}
 	
   :global(.ce-toolbar__settings-btn) {
@@ -166,11 +170,19 @@
   :global(.ce-toolbar__plus, .ce-toolbox__button) {
     color: var(--font-color);
   }
+  :global(.ce-toolbox--opened .ce-toolbox__button) {
+    color: var(--font-color);
+    background-color: var(--foreground);
+  }
+  :global(.ce-toolbox__button:hover) {
+    color: var(--font-color);
+    background-color: var(--foreground-hover) !important;
+  }
   :global(.ce-toolbar__plus--active, .ce-toolbar__plus:hover) {
-    color: var(--srcery-bright-blue);
+    color: var(--link-color);
   }
   :global(.ce-toolbox__button--active) {
-    color: var(--srcery-bright-blue);
+    color: var(--link-color);
   }
 
   :global(.ce-settings) {
@@ -187,7 +199,7 @@
     color: var(--font-color);
   }
   :global(.cdx-settings-button--active) {
-    color: var(--srcery-bright-blue);
+    color: var(--link-color);
   }
   :global(.cdx-settings-button:hover) {
     background-color: var(--foreground-hover);

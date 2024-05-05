@@ -7,7 +7,7 @@
   export let saveChanges: () => Promise<void>;
   export let emptyMessage: string;
   export let curretStore: Writable<EntryState<EntryUnion>>;
-  export let archiveFunction: () => Promise<void> | undefined = undefined;
+  export let useFields = true;
 </script>
 
 <div class="editor-template">
@@ -18,20 +18,18 @@
         <Button label="Save" width="90px" height="30px" highlight onClick={saveChanges} />
         <div style="height: 1px; width: 10px" />
       {/if}
-      {#if archiveFunction}
-        <Button label={$selectedCategory === "Projects" ? "Archive" : "Unarchive"} width="90px" height="30px" warn onClick={archiveFunction} />
-        <div style="height: 1px; width: 10px" />
-      {/if}
       <Button label="Delete" width="90px" height="30px" warn onClick={() => $showConfirmDeleteModal = true} />
     </div>
   </div>
   <div class="content" class:hide={$curretStore.original === ""}>
-    <div class="fields">
-      <h3>Fields</h3>
-      <div class="scroll-container">
-        <slot name="fields" />
+    {#if useFields}
+      <div class="fields">
+        <h3>Fields</h3>
+        <div class="scroll-container">
+          <slot name="fields" />
+        </div>
       </div>
-    </div>
+    {/if}
     <div class="editor">
       <h3>Writeup</h3>
       <div class="scroll-container">
@@ -113,8 +111,10 @@
   }
 
   .scroll-container {
+    padding-right: 7px;
     height: calc(100% - 25px);
     overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   .hide {

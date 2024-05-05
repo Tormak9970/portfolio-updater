@@ -4,7 +4,6 @@
 	import {
 		config,
     canSave,
-		selectedCategory,
     currentProject,
     projectsList
 	} from "../../stores";
@@ -15,16 +14,17 @@
 	} from "../../lib/Utils";
 	import ImagePreview from "../interactables/ImagePreview.svelte";
   import TextInput from "../interactables/TextInput.svelte";
-  import DropDown from "../interactables/DropDown.svelte";
+  import TextArea from "../interactables/TextArea.svelte";
   import EditorJs from "../EditorJS.svelte";
   import VerticalSpacer from "../utils/VerticalSpacer.svelte";
   import type { ProjectEntry } from "src/types/ConfigTypes";
   import EditorTemplate from "./EditorTemplate.svelte";
+    import Tags from "../interactables/Tags.svelte";
 
   let image = $currentProject.data.image;
   let name = $currentProject.data.name;
   let link = $currentProject.data.link;
-
+  let description = $currentProject.data.description;
   let tech = $currentProject.data.tech;
 
   let content = $currentProject.data.content as OutputData;
@@ -48,7 +48,7 @@
     const changedProject: ProjectEntry = {
       index: $currentProject.data.index,
       name: name,
-      description: content.blocks[1].data.text,
+      description: description,
       content: content,
       link: link,
       image: image,
@@ -107,9 +107,20 @@
 
     <VerticalSpacer />
     
-    <!-- TODO: set tech -->
+    <Tags
+      label="Tech"
+      bind:value={tech}
+      onChange={allowSave}
+    />
   </div>
   <div slot="editor">
+    <TextArea
+      label={"Short Description"}
+      placeholder="A short description of the project"
+      bind:value={description}
+      onChange={allowSave}
+    />
+
     <EditorJs onChange={allowSave} bind:content={content} />
   </div>
 </EditorTemplate>
