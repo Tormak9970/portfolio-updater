@@ -5,7 +5,7 @@
     "email": "Tormak9970@gmail.com"
   },
   "description": "A small application for portfolio management.",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "type": "module",
   "private": true,
   "scripts": {
@@ -17,17 +17,16 @@
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.0",
-    "@tauri-apps/api": "^1.2.0",
-    "@tsconfig/svelte": "^2.0.0",
+    "@tauri-apps/cli": "^1.5.10",
+    "@tsconfig/svelte": "^3.0.0",
     "@types/node": "^20.3.1",
     "@zerodevx/svelte-toast": "^0.7.2",
-    "as-toast": "^1.0.0",
     "svelte": "^3.59.2",
-    "svelte-check": "^2.0.0",
+    "svelte-check": "^3.0.0",
     "svelte-dnd-action": "^0.9.26",
-    "svelte-preprocess": "^4.0.0",
-    "tslib": "^2.0.0",
-    "typescript": "^4.7.2",
+    "svelte-preprocess": "^5.0.0",
+    "tslib": "^2.4.1",
+    "typescript": "^4.6.4",
     "vite": "^4.0.0"
   },
   "dependencies": {
@@ -43,8 +42,5 @@
     "@tauri-apps/cli": "^1.2.2",
     "sirv-cli": "^2.0.0",
     "svelte-editorjs": "^0.1.0"
-  },
-  "peerDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^2.0.0"
   }
 }

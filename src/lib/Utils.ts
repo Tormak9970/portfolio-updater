@@ -1,8 +1,4 @@
 import { fs, invoke, path, tauri } from "@tauri-apps/api";
-import { selectedCategory } from "../stores";
-import { get } from "svelte/store";
-
-const scopeCache = [];
 
 const DEFAULT_SETTINGS = {
   "configPath": "",
@@ -11,64 +7,26 @@ const DEFAULT_SETTINGS = {
     "original": "",
     "key": "",
     "data": {
+      "index": 0,
       "name": "",
       "category": "",
-      "time": "",
-      "status": "",
-      "difficulty": "",
+      "tech": [],
       "description": "",
       "content": {},
       "link": "",
-      "isRelative": false,
       "image": "",
-      "org": ""
-    }
-  },
-  "currentArt": {
-    "original": "",
-    "key": "",
-    "data": {
-      "name": "",
-      "image": "",
-      "description": ""
     }
   },
   "currentExperience": {
     "original": "",
     "key": "",
     "data": {
+      "index": 0,
       "company": "",
-      "image": "",
       "position": "",
+      "duration": "",
+      "companyLink": "",
       "description": ""
-    }
-  },
-  "currentOrganization": {
-    "original": "",
-    "key": "",
-    "data": {
-      "name": "",
-      "image": "",
-      "about": "",
-      "description": "",
-      "projects": []
-    }
-  },
-  "currentArchive": {
-    "original": "",
-    "key": "",
-    "data": {
-      "name": "",
-      "category": "",
-      "time": "",
-      "status": "",
-      "difficulty": "",
-      "description": "",
-      "content": {},
-      "link": "",
-      "isRelative": false,
-      "image": "",
-      "org": ""
     }
   }
 }
@@ -101,8 +59,6 @@ export async function updateSettings(data: { prop: string, data: any }) {
   await fs.writeTextFile(settingsPath, JSON.stringify(settings));
 }
 export async function getConfig(cfgPath: string) {
-  await addPathToScope(cfgPath);
-
   if (cfgPath !== "" && await fs.exists(cfgPath)) {
     const contents = await fs.readTextFile(cfgPath);
     configPath = cfgPath;
@@ -120,14 +76,14 @@ export async function writeConfig(data: string) {
     console.log(e);
   }
 }
+
 export async function uploadUrl(url: string) {
   const name = url.substring(url.lastIndexOf("/") + 1);
 
   const response = await fetch(url);
   const buffer = await response.arrayBuffer();
 
-  const selectedCat = get(selectedCategory);
-  const imagesWebsiteDir = await path.join('images', selectedCat === 'Archive' ? "projects" : selectedCat.toLowerCase());
+  const imagesWebsiteDir = await path.join('images', "projects");
   const preFinalPath = await path.join(imagesWebsiteDir, name);
   const finalPath = await path.join(await path.dirname(configPath), preFinalPath);
 
@@ -136,11 +92,11 @@ export async function uploadUrl(url: string) {
     contents: new Uint8Array(buffer)
   });
 
-  return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath), webUrl: "./" + preFinalPath.replaceAll("\\", "/") } });
+  return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath) } });
 }
+
 export async function uploadFile(name:string, buffer: ArrayBuffer) {
-  const selectedCat = get(selectedCategory);
-  const imagesWebsiteDir = await path.join('images', selectedCat === 'Archive' ? "projects" : selectedCat.toLowerCase());
+  const imagesWebsiteDir = await path.join('images', "projects");
   const preFinalPath = await path.join(imagesWebsiteDir, name);
   const finalPath = await path.join(await path.dirname(configPath), preFinalPath);
 
@@ -149,15 +105,7 @@ export async function uploadFile(name:string, buffer: ArrayBuffer) {
     contents: new Uint8Array(buffer)
   });
 
-  return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath), webUrl: "./" + preFinalPath.replaceAll("\\", "/") } });
-}
-
-export async function addPathToScope(filePath: string) {
-  if (scopeCache.includes(filePath)) return true;
-  const res = await invoke<boolean>("add_path_to_scope", { targetPath: filePath });
-
-  if (res) scopeCache.push(filePath);
-  return res;
+  return JSON.stringify({ success: 1, file: { url: tauri.convertFileSrc(finalPath) } });
 }
 
 export function getKeyFromName(name: string): string {

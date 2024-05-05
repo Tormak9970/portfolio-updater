@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { SvelteToast } from "@zerodevx/svelte-toast";
-	import { showConfirmDeleteModal, showSetup, showUnsavedChangesModal } from "./stores";
+	import { showConfirmDeleteModal, showSetup, showUnsavedChangesModal, windowIsMaximized } from "./stores";
 
 	import Titlebar from "./components/Titlebar.svelte";
 	import Setup from "./components/Setup.svelte";
@@ -17,7 +17,7 @@
 	<SvelteToast target="top" options={{ initial: 0, intro: { y: -64 } }} />
 </div>
 <main>
-	<Titlebar />
+	<Titlebar bind:isMaxed={$windowIsMaximized} />
 	<div class="content">
 		<svelte:component this={$showSetup ? Setup : Core}/>
 	
@@ -32,8 +32,6 @@
 <SvelteToast />
 
 <style>
-	@import "/theme.css";
-
 	main {
 		width: 100%;
 		height: 100%;

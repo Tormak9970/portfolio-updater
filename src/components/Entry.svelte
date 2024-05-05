@@ -2,8 +2,8 @@
   import { path, tauri } from "@tauri-apps/api";
 
   import { onMount } from "svelte";
-  import { currentArchive, currentArt, currentExperience, currentOrganization, currentProject, selectedCategory, selectedKey } from "../stores";
-  import { addPathToScope, configPath, updateSettings } from "../lib/Utils";
+  import { currentExperience, currentProject, selectedCategory, selectedKey } from "../stores";
+  import { configPath, updateSettings } from "../lib/Utils";
   import Button from "./interactables/Button.svelte";
 
   export let data: any;
@@ -14,10 +14,7 @@
 
   const fieldStateLUT = {
     "projects": "currentProject",
-    "art": "currentArt",
     "experience": "currentExperience",
-    "organizations": "currentOrganization",
-    "archive": "currentArchive"
   }
 
   async function setState() {
@@ -33,17 +30,8 @@
       case "Projects":
         $currentProject = newData;
         break;
-      case "Art":
-        $currentArt = newData;
-        break;
       case "Experience":
         $currentExperience = newData;
-        break;
-      case "Organizations":
-        $currentOrganization = newData;
-        break;
-      case "Archive":
-        $currentArchive = newData;
         break;
     }
 
@@ -56,8 +44,6 @@
       await path.dirname(configPath),
       data.image.substring(2)
     );
-
-    if (tmpPath && tmpPath != "") await addPathToScope(tmpPath);
 
     imgPath = tmpPath;
   });
@@ -74,13 +60,11 @@
   </div>
   <div class="btn-cont">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <Button label="Edit" onClick={setState} highlight height="30px" width="60px" />
+    <Button label="Edit" onClick={setState} height="30px" width="60px" />
   </div>
 </div>
 
 <style>
-  @import "/theme.css";
-
   .entry {
     height: 60px;
     min-width: 300px;

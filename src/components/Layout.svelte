@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { EntryUnion } from "../types/ConfigTypes";
-  import { config, selectedCategory, selectedKey } from "../stores";
+  import { config, selectedKey } from "../stores";
 	import Entry from "./Entry.svelte";
   import GenerateNewEntry from "./utils/GenerateNewEntry.svelte";
 
@@ -41,9 +41,7 @@
 <div class="layout">
 	<div class="entries-container">
 		<div class="entries">
-      {#if $selectedCategory !== "Archive"}
-        <GenerateNewEntry />
-      {/if}
+      <GenerateNewEntry />
 
       <div class="dnd-zone" use:dndzone={{ items: data, flipDurationMs: animateDurationMS, dropTargetStyle: {} }} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>
         {#each data as entry (entry.key)}

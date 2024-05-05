@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { tauri, path } from "@tauri-apps/api";
 	import type { OutputData } from "@editorjs/editorjs";
 	import Header from "@editorjs/header";
 	import Code from "@editorjs/code";
@@ -10,8 +11,7 @@
 
   import { createEditor } from 'svelte-editorjs';
 
-	import { path, tauri } from "@tauri-apps/api";
-  import { addPathToScope, configPath, uploadFile, uploadUrl } from "../lib/Utils";
+  import { configPath, uploadFile, uploadUrl } from "../lib/Utils";
 
   export let onChange: (content: OutputData) => Promise<void> = async () => {};
   export let content: OutputData;
@@ -68,20 +68,9 @@
 			await Promise.all(
 				data.blocks.map(async (block: any) => {
 					if (block.type === "image") {
-            if (block.data.file.url.indexOf("./") === 0) {
-              block.data.file.webUrl = block.data.file.url;
-
-              const targetPath = await path.join(await path.dirname(configPath), block.data.file.url);
-              
-              await addPathToScope(targetPath);
-              console.log(`added ${targetPath} to scope.`)
-              
-              block.data.file.url = tauri.convertFileSrc(targetPath);
-            } else {
-              const targetPath = await path.join(await path.dirname(configPath), block.data.file.webUrl);
-                
-              await addPathToScope(targetPath);
-            }
+            const configPathDir = await path.dirname(configPath);
+            const imagePath = await path.join(configPathDir, "images", "projects", block.data.file.url);
+            block.data.file.url = tauri.convertFileSrc(imagePath);
 
             return block;
           }
@@ -95,10 +84,8 @@
 	function convertToWeb(data: OutputData) {
 		data.blocks = data.blocks.map((block) => {
 			if (block.type == "image") {
-				if (block.data.file.webUrl) {
-					block.data.file.url = block.data.file.webUrl;
-					delete block.data.file.webUrl;
-				}
+        const lastSplitIdx = block.data.file.url.lastIndexOf("%5C");
+        block.data.file.url = block.data.file.url.substring(lastSplitIdx + 3);
 			}
 
 			return block;

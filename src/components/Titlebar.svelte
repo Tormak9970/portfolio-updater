@@ -1,11 +1,9 @@
 <script lang="ts">
-  import { fs, path } from "@tauri-apps/api";
-
+  import { fs } from "@tauri-apps/api";
   import { appWindow } from "@tauri-apps/api/window";
   import { afterUpdate, onMount } from "svelte";
-  import { selectedCategory, config, showSetup, currentProject, currentArt, currentExperience, currentOrganization, currentArchive, canSave, showUnsavedChangesModal } from "../stores";
+  import { selectedCategory, config, showSetup, currentProject, currentExperience, canSave, showUnsavedChangesModal } from "../stores";
   import {
-    addPathToScope,
     getConfig,
     setSettingsPath,
     settingsPath,
@@ -18,7 +16,7 @@
   let maximize: HTMLDivElement;
   let close: HTMLDivElement;
 
-  let isMaxed = false;
+  export let isMaxed = false;
 
   let categories = [
     {
@@ -26,20 +24,8 @@
       data: "Projects"
     },
     {
-      label: "Art",
-      data: "Art"
-    },
-    {
       label: "Experience",
       data: "Experience"
-    },
-    {
-      label: "Organizations",
-      data: "Organizations"
-    },
-    {
-      label: "Archive",
-      data: "Archive"
     }
   ];
 
@@ -51,13 +37,9 @@
     $selectedCategory = settings.selectedCategory;
 
     $currentProject = settings.currentProject;
-    $currentArt = settings.currentArt;
     $currentExperience = settings.currentExperience;
-    $currentOrganization = settings.currentOrganization;
-    $currentArchive = settings.currentArchive;
 
     const cfg = await getConfig(settings.configPath);
-    await addPathToScope(await path.dirname(settings.configPath));
 
     if (!cfg) {
       $showSetup = true;
@@ -97,7 +79,7 @@
 <div data-tauri-drag-region class="titlebar">
   <div class="info">
     <img src="/logo.svg" alt="logo" height="15px" style="margin-left: 10px;" />
-    <div style="margin-left: 10px; margin-right: 30px;">Portfolio Updater</div>
+    <div style="margin-left: 10px; margin-right: 30px;">Portfolio Editor</div>
     {#if !$showSetup}
       <DropDown options={categories} bind:value={dropVal} width={"120px"} />
     {/if}
@@ -135,8 +117,6 @@
 </div>
 
 <style>
-  @import "/theme.css";
-
   .titlebar {
     height: 30px;
     width: 100%;

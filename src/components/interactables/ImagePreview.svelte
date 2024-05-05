@@ -18,11 +18,7 @@
   }
 
   async function processPath(filePath: string) {
-    const relPath = await path.join(
-      "./images",
-      $selectedCategory === 'Archive' ? "projects" : $selectedCategory.toLowerCase(),
-      await path.basename(filePath)
-    );
+    const relPath = await path.join("./images/projects", await path.basename(filePath));
     const tarPath = await path.join(await path.dirname(configPath), relPath);
 
     if (await fs.exists(tarPath)) {
@@ -69,8 +65,6 @@
 </div>
 
 <style>
-  @import "/theme.css";
-
   .img-preview {
     max-width: 300px;
     margin-bottom: 7px;

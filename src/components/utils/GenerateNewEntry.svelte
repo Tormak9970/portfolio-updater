@@ -1,13 +1,8 @@
 <script lang="ts">
-  import { updateSettings } from "../../lib/Utils";
   import {
-    artList,
-    currentArt,
     currentExperience,
-    currentOrganization,
     currentProject,
     experienceList,
-    organizationsList,
     projectsList,
     selectedCategory,
     selectedKey
@@ -17,17 +12,14 @@
     switch ($selectedCategory) {
       case "Projects":
         const newProject = {
-          "category": "web-dev",
+          "index": $projectsList.length,
           "name": "New Project",
           "time": "",
-          "status": "In Progress",
-          "difficulty": "Moderate",
+          "tech": [],
           "description": "",
           "content": {},
           "link": "",
-          "isRelative": false,
-          "image": "",
-          "organization": "none"
+          "image": ""
         };
         $currentProject = {
           "original": "New Project",
@@ -37,25 +29,14 @@
         $projectsList = [{ "key": "new-project", "data": newProject }, ...$projectsList];
         $selectedKey = "new-project";
         break;
-      case "Art":
-        const newArt = {
-          "name": "New Art",
-          "image": "",
-          "description": ""
-        }
-        $currentArt = {
-          "original": "New Art",
-          "key": "new-art",
-          "data": newArt
-        }
-        $artList = [{ "key": "new-art", "data": newArt }, ...$artList];
-        $selectedKey = "new-art";
-        break;
       case "Experience":
         const newExperience = {
+          "index": $experienceList.length,
           "company": "new",
           "position": "experience",
           "image": "",
+          "duration": "",
+          "companyLink": "",
           "description": ""
         }
         $currentExperience = {
@@ -65,23 +46,6 @@
         }
         $experienceList = [{ "key": "new-experience", "data": newExperience }, ...$experienceList];
         $selectedKey = "new-experience";
-        break;
-      case "Organizations":
-        const newOrganization = {
-          "name": "New Organization",
-          "about": "",
-          "description": "",
-          "image": "",
-          "link": "",
-          "projects": []
-        }
-        $currentOrganization = {
-          "original": "New Organization",
-          "key": "new-organization",
-          "data": newOrganization
-        }
-        $organizationsList = [{ "key": "new-organization", "data": newOrganization }, ...$organizationsList];
-        $selectedKey = "new-organization";
         break;
     }
   }
@@ -98,8 +62,6 @@
 </div>
 
 <style>
-  @import "/theme.css";
-
   .gen-new-entry {
     height: 60px;
     min-width: 300px;

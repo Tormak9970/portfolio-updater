@@ -1,7 +1,6 @@
 <script lang="ts">
   import { config, currentExperience, canSave, experienceList } from "../../stores";
   import { getKeyFromName, updateSettings, writeConfig } from "../../lib/Utils";
-  import ImagePreview from "../interactables/ImagePreview.svelte";
   import TextArea from "../interactables/TextArea.svelte";
   import TextInput from "../interactables/TextInput.svelte";
   import EditorTemplate from "./EditorTemplate.svelte";
@@ -10,7 +9,8 @@
 
   let company = $currentExperience.data.company;
   let position = $currentExperience.data.position;
-  let image = $currentExperience.data.image;
+  let companyLink = $currentExperience.data.companyLink;
+  let duration = $currentExperience.data.duration;
   let description = $currentExperience.data.description;
 
   async function allowSave() {
@@ -37,7 +37,8 @@
       index: $currentExperience.data.index,
       company: company,
       position: position,
-      image: image,
+      companyLink: companyLink,
+      duration: duration,
       description: description
     }
 
@@ -83,12 +84,6 @@
     />
     <VerticalSpacer />
 
-    <ImagePreview
-      label={"Image"}
-      placeholder={"The company logo"}
-      bind:value={image}
-      onChange={allowSave}
-    />
   </div>
   <div slot="editor">
     <TextArea

@@ -1,5 +1,5 @@
-type PortfolioCategory = "Projects" | "Art" | "Experience" | "Organizations" | "Archive";
-type LowercaseCategory = "projects" | "art" | "experience" | "organizations" | "archive";
+type PortfolioCategory = "Projects" | "Experience";
+type LowercaseCategory = "projects" | "experience";
 
 declare type Item = import('svelte-dnd-action').Item;
 declare type DndEvent<ItemType = Item> = import('svelte-dnd-action').DndEvent<ItemType>;

@@ -14,7 +14,6 @@ export type ExperienceEntry = {
   index: number,
   company: string,
   duration: string,
-  image: string,
   position: string,
   companyLink: string,
   description: string

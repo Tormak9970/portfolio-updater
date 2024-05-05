@@ -1,6 +1,6 @@
 <script lang="ts">
   import { updateSettings, writeConfig } from "../../lib/Utils";
-  import { archiveList, artList, config, currentArchive, currentArt, currentExperience, currentOrganization, currentProject, experienceList, organizationsList, projectsList, selectedCategory, showConfirmDeleteModal } from "../../stores";
+  import { config, currentExperience, currentProject, experienceList, projectsList, selectedCategory, showConfirmDeleteModal } from "../../stores";
   import ModalBody from "./ModalBody.svelte";
   import Button from "../interactables/Button.svelte";
 
@@ -13,41 +13,16 @@
           key: "",
           data: {
             index: 0,
-            category: "",
             name: "",
-            time: "",
-            status: "",
-            difficulty: "",
             description: "",
             content: {},
             link: "",
-            isRelative: false,
             image: "",
-            organization: "",
+            tech: []
           },
         };
         await updateSettings({ prop: "currentProject", data: $currentProject });
         $projectsList = Object.entries($config.projects).map(([key, data]) => {
-          return {
-            key: key,
-            data: data,
-          }
-        });
-        break;
-      case "Art":
-        delete $config[$selectedCategory.toLowerCase()][$currentArt.key];
-        $currentArt = {
-          original: "",
-          key: "",
-          data: {
-            index: 0,
-            name: "",
-            image: "",
-            description: "",
-          },
-        };
-        await updateSettings({ prop: "currentArt", data: $currentArt });
-        $artList = Object.entries($config.art).map(([key, data]) => {
           return {
             key: key,
             data: data,
@@ -62,64 +37,14 @@
           data: {
             index: 0,
             company: "",
-            image: "",
             position: "",
             description: "",
+            duration: "",
+            companyLink: ""
           },
         };
         await updateSettings({ prop: "currentExperience", data: $currentExperience });
         $experienceList = Object.entries($config.experience).map(([key, data]) => {
-          return {
-            key: key,
-            data: data,
-          }
-        });
-        break;
-      case "Organizations":
-        delete $config[$selectedCategory.toLowerCase()][$currentOrganization.key];
-        $currentOrganization = {
-          original: "",
-          key: "",
-          data: {
-            index: 0,
-            name: "",
-            image: "",
-            about: "",
-            description: "",
-            projects: [],
-            link: "",
-          },
-        };
-        await updateSettings({ prop: "currentOrganization", data: $currentOrganization });
-        $organizationsList = Object.entries($config.organizations).map(([key, data]) => {
-          return {
-            key: key,
-            data: data,
-          }
-        });
-        break;
-      case "Archive":
-        delete $config[$selectedCategory.toLowerCase()][$currentArchive.key];
-        $currentArchive = {
-          original: "",
-          key: "",
-          data: {
-            index: 0,
-            category: "",
-            name: "",
-            time: "",
-            status: "",
-            difficulty: "",
-            description: "",
-            content: {},
-            link: "",
-            isRelative: false,
-            image: "",
-            organization: "",
-          },
-        };
-        await updateSettings({ prop: "currentArchive", data: $currentArchive });
-        $archiveList = Object.entries($config.archive).map(([key, data]) => {
           return {
             key: key,
             data: data,

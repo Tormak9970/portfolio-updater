@@ -6,8 +6,6 @@
     canSave,
 		selectedCategory,
     currentProject,
-    currentArchive,
-    archiveList,
     projectsList
 	} from "../../stores";
 	import {
@@ -20,79 +18,20 @@
   import DropDown from "../interactables/DropDown.svelte";
   import EditorJs from "../EditorJS.svelte";
   import VerticalSpacer from "../utils/VerticalSpacer.svelte";
-  import { categories, difficulties, statusOptions } from "../../lib/ProjectDropdowns";
   import type { ProjectEntry } from "src/types/ConfigTypes";
   import EditorTemplate from "./EditorTemplate.svelte";
 
-  const organizations = $config.organizations ?[ { label: "none", data: "none" }, ...Object.keys($config.organizations).map((entry: string) => { return { label: entry, data: entry } }) ] : [];
-
   let image = $currentProject.data.image;
   let name = $currentProject.data.name;
-  let time = $currentProject.data.time;
   let link = $currentProject.data.link;
 
-  let category = $currentProject.data.category;
-  let organization = $currentProject.data.organization;
-  let status = $currentProject.data.status;
-  let difficulty = $currentProject.data.difficulty;
+  let tech = $currentProject.data.tech;
 
   let content = $currentProject.data.content as OutputData;
 
   async function allowSave() {
     $canSave = true;
   }
-
-	async function archiveProject() {
-		const cfg = $config;
-
-		cfg["archive"][$currentProject.key] = $currentProject.data;
-
-    $currentArchive = {
-      "original": $currentProject.original,
-      "key": $currentProject.key,
-      "data": $currentProject.data
-    }
-
-		delete cfg["projects"][$currentProject.key];
-		$currentProject = {
-			original: "",
-			key: "",
-			data: {
-        index: 0,
-				category: "",
-				name: "",
-				time: "",
-				status: "",
-				difficulty: "",
-				description: "",
-				content: {},
-				link: "",
-				isRelative: false,
-				image: "",
-				organization: "",
-			},
-		};
-		$selectedCategory = "Archive";
-
-		$config = cfg;
-		await writeConfig(JSON.stringify(cfg, null, "\t"));
-		await updateSettings({ prop: "currentProject", data: $currentProject });
-		await updateSettings({ prop: "currentArchive", data: $currentArchive });
-
-		$projectsList = Object.entries($config.projects).map(([key, data]) => {
-      return {
-        key: key,
-				data: data,
-			}
-    });
-
-		$archiveList = Object.entries($config.archive).map(([key, data]) => {
-      return {
-        key: key,
-				data: data,
-			}
-    });
-	}
 
   async function saveChanges() {
     const cfg = $config;
@@ -108,17 +47,12 @@
 
     const changedProject: ProjectEntry = {
       index: $currentProject.data.index,
-      category: category,
       name: name,
-      time: time,
-      status: status,
-      difficulty: difficulty,
       description: content.blocks[1].data.text,
       content: content,
       link: link,
-      isRelative: $currentProject.data.isRelative,
       image: image,
-      organization: organization
+      tech: tech
     }
 
 		$currentProject = {
@@ -145,7 +79,7 @@
   }
 </script>
 
-<EditorTemplate saveChanges={saveChanges} curretStore={currentProject} archiveFunction={archiveProject} emptyMessage="Select a Project to get started">
+<EditorTemplate saveChanges={saveChanges} curretStore={currentProject} emptyMessage="Select a Project to get started">
   <div slot="fields">
     <TextInput
       label={"Name"}
@@ -162,12 +96,6 @@
       onChange={allowSave}
     />
 
-    <TextInput
-      label={"Time"}
-      placeholder={"# hours"}
-      bind:value={time}
-      onChange={allowSave}
-    />
     <VerticalSpacer />
 
     <TextInput
@@ -176,18 +104,10 @@
       bind:value={link}
       onChange={allowSave}
     />
+
     <VerticalSpacer />
     
-    <DropDown label={"Category"} options={categories} width={"148px"} bind:value={category} onChange={allowSave} />
-    <VerticalSpacer />
-
-    <DropDown label={"Organization"} options={organizations} width={"148px"} bind:value={organization} onChange={allowSave} />
-    <VerticalSpacer />
-
-    <DropDown label={"Difficulty"} options={difficulties} width={"148px"} bind:value={difficulty} onChange={allowSave} />
-    <VerticalSpacer />
-
-    <DropDown label={"Status"} options={statusOptions} width={"148px"} bind:value={status} onChange={allowSave} />
+    <!-- TODO: set tech -->
   </div>
   <div slot="editor">
     <EditorJs onChange={allowSave} bind:content={content} />

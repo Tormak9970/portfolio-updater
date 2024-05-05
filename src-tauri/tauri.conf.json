@@ -17,14 +17,14 @@
 			"fs": {
 				"all": true,
 				"scope": [
-					"*"
+					"**/**"
 				]
 			},
 			"protocol": {
 				"all": true,
 				"asset": true,
 				"assetScope": [
-					"*"
+					"**/**"
 				]
 			},
 			"window": {
@@ -73,7 +73,7 @@
         "height": 750,
         "resizable": true,
         "title": "Portfolio Editor",
-        "width": 1500,
+        "width": 1100,
         "decorations": false,
         "center": true
       }

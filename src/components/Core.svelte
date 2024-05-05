@@ -14,25 +14,10 @@
       "field": "projects",
       "editor": ProjectEditor
     },
-    "Art": {
-      "list": artList,
-      "field": "art",
-      "editor": ArtEditor
-    },
     "Experience": {
       "list": experienceList,
       "field": "experience",
       "editor": ExperienceEditor
-    },
-    "Organizations": {
-      "list": organizationsList,
-      "field": "organizations",
-      "editor": OrganizationEditor
-    },
-    "Archive": {
-      "list": archiveList,
-      "field": "archive",
-      "editor": ArchiveEditor
     }
   }
 

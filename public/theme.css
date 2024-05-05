@@ -3,12 +3,14 @@
 
   --background: #251d1e;
 
+  --foreground-dark: #312526;
+
   --foreground: #801336;
   --foreground-hover: #9b0f3c;
   --foreground-text: #e45218;
 
-  --foreground-light: #801336;
-  --foreground-light-hover: #c72c41;
+  --foreground-light: #bd0c44;
+  --foreground-light-hover: #d60648;
   --foreground-light-text: var(--font-color);
 
   --border: #510a32;
@@ -23,4 +25,11 @@
 
   --link-color: #3184d2;
   --link-color_clicked: #398fdf;
+
+  
+	--warning: #e24a4a;
+	--warning-hover: #e13525;
+  
+	--save: #18bb03;
+	--save-hover: #28c900;
 }

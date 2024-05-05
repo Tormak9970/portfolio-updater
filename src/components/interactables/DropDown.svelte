@@ -7,6 +7,7 @@
   export let onChange: (value: string) => void = () => {};
   export let width = "auto";
   export let direction: "UP" | "DOWN" = "DOWN";
+  export let disabled = false;
 
   let customSelectElem: HTMLDivElement;
   let customSelectElemWrapper: HTMLDivElement;
@@ -19,7 +20,9 @@
    * @param e The click event.
    */
   function closeDropdowns(e: Event): void {
-    const target = <HTMLDivElement>e.target;
+    const target = e.currentTarget as HTMLElement;
+    // * Need this bc we want to only compare the properties of the objects.
+    // eslint-disable-next-line eqeqeq
     if (target != customSelectElem && target != customSelectElemWrapper) active = false;
   }
 
@@ -35,7 +38,7 @@
    * @param e The associated event.
    */
   function selectOption(e: Event): void {
-    const targetElement = <HTMLElement>e.currentTarget;
+    const targetElement = e.currentTarget as HTMLElement;
     
     onChange(targetElement.id);
     value = targetElement.id;
@@ -44,18 +47,19 @@
   }
 
   afterUpdate(() => {
-    internalValue = options.find((opt) => opt.data == value)?.label;
+    internalValue = options.find((opt) => opt.data === value)?.label;
   });
 </script>
 
 <svelte:window on:click={closeDropdowns} />
 
-<div class="wrapper">
-  {#if label != ""}
-    <div style="margin-bottom: 3px; font-size: 16px; user-select: none;">{label}:</div>
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div class="wrapper" on:click|stopPropagation>
+  {#if label !== ""}
+    <div style="margin-right: 7px; font-size: 14px; user-select: none;">{label}:</div>
   {/if}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <div class="custom-select" style="width: calc({width} - 8px); min-width: calc({width} - 8px);" on:click|stopPropagation={toggleDropdown} bind:this={customSelectElemWrapper}>
+  <div class="custom-select" class:disabled={disabled} style="width: calc({width} - 8px); min-width: calc({width} - 8px);" on:click={toggleDropdown} bind:this={customSelectElemWrapper}>
     <select>
       <option value="default">{internalValue}</option>
       {#each options as opt}
@@ -66,10 +70,10 @@
     {#key value}
       <div class="select-selected" class:select-arrow-active={active} bind:this={customSelectElem}>{internalValue}</div>
     {/key}
-    <div class="select-items" class:open-up={direction=="UP"} style="--top-percentage: -{(options.length + 1) * 100 - 35 }%;" class:select-hide={!active}>
+    <div class="select-items" class:open-up={direction === "UP"} style="--top-percentage: -{(options.length + 1) * 100 - 35 }%;" class:select-hide={!active}>
       {#each options as opt}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div id={opt.data} class:same-as-selected={opt.data == value} on:click|stopPropagation={selectOption}>{opt.label}</div>
+        <div id={opt.data} class:same-as-selected={opt.data === value} on:click|stopPropagation={selectOption}>{opt.label}</div>
       {/each}
     </div>
   </div>
@@ -80,7 +84,8 @@
     margin: 0px;
 
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
+		align-items: center;
 
 		color: var(--font-color);
 
@@ -103,6 +108,10 @@
     background-color: var(--foreground-hover);
     cursor: pointer;
   }
+  .disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
   .custom-select > select { display: none; }
 
   .select-selected {
@@ -122,9 +131,9 @@
     border-color: var(--font-color) transparent transparent transparent;
   }
   
-  :global(.select-arrow-active::after) {
-    border-color: transparent transparent var(--font-color) transparent !important;
-    top: 7px !important;
+  .select-arrow-active::after {
+    border-color: transparent transparent var(--font-color) transparent;
+    top: 7px;
   }
 
   .select-items > div,
@@ -138,9 +147,8 @@
   }
   .select-items > div {
     padding: 3px 4px;
-    padding-top: 5px;
 
-    height: calc(22px - 7px);
+    height: 16px;
     
     transition: background-color 0.15s ease-in-out;
   }
@@ -156,7 +164,7 @@
   }
   .select-items {
     position: absolute;
-    background-color: var(--foreground);
+    background-color: var(--foreground-light);
     top: 102%;
     left: 0;
     right: 0;
@@ -167,7 +175,7 @@
     box-shadow: 3px 6px 12px -2px var(--shadow);
   }
   .select-items > div:hover {
-    background-color: var(--foreground-light);
+    background-color: var(--foreground-light-hover);
     cursor: pointer;
   }
   
@@ -177,7 +185,7 @@
     right: 0;
     z-index: 99;
     margin-top: 2px;
-    border-radius: 4px;
+    border-radius: 2px;
     border: 1px solid transparent;
     box-shadow: -3px -6px 26px -2px var(--shadow);
   }
