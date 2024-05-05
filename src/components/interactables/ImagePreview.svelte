@@ -5,7 +5,6 @@
   import { configPath } from "../../lib/Utils";
   import TextInput from "./TextInput.svelte";
   import FileButton from "./FileButton.svelte";
-  import { selectedCategory } from "../../stores";
   import { toast } from "@zerodevx/svelte-toast";
 
   export let label: string;

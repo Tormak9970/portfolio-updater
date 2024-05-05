@@ -3,7 +3,7 @@
 
   import { onMount } from "svelte";
   import { currentExperience, currentProject, selectedCategory, selectedKey } from "../stores";
-  import { configPath, genExperienceKey, updateSettings } from "../lib/Utils";
+  import { configPath, updateSettings } from "../lib/Utils";
   import Button from "./interactables/Button.svelte";
 
   export let data: any;
@@ -32,7 +32,7 @@
         $currentProject = newData;
         break;
       case "Experience":
-        newData.original = genExperienceKey(data.company, data.position);
+        newData.original = data.position;
         $currentExperience = newData;
         break;
     }

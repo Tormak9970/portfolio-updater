@@ -12,7 +12,7 @@
     switch ($selectedCategory) {
       case "Projects":
         const newProject = {
-          "index": $projectsList.length,
+          "index": 0,
           "name": "New Project",
           "time": "",
           "tech": [],
@@ -26,12 +26,16 @@
           "key": "new-project",
           "data": newProject
         }
-        $projectsList = [{ "key": "new-project", "data": newProject }, ...$projectsList];
+        const updatedProjectIndices = $projectsList.map((entry) => {
+          entry.data.index++;
+          return entry;
+        });
+        $projectsList = [{ "key": "new-project", "data": newProject }, ...updatedProjectIndices];
         $selectedKey = "new-project";
         break;
       case "Experience":
         const newExperience = {
-          "index": $experienceList.length,
+          "index": 0,
           "company": "new",
           "position": "experience",
           "image": "",
@@ -44,7 +48,11 @@
           "key": "new-experience",
           "data": newExperience
         }
-        $experienceList = [{ "key": "new-experience", "data": newExperience }, ...$experienceList];
+        const updatedExperienceIndices = $experienceList.map((entry) => {
+          entry.data.index++;
+          return entry;
+        });
+        $experienceList = [{ "key": "new-experience", "data": newExperience }, ...updatedExperienceIndices];
         $selectedKey = "new-experience";
         break;
     }
