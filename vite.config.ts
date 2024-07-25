@@ -4,7 +4,7 @@ import sveltePreprocess from "svelte-preprocess";
 import { resolve } from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(async () => ({
+export default defineConfig({
   plugins: [
     svelte({
       preprocess: [
@@ -37,11 +37,11 @@ export default defineConfig(async () => ({
     rollupOptions: {
       input: {
         // @ts-ignore
-        main: resolve(__dirname, 'index.html')
+        main: resolve(__dirname, 'src/index.html')
       }
     },
   },
   define: {
     'APP_VERSION': JSON.stringify(process.env.npm_package_version),
   }
-}));
+});

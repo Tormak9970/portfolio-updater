@@ -39,6 +39,8 @@
 </script>
 
 <div class="layout">
+  <div class="grad-left" />
+  <div class="grad-right" />
 	<div class="entries-container">
 		<div class="entries">
       <GenerateNewEntry />
@@ -71,7 +73,21 @@
 		justify-content: center;
 		align-items: center;
 
+    position: relative;
+
 		color: var(--font-color);
+
+    background-color: var(--background);
+    background:
+      linear-gradient(-90deg, var(--background) 1px, transparent 1px),
+      linear-gradient(var(--background) 1px, transparent 1px),
+      linear-gradient(-90deg, var(--background) 1px, transparent 1px),
+      linear-gradient(var(--background) 1px, transparent 1px),
+      linear-gradient(transparent 6px, transparent 6px, transparent 156px, transparent 156px),
+      linear-gradient(-90deg,var(--background) 1px, transparent 1px),
+      linear-gradient(-90deg, transparent 6px, transparent 6px, transparent 156px, transparent 156px),
+      linear-gradient(var(--background) 1px, transparent 1px),
+      transparent;
 
 		overflow: hidden;
 	}
@@ -92,6 +108,32 @@
     overflow-y: scroll;
     overflow-x: none;
 	}
+
+  .grad-left {
+    position: absolute;
+    z-index: 1;
+    top: 0%;
+    left: -50%;
+    width: 150vh;
+    height: 150vh;
+    opacity: .3;
+    background: radial-gradient(circle, var(--highlight-alt) 0%, transparent 70%);
+    animation: 14s intro;
+    pointer-events: none;
+  }
+
+  .grad-right {
+    position: absolute;
+    z-index: 1;
+    top: -50%;
+    left: 50%;
+    width: 150vh;
+    height: 150vh;
+    opacity: .3;
+    background: radial-gradient(circle, var(--highlight) 0%, transparent 70%);
+    animation: 6s intro;
+    pointer-events: none;
+  }
 
   .entries {
     height: auto;

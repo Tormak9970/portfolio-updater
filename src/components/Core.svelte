@@ -46,8 +46,6 @@
 </div>
 
 <style>
-	@import "/theme.css";
-
 	.core {
 		width: 100%;
 		height: 100%;
