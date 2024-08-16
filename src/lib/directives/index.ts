@@ -1,0 +1,1 @@
+export { scrollShadow } from "./ScrollShadow";

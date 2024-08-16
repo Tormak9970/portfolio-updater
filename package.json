@@ -16,20 +16,23 @@
     "tauri": "tauri"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.2",
     "@tauri-apps/cli": "^1.5.10",
-    "@tsconfig/svelte": "^3.0.0",
+    "@tsconfig/svelte": "^5.0.2",
     "@types/node": "^20.3.1",
-    "@zerodevx/svelte-toast": "^0.7.2",
-    "svelte": "^3.59.2",
-    "svelte-check": "^3.0.0",
-    "svelte-dnd-action": "^0.9.26",
-    "svelte-preprocess": "^5.0.0",
-    "tslib": "^2.4.1",
-    "typescript": "^4.6.4",
-    "vite": "^4.0.0"
+    "svelte": "^4.2.12",
+    "svelte-awesome-color-picker": "^3.1.0",
+    "svelte-check": "^3.6.7",
+    "svelte-preprocess": "^5.1.4",
+    "tslib": "^2.6.2",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
   },
   "dependencies": {
+    "@iconify/types": "^2.0.0",
+    "@ktibow/iconset-material-symbols": "^0.0.1715672497",
+    "@material/material-color-utilities": "^0.2.7",
+    "svelte-dnd-action": "github:Tormak9970/svelte-dnd-action#build",
     "@editorjs/code": "^2.7.0",
     "@editorjs/delimiter": "^1.2.0",
     "@editorjs/editorjs": "^2.22.2",
@@ -39,8 +42,6 @@
     "@editorjs/link": "^2.3.1",
     "@editorjs/nested-list": "^1.0.2",
     "@editorjs/paragraph": "^2.8.0",
-    "@tauri-apps/cli": "^1.2.2",
-    "sirv-cli": "^2.0.0",
     "svelte-editorjs": "^0.1.0"
   }
 }

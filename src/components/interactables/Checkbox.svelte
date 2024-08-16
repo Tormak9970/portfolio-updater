@@ -1,67 +1,95 @@
 <script lang="ts">
-  export let value:boolean;
-  export let onChange: (checked: boolean) => void = () => {};
+  import type { HTMLAttributes } from "svelte/elements";
 
-  /**
-   * Toggles the check's value.
-   */
-  function check(): void {
-    value = !value;
-    onChange(value);
-  }
+  export let display = "inline-flex";
+  export let extraOptions: HTMLAttributes<HTMLLabelElement> = {};
+  export let checked = false;
+  export let disabled = false;
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="check-box-container" on:click={check}>
-  <input type="checkbox" id="" bind:checked={value}>
-  <span class="check-box">
-    {#if value}
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-        <!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-        <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/>
-      </svg>
-    {/if}
-  </span>
-</div>
+<label class="m3-container" style="display: {display};" {...extraOptions}>
+  <input type="checkbox" bind:checked={checked} on:input disabled={disabled} />
+  <div class="layer">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M 4.83 13.41 L 9 17.585 L 19.59 7"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.41"
+      />
+    </svg>
+  </div>
+</label>
 
 <style>
-  .check-box-container {
-    display: block;
+  .m3-container {
     position: relative;
-    cursor: pointer;
-
-    height: 16px;
-    width: 16px;
-
-    border-radius: 4px;
-    border: 1px solid transparent;
+    width: 1.125rem;
+    height: 1.125rem;
   }
-
-  .check-box-container input {
+  .m3-container input {
     position: absolute;
     opacity: 0;
+  }
+  .layer {
+    position: absolute;
+    inset: -0.6875rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--m3-util-rounding-full);
+
+    transition: background-color 200ms;
     cursor: pointer;
-    height: 0;
-    width: 0;
+    --color: var(--m3-scheme-on-surface-variant);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .layer::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    inset: 0.6875rem;
+    border-radius: 0.125rem;
+    border: solid 0.125rem rgb(var(--color));
+    transition: background-color 200ms, border-color 200ms;
+  }
+  svg {
+    position: absolute;
+    inset: 0.6875rem;
+    color: rgb(var(--m3-scheme-on-primary));
+    opacity: 0;
+    transition: opacity 200ms;
   }
 
-  .check-box {
-    height: calc(100% - 4px);
-    width: calc(100% - 4px);
-    background-color: var(--foreground);
-    padding: 2px;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    
-    transition: background-color 0.15s ease-in-out;
-
-    fill: var(--highlight);
+  @media (hover: hover) {
+    .layer:hover {
+      --color: var(--m3-scheme-on-surface);
+      background-color: rgb(var(--color) / 0.08);
+    }
+  }
+  .layer:active,
+  input:focus-visible + .layer {
+    --color: var(--m3-scheme-on-surface);
+    background-color: rgb(var(--color) / 0.12);
+  }
+  input:checked + .layer {
+    --color: var(--m3-scheme-primary);
+  }
+  input:checked + .layer::before {
+    background-color: rgb(var(--color));
+  }
+  input:checked + .layer svg {
+    opacity: 1;
   }
 
-  .check-box-container:hover input ~ .check-box {
-    background-color: var(--foreground-hover);
+  input:disabled + .layer {
+    background-color: transparent;
+    --color: var(--m3-scheme-on-surface) / 0.38;
+    pointer-events: none;
+  }
+  input:disabled + .layer svg {
+    color: rgb(var(--m3-scheme-surface));
+  }
+  input:disabled:checked + .layer::before {
+    border-color: transparent;
   }
 </style>

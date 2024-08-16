@@ -1,7 +1,7 @@
-import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
-import sveltePreprocess from "svelte-preprocess";
 import { resolve } from "path";
+import sveltePreprocess from "svelte-preprocess";
+import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,6 +14,18 @@ export default defineConfig({
       ],
     })
   ],
+
+  resolve: {
+    alias: {
+      "@interactables": resolve(__dirname, "./src/components/interactables"),
+      "@layout": resolve(__dirname, "./src/components/layout"),
+      "@component-utils": resolve(__dirname, "./src/components/utils"),
+      "@directives": resolve(__dirname, "./src/lib/directives"),
+      "@utils": resolve(__dirname, "./src/lib/utils"),
+      "@types": resolve(__dirname, "./src/lib/types"),
+      "@icons": resolve(__dirname, "./src/lib/icons")
+    }
+  },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   // prevent vite from obscuring rust errors

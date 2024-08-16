@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { windowIsMaximized } from "../../stores";
 
   export let title: string;
   export let onClose: () => void = () => {};
@@ -24,7 +23,7 @@
   }
 </script>
 
-<div class="blur" class:rounded={!$windowIsMaximized} />
+<div class="blur" />
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="background" on:mousedown={checkCanQuit} on:mouseup={closeWrapper} on:contextmenu|preventDefault|stopPropagation>
   <div class="modal-body" on:contextmenu|stopPropagation>

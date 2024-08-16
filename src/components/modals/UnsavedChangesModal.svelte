@@ -1,7 +1,7 @@
 <script lang="ts">
   import { showUnsavedChangesModal } from "../../stores";
   import ModalBody from "./ModalBody.svelte";
-  import Button from "../interactables/Button.svelte";
+  import Button from "../old-interactables/Button.svelte";
   import { exit } from "@tauri-apps/api/process";
 
   async function onConfirm() {

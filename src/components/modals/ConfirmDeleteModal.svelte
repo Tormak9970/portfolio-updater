@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { updateSettings, writeConfig } from "../../lib/Utils";
+  import { updateSettings, writeConfig } from "../../lib/utils/Utils";
   import { config, currentExperience, currentProject, experienceList, projectsList, selectedCategory, showConfirmDeleteModal } from "../../stores";
+  import Button from "../old-interactables/Button.svelte";
   import ModalBody from "./ModalBody.svelte";
-  import Button from "../interactables/Button.svelte";
 
   async function onConfirm() {
     switch ($selectedCategory) {

@@ -1,10 +1,14 @@
 import { writable } from "svelte/store";
-import type { Config, EntryState, ExperienceEntry, ProjectEntry } from "./types/ConfigTypes";
+import type { Config, EntryState, ExperienceEntry, ProjectEntry } from "./lib/types/ConfigTypes";
 
-export const windowIsMaximized = writable(false);
+export const showInfoSnackbar = writable<(data: ShowInfoOptions) => void>();
+export const showErrorSnackbar = writable<(data: ShowInfoOptions) => void>();
+
+export const themePrimaryColor = writable("#dd5527");
 
 export const canSave = writable(false);
 
+export const showSideNav = writable(false);
 export const showSetup = writable(true);
 export const config = writable<Config>(null);
 export const selectedCategory = writable<PortfolioCategory>("Projects");

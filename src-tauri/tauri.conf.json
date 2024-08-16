@@ -1,8 +1,8 @@
 {
   "$schema": "..\\node_modules/@tauri-apps/cli\\schema.json",
   "build": {
-    "beforeBuildCommand": "npm run build",
-    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "bun run build",
+    "beforeDevCommand": "bun dev",
     "devPath": "http://localhost:1420",
     "distDir": "../dist"
   },
@@ -75,7 +75,6 @@
         "resizable": true,
         "title": "Portfolio Editor",
         "width": 1100,
-        "decorations": false,
         "center": true
       }
     ]
