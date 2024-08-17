@@ -20,7 +20,7 @@
   {...extraWrapperOptions}
 >
   <textarea
-    class="m3-font-body-large"
+    class="m3-font-body-large styled-scrollbar"
     placeholder=" "
     bind:value
     {id}
@@ -51,7 +51,7 @@
     height: 100%;
     border: none;
     outline: none;
-    padding: 1rem;
+    padding: 1rem 0.5rem;
     border-radius: var(--m3-textfield-outlined-shape);
     background-color: transparent;
     color: rgb(var(--m3-scheme-on-surface));

@@ -98,11 +98,11 @@
       on:change={allowSave}
     />
   </div>
-  <div slot="editor">
+  <div slot="editor" class="editor-container">
     <TextArea
       name={"Short Description"}
       extraWrapperOptions={{
-        style: "width: calc(100% - 0.5rem); height: 100px; margin-top: 0.5rem; margin-right: 0.5rem;"
+        style: "width: 100%; height: 100px; margin-top: 0.5rem; margin-right: 0.5rem;"
       }}
       bind:value={description}
       on:change={allowSave}
@@ -121,6 +121,15 @@
     display: flex;
     flex-direction: column;
 
+    gap: 0.5rem;
+  }
+
+  .editor-container {
+    height: calc(100% - 25px);
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
   }
 </style>

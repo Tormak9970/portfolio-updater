@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
-  import { scrollShadow } from "@directives";
   import { Close, Save, Settings } from "@icons";
   import { Button } from "@interactables";
   import { Card } from "@layout";
@@ -11,7 +10,6 @@
   export let saveChanges: () => Promise<void>;
   export let emptyMessage: string;
   export let curretStore: Writable<EntryState<EntryUnion>>;
-  export let useFields = true;
 </script>
 
 <div class="editor-template">
@@ -36,22 +34,16 @@
     </div>
   </Card>
   <div class="content" class:hide={$curretStore.original === ""}>
-    {#if useFields}
-      <Card type="filled" extraOptions={{ style: "height: 100%;" }}>
-        <div class="fields">
-          <h3>Fields</h3>
-          <slot name="fields" />
-        </div>
-      </Card>
-    {/if}
+    <Card type="filled" extraOptions={{ style: "height: 100%;" }}>
+      <div class="fields">
+        <h3>Fields</h3>
+        <slot name="fields" />
+      </div>
+    </Card>
     <Card type="filled" extraOptions={{ style: "height: 100%; flex-grow: 1;" }}>
       <div class="editor">
         <h3>Writeup</h3>
-        <div class="scroll-wrapper">
-          <div class="scroll-container" use:scrollShadow={{ background: "--m3-scheme-surface-container" }}>
-            <slot name="editor" />
-          </div>
-        </div>
+        <slot name="editor" />
       </div>
     </Card>
   </div>
@@ -114,23 +106,9 @@
   .editor {
     padding: 7px;
     padding-left: 10px;
-    height: calc(100% - 14px);
+    height: 100%;
     
     border-radius: 4px;
-    background-color: var(--foreground-dark);
-  }
-
-  .scroll-wrapper {
-    height: 100%;
-    flex-grow: 1;
-
-    position: relative;
-  }
-
-  .scroll-container {
-    height: calc(100% - 25px);
-    overflow-y: scroll;
-    /* overflow-x: hidden; */
   }
 
   .hide {

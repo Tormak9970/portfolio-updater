@@ -39,7 +39,6 @@
     "@editorjs/image": "^2.9.3",
     "@editorjs/link": "^2.6.2",
     "@editorjs/nested-list": "^1.4.3",
-    "@editorjs/paragraph": "^2.11.6",
-    "svelte-editorjs": "^0.1.0"
+    "@editorjs/paragraph": "^2.11.6"
   }
 }

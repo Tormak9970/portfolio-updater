@@ -33,17 +33,29 @@
     <Toggle bind:checked={singleYear} />
   </label>
   {#if singleYear}
-    <TextField name="Duration" bind:value={value} on:change={onChange} />
+    <TextField
+      name="Duration"
+      extraWrapperOptions={{
+        style: "width: 100%;"
+      }}
+      bind:value={value}
+      on:change={onChange}
+    />
   {:else}
     <div class="multi-year-container">
       <TextField
         name="From"
+        extraWrapperOptions={{
+          style: "width: 100%;"
+        }}
         bind:value={from}
         on:change={onSplitChangeWrapper}
       />
-      <div style="margin: 0px 7px;">—</div>
       <TextField
         name="To"
+        extraWrapperOptions={{
+          style: "width: 100%;"
+        }}
         bind:value={to}
         on:change={onSplitChangeWrapper}
       />
@@ -69,5 +81,8 @@
   .multi-year-container {
     display: flex;
     align-items: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
   }
 </style>

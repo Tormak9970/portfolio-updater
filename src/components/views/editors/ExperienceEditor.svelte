@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { TextField } from "@interactables";
+  import type { OutputData } from "@editorjs/editorjs";
+  import { Duration, TextArea, TextField } from "@interactables";
   import type { ExperienceEntry } from "@types";
   import { genExperienceKey, updateSettings, writeConfig } from "@utils";
   import { canSave, config, currentExperience, experienceList } from "../../../stores";
-  import Duration from "../../interactables/Duration.svelte";
-  import TextArea from "../../interactables/TextArea.svelte";
+  import EditorJs from "./EditorJS.svelte";
   import EditorTemplate from "./EditorTemplate.svelte";
 
   let company = $currentExperience.data.company;
@@ -12,6 +12,8 @@
   let companyLink = $currentExperience.data.companyLink;
   let duration = $currentExperience.data.duration;
   let description = $currentExperience.data.description;
+  
+  let content = $currentExperience.data.content as OutputData;
 
   let singleYear = !duration.includes("—");
 
@@ -37,7 +39,8 @@
       position: position,
       companyLink: companyLink,
       duration: duration,
-      description: description
+      description: description,
+      content: content,
     }
 
 		$currentExperience = {
@@ -64,8 +67,8 @@
   }
 </script>
 
-<EditorTemplate saveChanges={saveChanges} emptyMessage="Select an Experience entry to get started" curretStore={currentExperience} useFields={false}>
-  <div slot="editor" class="fields">
+<EditorTemplate saveChanges={saveChanges} emptyMessage="Select an Experience entry to get started" curretStore={currentExperience}>
+  <div slot="fields" class="fields">
     <TextField
       name={"Company"}
       extraWrapperOptions={{
@@ -98,15 +101,18 @@
       singleYear={singleYear}
       onChange={allowSave}
     />
-
+  </div>
+  <div slot="editor" class="editor-container">
     <TextArea
-      name={"Description"}
+      name={"Short Description"}
       extraWrapperOptions={{
-        style: "width: 100%; height: 100px"
+        style: "width: 100%; height: 100px; margin-top: 0.5rem; margin-right: 0.5rem;"
       }}
       bind:value={description}
       on:change={allowSave}
     />
+
+    <EditorJs onChange={allowSave} bind:content={content} />
   </div>
 </EditorTemplate>
 
@@ -119,6 +125,15 @@
     display: flex;
     flex-direction: column;
 
+    gap: 0.5rem;
+  }
+
+  .editor-container {
+    height: calc(100% - 25px);
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
   }
 </style>
