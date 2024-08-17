@@ -55,6 +55,12 @@ a:hover, a:visited {
   background: #4f6e85;
 }
 
+.codex-editor,
+.codex-editor.codex-editor--empty {
+  width: 100%;
+  min-height: 100px;
+}
+
 
 /* ? Image Styles */
 .image-tool__caption[contentEditable=true][data-placeholder]:before {

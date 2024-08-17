@@ -3,8 +3,8 @@
 
 	import { ImageField, TagsField, TextArea, TextField } from "@interactables";
 	import type { ProjectEntry } from "@types";
-	import { getKeyFromName, updateSettings, writeConfig } from "@utils";
-	import { canSave, config, currentProject, projectsList } from "../../../stores";
+	import { getKeyFromName } from "@utils";
+	import { canSave, config, currentProject } from "../../../stores";
 	import EditorJs from "./EditorJS.svelte";
 	import EditorTemplate from "./EditorTemplate.svelte";
 
@@ -42,27 +42,29 @@
       tech: tech
     }
 
-		$currentProject = {
-      "original": $currentProject.original,
-      "key": $currentProject.key,
-      "data": changedProject
-    };
+    console.log(changedProject);
 
-		await updateSettings({ prop: "currentProject", data: $currentProject });
+		// $currentProject = {
+    //   "original": $currentProject.original,
+    //   "key": $currentProject.key,
+    //   "data": changedProject
+    // };
+
+		// await updateSettings({ prop: "currentProject", data: $currentProject });
     
-		cfg.projects[$currentProject.key] = changedProject;
+		// cfg.projects[$currentProject.key] = changedProject;
 
-		await writeConfig(JSON.stringify(cfg, null, "\t"));
+		// await writeConfig(JSON.stringify(cfg, null, "\t"));
 
-		$config = cfg;
-		$canSave = false;
+		// $config = cfg;
+		// $canSave = false;
     
-		$projectsList = Object.entries($config.projects).map(([key, data]) => {
-      return {
-        key: key,
-				data: data,
-			}
-    });
+		// $projectsList = Object.entries($config.projects).map(([key, data]) => {
+    //   return {
+    //     key: key,
+		// 		data: data,
+		// 	}
+    // });
   }
 </script>
 

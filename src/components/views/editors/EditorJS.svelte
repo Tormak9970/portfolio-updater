@@ -69,11 +69,11 @@
             const configPathDir = await path.dirname(configPath);
             const imagePath = await path.join(configPathDir, "images", "projects", block.data.file.url);
             const converted = tauri.convertFileSrc(imagePath);
-            
+
             block.data.file.url = converted;
-            
-            return block;
           }
+
+          return block;
         })
 			);
 		}
