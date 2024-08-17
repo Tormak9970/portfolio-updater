@@ -1,6 +1,4 @@
 <script lang="ts">
-  import Code from "@editorjs/code";
-  import Delimiter from "@editorjs/delimiter";
   import type { OutputData } from "@editorjs/editorjs";
   import Embed from "@editorjs/embed";
   import Header from "@editorjs/header";
@@ -23,7 +21,6 @@
     logLevel: "ERROR",
     tools: {
       header: { class: Header, inlineToolbar: true },
-      code: { class: Code, inlineToolbar: true },
       image: {
         class: ImageTool,
         config: {
@@ -35,7 +32,7 @@
               );
               return JSON.parse(uploadRes);
             },
-            uploadByUrl: async (url) => {
+            uploadByUrl: async (url: string) => {
               const uploadRes = await uploadUrl(url);
               return JSON.parse(uploadRes);
             },
@@ -43,7 +40,6 @@
         },
       },
       list: { class: List, inlineToolbar: true },
-      delimiter: { class: Delimiter, inlineToolbar: true },
       paragraph: { class: Paragraph, inlineToolbar: true },
       embed: { class: Embed, inlineToolbar: true },
     },
@@ -67,11 +63,13 @@
 		if (data) {
 			await Promise.all(
 				data.blocks.map(async (block: any) => {
-					if (block.type === "image") {
+					if (block.type === "image" && !block.data.file.url.startsWith("https://asset.localhost")) {
             const configPathDir = await path.dirname(configPath);
             const imagePath = await path.join(configPathDir, "images", "projects", block.data.file.url);
-            block.data.file.url = tauri.convertFileSrc(imagePath);
-
+            const converted = tauri.convertFileSrc(imagePath);
+            
+            block.data.file.url = converted;
+            
             return block;
           }
         })
@@ -83,7 +81,7 @@
 
 	function convertToWeb(data: OutputData) {
 		data.blocks = data.blocks.map((block) => {
-			if (block.type == "image") {
+			if (block.type == "image" && block.data.file.url.startsWith("https://asset.localhost")) {
         const lastSplitIdx = block.data.file.url.lastIndexOf("%5C");
         block.data.file.url = block.data.file.url.substring(lastSplitIdx + 3);
 			}
@@ -101,7 +99,7 @@
 		return JSON.parse(
 			contentStr.replaceAll(
 				`<a href`,
-				`<a target=\\"_blank\\" rel=\\"noreferrer noopener\\" href`
+				`<a target=\\"_blank\\" rel=\\"noreferrer\\" href`
 			)
 		);
 	}
@@ -112,8 +110,9 @@
 </div>
 
 <!-- svelte-ignore css-unused-selector -->
-<style>
+<style> 
 	.editorjs-container {
+    width: 100%;
 		margin: 0px;
 		padding-bottom: 7px;
 
@@ -121,7 +120,7 @@
 		flex-direction: column;
 		align-items: center;
 
-		color: var(--font-color);
+		color: rgb(var(--m3-scheme-on-background));
 
 		position: relative;
 	}
@@ -131,12 +130,12 @@
 	}
 
   :global(a) {
-    color: var(--link-color);
+    color: rgb(var(--m3-scheme-primary));
     font-weight: bold;
     text-decoration: none;
   }
   :global(a:hover, a:visited) {
-    color: var(--link-color-clicked);
+    color: rgb(var(--m3-scheme-on-primary-container));
     text-decoration: underline;
   }
 
@@ -148,105 +147,129 @@
 		width: 100%;
 	}
 	:global(.codex-editor__redactor) {
+    width: calc(100% - 30px);
 		padding-bottom: 60px !important;
-    margin-right: 20px !important;
+    margin-right: 30px !important;
 	}
+	:global(.ce-block) {
+    width: 100%
+	}
+
+  :global(.codex-editor--narrow .ce-toolbar__actions) {
+    right: 2px;
+  }
+
+  :global(.codex-editor--narrow .ce-block--focused) {
+    margin-right: 0;
+    padding-right: 0;
+  }
 	
   :global(.ce-toolbar__settings-btn) {
     border-radius: 4px;
-    background-color: var(--foreground);
-    color: var(--font-color);
+    background-color: rgb(var(--m3-scheme-surface-container-lowest));
+    color: rgb(var(--m3-scheme-on-background));
     transition: background-color 0.2s ease-in-out;
   }
   :global(.ce-toolbar__settings-btn:hover) {
-    background-color: var(--foreground-hover);
-    color: var(--font-color);
+    background-color: rgb(var(--m3-scheme-surface-container-lowest) / 0.7);
+    color: rgb(var(--m3-scheme-on-background));
   }
 
   :global(.ce-block--selected .ce-block__content) {
     background: #4f6e85;
   }
 
+
+  :global(.codex-editor--narrow .ce-toolbox) {
+    background-color: rgb(var(--m3-scheme-background));
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
   :global(.ce-toolbar__plus, .ce-toolbox__button) {
-    color: var(--font-color);
+    color: rgb(var(--m3-scheme-on-background));
   }
   :global(.ce-toolbox--opened .ce-toolbox__button) {
-    color: var(--font-color);
-    background-color: var(--foreground);
+    color: rgb(var(--m3-scheme-on-background));
+    background-color: rgb(var(--m3-scheme-surface-container-lowest));
   }
   :global(.ce-toolbox__button:hover) {
-    color: var(--font-color);
-    background-color: var(--foreground-hover) !important;
+    color: rgb(var(--m3-scheme-on-background));
+    background-color: rgb(var(--m3-scheme-surface-container-low)) !important;
   }
   :global(.ce-toolbar__plus--active, .ce-toolbar__plus:hover) {
-    color: var(--link-color);
+    color: rgb(var(--m3-scheme-primary));
+  } 
+  :global(.ce-toolbox__button.ce-toolbox__button--active) {
+    color: rgb(var(--m3-scheme-primary));
+    background-color: rgb(var(--m3-scheme-surface-container-low));
   }
-  :global(.ce-toolbox__button--active) {
-    color: var(--link-color);
+  :global(.ce-toolbar__plus, .ce-toolbox__button.ce-toolbox__button--active) {
+    color: rgb(var(--m3-scheme-primary));
   }
 
   :global(.ce-settings) {
-    background-color: var(--foreground);
+    background-color: rgb(var(--m3-scheme-surface-container-lowest));
     border: 1px solid transparent;
   }
   :global(.ce-settings__button) {
-    color: var(--font-color);
+    color: rgb(var(--m3-scheme-on-background));
   }
   :global(.ce-settings__button:hover) {
-    background-color: var(--foreground-hover);
+    background-color: rgb(var(--m3-scheme-surface-container-low));
   }
   :global(.cdx-settings-button) {
-    color: var(--font-color);
+    color: rgb(var(--m3-scheme-on-background));
   }
   :global(.cdx-settings-button--active) {
-    color: var(--link-color);
+    color: rgb(var(--m3-scheme-primary));
   }
   :global(.cdx-settings-button:hover) {
-    background-color: var(--foreground-hover);
+    background-color: rgb(var(--m3-scheme-surface-container-low));
   }
 
   :global(.ce-conversion-toolbar) {
-    background-color: var(--foreground);
+    background-color: rgb(var(--m3-scheme-surface-container-lowest));
     border: 1px solid transparent;
   }
 
   :global(.ce-inline-toolbar) {
-    background-color: var(--foreground);
+    background-color: rgb(var(--m3-scheme-surface-container-lowest));
     border: 1px solid transparent;
   }
 
   :global(.ce-inline-toolbar__dropdown:hover) {
-    background-color: var(--foreground-hover);
+    background-color: rgb(var(--m3-scheme-surface-container-low));
   }
   :global(.ce-conversion-toolbar__label) {
-    color: var(--font-color);
+    color: rgb(var(--m3-scheme-on-background));
   }
 
   :global(.ce-conversion-tool:hover) {
-    background-color: var(--foreground-hover);
+    background-color: rgb(var(--m3-scheme-surface-container-low));
   }
 
   :global(.ce-conversion-tool__icon) {
-    background-color: var(--foreground-light);
+    background-color: rgb(var(--m3-scheme-surface-container-highest));
     border: 1px solid transparent;
   }
 
   :global(.ce-inline-tool) {
-    color: var(--font-color);
+    color: rgb(var(--m3-scheme-on-background));
   }
   :global(.ce-inline-tool:hover) {
-    background-color: var(--foreground-hover);
+    background-color: rgb(var(--m3-scheme-surface-container-low));
   }
 
   :global(.ce-inline-tool-input) {
-    background-color: var(--foreground);
-    color: var(--font-color);
+    background-color: rgb(var(--m3-scheme-surface-container-lowest));
+    color: rgb(var(--m3-scheme-on-background));
   }
 
   :global(.ct:before, .ct:after) {
-    background-color: var(--foreground-light);
+    background-color: rgb(var(--m3-scheme-surface-container-highest));
   }
   :global(.ct__content) {
-    color: var(--font-color);
+    color: rgb(var(--m3-scheme-on-background));
   }
 </style>

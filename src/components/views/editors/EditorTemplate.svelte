@@ -119,7 +119,7 @@
   .scroll-container {
     height: calc(100% - 25px);
     overflow-y: scroll;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
   }
 
   .hide {

@@ -5,7 +5,7 @@
     "email": "Tormak9970@gmail.com"
   },
   "description": "A small application for portfolio management.",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "type": "module",
   "private": true,
   "scripts": {
@@ -33,15 +33,13 @@
     "@ktibow/iconset-material-symbols": "^0.0.1715672497",
     "@material/material-color-utilities": "^0.2.7",
     "svelte-dnd-action": "github:Tormak9970/svelte-dnd-action#build",
-    "@editorjs/code": "^2.7.0",
-    "@editorjs/delimiter": "^1.2.0",
-    "@editorjs/editorjs": "^2.22.2",
-    "@editorjs/embed": "^2.4.6",
-    "@editorjs/header": "^2.6.1",
-    "@editorjs/image": "^2.6.2",
-    "@editorjs/link": "^2.3.1",
-    "@editorjs/nested-list": "^1.0.2",
-    "@editorjs/paragraph": "^2.8.0",
+    "@editorjs/editorjs": "^2.30.5",
+    "@editorjs/embed": "^2.7.4",
+    "@editorjs/header": "^2.8.7",
+    "@editorjs/image": "^2.9.3",
+    "@editorjs/link": "^2.6.2",
+    "@editorjs/nested-list": "^1.4.3",
+    "@editorjs/paragraph": "^2.11.6",
     "svelte-editorjs": "^0.1.0"
   }
 }
