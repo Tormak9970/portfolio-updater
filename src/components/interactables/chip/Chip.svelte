@@ -1,7 +1,9 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import type { IconifyIcon } from "@iconify/types";
+  import { createEventDispatcher } from "svelte";
   import type { HTMLButtonAttributes } from "svelte/elements";
+  import Button from "../Button.svelte";
 
   export let display = "inline-flex";
   export let extraOptions: HTMLButtonAttributes = {};
@@ -15,11 +17,12 @@
    * | suggestion | smart actions    | like a chat response          | query/message      |
    */
   export let type: "input" | "assist" | "general";
-  export let icon: IconifyIcon | null = null;
   export let trailingIcon: IconifyIcon | null = null;
   export let elevated = false;
   export let disabled = false;
   export let selected = false;
+  
+  const dispatch = createEventDispatcher();
 </script>
 
 <button
@@ -32,12 +35,15 @@
   {...extraOptions}
 >
   <div class="layer" />
-  {#if icon}
-    <Icon {icon} class="leading" />
-  {/if}
-  <span class="m3-font-label-large"><slot /></span>
+  <span class="m3-font-label-large">
+    <slot />
+  </span>
   {#if trailingIcon}
-    <Icon icon={trailingIcon} class="trailing" />
+    <div class="trailing">
+      <Button type="text" iconType="full" size="1.5rem" iconSize="1.25rem" on:click={() => dispatch("trailingClick")}>
+        <Icon icon={trailingIcon} />
+      </Button>
+    </div>
   {/if}
 </button>
 
@@ -78,9 +84,6 @@
   .m3-container:enabled:not(.type-input):not(.selected) > :global(.leading) {
     color: rgb(var(--m3-scheme-primary));
   }
-  .m3-container > :global(.leading) {
-    margin-left: -0.5rem;
-  }
   .m3-container > :global(.trailing) {
     margin-right: -0.5rem;
   }
@@ -90,6 +93,13 @@
   .type-input > :global(.trailing) {
     margin-right: -0.25rem;
   }
+
+  /* .trailing {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } */
 
   .type-assist {
     color: rgb(var(--m3-scheme-on-surface));

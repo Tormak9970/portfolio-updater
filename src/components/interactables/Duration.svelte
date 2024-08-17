@@ -1,9 +1,7 @@
 <script lang="ts">
+  import { TextField, Toggle } from "@interactables";
   import { onMount } from "svelte";
-  import Checkbox from "./Checkbox.svelte";
-  import TextInput from "./TextInput.svelte";
 
-  export let label:string = "";
   export let value:string;
   export let singleYear: boolean;
 
@@ -30,29 +28,38 @@
 
 <div class="duration-container">
   <!-- svelte-ignore a11y-label-has-associated-control -->
-  {#if label != ""}
-    <label style="margin-bottom: 2px; font-size: 16px; user-select: none;">{label}</label>
-  {/if}
-  <div class="type-container">
+  <label class="type-container">
     <div class="type-label" style="margin-right: 7px;">Single Year:</div>
-    <Checkbox bind:value={singleYear} />
-  </div>
+    <Toggle bind:checked={singleYear} />
+  </label>
   {#if singleYear}
-    <TextInput placeholder="The dates of employment" bind:value={value} onInput={onChange} />
+    <TextField name="Duration" bind:value={value} on:change={onChange} />
   {:else}
     <div class="multi-year-container">
-      <TextInput bind:value={from} onInput={onSplitChangeWrapper} width={80} />
+      <TextField
+        name="From"
+        bind:value={from}
+        on:change={onSplitChangeWrapper}
+      />
       <div style="margin: 0px 7px;">—</div>
-      <TextInput bind:value={to} onInput={onSplitChangeWrapper} width={80} />
+      <TextField
+        name="To"
+        bind:value={to}
+        on:change={onSplitChangeWrapper}
+      />
     </div>
   {/if}
 </div>
 
 <style>
+  .duration-container {
+    height: 110px;
+  }
+  
   .type-container {
     display: flex;
     align-items: center;
-    margin: 5px 0px;
+    margin: 0.5rem 0;
   }
 
   .type-label {

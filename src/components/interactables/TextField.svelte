@@ -3,6 +3,7 @@
   import type { IconifyIcon } from "@iconify/types";
   import { createEventDispatcher } from "svelte";
   import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
+  import Button from "./Button.svelte";
 
   export let display = "inline-flex";
   export let extraWrapperOptions: HTMLAttributes<HTMLDivElement> = {};
@@ -44,9 +45,11 @@
     <Icon icon={leadingIcon} class="leading" />
   {/if}
   {#if trailingIcon}
-    <button on:click={() => dispatch("trailingClick")} class="trailing">
-      <Icon icon={trailingIcon} />
-    </button>
+    <div class="trailing">
+      <Button type="text" iconType="full" on:click={() => dispatch("trailingClick")}>
+        <Icon icon={trailingIcon} />
+      </Button>
+    </div>
   {/if}
 </div>
 
@@ -77,7 +80,7 @@
     left: 0.75rem;
     top: 1rem;
     color: rgb(var(--error, var(--m3-scheme-on-surface-variant)));
-    background-color: rgb(var(--m3-util-background, var(--m3-scheme-surface)));
+    background-color: rgb(var(--m3-util-background, var(--m3-scheme-surface-container)));
     padding: 0 0.25rem;
     pointer-events: none;
     transition:
@@ -106,22 +109,16 @@
   }
   .trailing {
     position: absolute;
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-    height: 100%;
-    right: 0;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    height: 80%;
+    aspect-ratio: 1 / 1;
+    top: 10%;
+    right: 0.1rem;
 
     display: flex;
     align-items: center;
     justify-content: center;
-    border: none;
-    background-color: transparent;
-    border-top-right-radius: 0.25rem;
-    border-bottom-right-radius: 0.25rem;
-
-    -webkit-tap-highlight-color: transparent;
-    cursor: pointer;
-    transition: all 200ms;
   }
 
   input:focus ~ label,
@@ -143,15 +140,6 @@
   input:focus ~ .layer {
     border-color: rgb(var(--error, var(--m3-scheme-primary)));
     border-width: 0.125rem;
-  }
-  @media (hover: hover) {
-    button:hover {
-      background-color: rgb(var(--m3-scheme-on-surface-variant) / 0.08);
-    }
-  }
-  button:focus-visible,
-  button:active {
-    background-color: rgb(var(--m3-scheme-on-surface-variant) / 0.12);
   }
 
   .leading-icon > input {

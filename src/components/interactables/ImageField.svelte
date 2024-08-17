@@ -1,14 +1,13 @@
 <script lang="ts">
-  import { fs, path, tauri } from "@tauri-apps/api";
+  import { dialog, fs, path, tauri } from "@tauri-apps/api";
 
-  import { toast } from "@zerodevx/svelte-toast";
+  import { MoreHoriz } from "@icons";
+  import { TextField } from "@interactables";
+  import { configPath } from "@utils";
   import { afterUpdate, onMount } from "svelte";
-  import { configPath } from "../../lib/utils/Utils";
-  import FileButton from "./FileButton.svelte";
-  import TextInput from "./TextInput.svelte";
+  import { showInfoSnackbar } from "../../stores";
 
-  export let label: string;
-  export let placeholder: string;
+  export let name: string;
   export let value: string;
   export let onChange: (path: string) => Promise<void> = async () => {};
 
@@ -21,7 +20,7 @@
     const tarPath = await path.join(await path.dirname(configPath), relPath);
 
     if (await fs.exists(tarPath)) {
-      toast.push("image with that name already exists!");
+      $showInfoSnackbar({ message: "An image with that name already exists!" });
     } else {
       await fs.copyFile(filePath, tarPath);
 
@@ -30,6 +29,15 @@
 
       await onChange(value);
     }
+  }
+
+  async function promptPickImage() {
+    const path = await dialog.open({
+      title: "Select a file",
+      directory: false,
+      multiple: false
+    });
+    if (path && path != "") processPath(path as string);
   }
 
   let imgPath = "";
@@ -46,18 +54,15 @@
 </script>
 
 <div class="img-preview">
-  <div class="info">
-    {#if label !== ""}
-      <!-- svelte-ignore a11y-label-has-associated-control -->
-      <label style="margin-bottom: 2px; font-size: 16px; user-select: none;">{label}</label>
-      <div style="height: 2px; width: 1px;" />
-    {/if}
-    <div class="inputs">
-      <TextInput placeholder={placeholder} onChange={wrapper} width="{188}" value={value} />
-      <div style="height: 1px; width: 7px;"/>
-      <FileButton onChange={async (path) => await processPath(path)} />
-    </div>
-  </div>
+  <TextField
+    name={name}
+    extraWrapperOptions={{
+      style: "width: 100%;"
+    }}
+    bind:value
+    trailingIcon={MoreHoriz}
+    on:trailingClick={promptPickImage}
+  />
   <div class="prev" style="margin-top: 7px; max-width: 100%;">
     <img src={imgPath && imgPath !== "" ? tauri.convertFileSrc(imgPath) : ""} alt="" style="max-width: 100%;" />
   </div>
@@ -74,21 +79,14 @@
 
     color: var(--font-color);
   }
-  .img-preview > .info {
-    width: 100%;
-  }
-
-  .inputs {
-    width: 100%;
-
-    display: flex;
-    flex-direction: row;
-  }
 
   .img-preview > .prev {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    border-radius: 10px;
+    overflow: hidden;
   }
 </style>

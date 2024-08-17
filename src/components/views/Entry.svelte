@@ -1,16 +1,12 @@
 <script lang="ts">
-  import { path, tauri } from "@tauri-apps/api";
-
-  import { onMount } from "svelte";
-  import { configPath, updateSettings } from "../../lib/utils/Utils";
+  import { Button } from "@interactables";
+  import { Card } from "@layout";
+  import { updateSettings } from "@utils";
   import { currentExperience, currentProject, selectedCategory, selectedKey } from "../../stores";
-  import Button from "../old-interactables/Button.svelte";
 
   export let data: any;
   export let field: LowercaseCategory;
   export let key: string;
-
-  let imgPath: string;
 
   const fieldStateLUT = {
     "projects": "currentProject",
@@ -40,39 +36,23 @@
     $selectedKey = key;
     await updateSettings({ prop: lutEntry, data: newData });
   }
-
-  onMount(async () => {
-    if ($selectedCategory === "Projects") {
-      const tmpPath = await path.join(
-        await path.dirname(configPath),
-        data.image.substring(2)
-      );
-
-      imgPath = tmpPath;
-    }
-  });
 </script>
 
-<div class="entry">
-  {#if imgPath}
-    <img
-      src={imgPath && imgPath != "" ? tauri.convertFileSrc(imgPath) : ""}
-      alt=""
-      style="width: 40px; margin: 0px 7px;"
-    />
-  {/if}
-  <div class="info" style="{$selectedCategory === "Experience" ? "margin-left: 10px" : ""}">
-    <div class="field">{$selectedCategory === "Experience" ? data.position : data.name}</div>
+
+<Card type="filled">
+  <div class="entry">
+    <div class="info" style="{$selectedCategory === "Experience" ? "margin-left: 10px" : ""}">
+      <div class="field">{$selectedCategory === "Experience" ? data.position : data.name}</div>
+    </div>
+    <Button type="elevated" on:click={setState}>
+      Edit
+    </Button>
   </div>
-  <div class="btn-cont">
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <Button label="Edit" onClick={setState} height="30px" width="60px" />
-  </div>
-</div>
+</Card>
 
 <style>
   .entry {
-    height: 60px;
+    height: 40px;
     min-width: 300px;
 
     background-color: var(--foreground);
@@ -87,7 +67,6 @@
   }
 
   .entry > .info {
-    margin-right: 7px;
     margin-right: 14px;
 
     display: flex;
@@ -97,12 +76,8 @@
   .entry > .info > .field {
     font-size: 20px;
     white-space: nowrap;
-    max-width: 170px;
+    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  .entry > .btn-cont {
-    margin-right: 7px;
   }
 </style>

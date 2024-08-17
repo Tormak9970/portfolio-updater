@@ -1,36 +1,27 @@
 <script lang="ts">
-  import { Icon } from "@component-utils";
-  import type { IconifyIcon } from "@iconify/types";
-  import { createEventDispatcher } from "svelte";
-  import type { HTMLAttributes, HTMLInputAttributes } from "svelte/elements";
+  import type { HTMLAttributes, HTMLTextareaAttributes } from "svelte/elements";
 
   export let display = "inline-flex";
   export let extraWrapperOptions: HTMLAttributes<HTMLDivElement> = {};
-  export let extraOptions: HTMLInputAttributes = {};
+  export let extraOptions: HTMLTextareaAttributes = {};
   export let name: string;
-  export let leadingIcon: IconifyIcon | undefined = undefined;
-  export let trailingIcon: IconifyIcon | undefined = undefined;
-
+  
   export let disabled = false;
   export let required = false;
   export let error = false;
   export let value = "";
-  const dispatch = createEventDispatcher();
   const id = crypto.randomUUID();
 </script>
 
 <div
   class="m3-container"
-  class:leading-icon={leadingIcon}
-  class:trailing-icon={trailingIcon}
   class:error
   style="display: {display}"
   {...extraWrapperOptions}
 >
-  <input
+  <textarea
     class="m3-font-body-large"
     placeholder=" "
-    type="number"
     bind:value
     {id}
     {disabled}
@@ -41,14 +32,6 @@
   />
   <div class="layer" />
   <label class="m3-font-body-large" for={id}>{name}</label>
-  {#if leadingIcon}
-    <Icon icon={leadingIcon} class="leading" />
-  {/if}
-  {#if trailingIcon}
-    <button on:click={() => dispatch("trailingClick")} class="trailing">
-      <Icon icon={trailingIcon} />
-    </button>
-  {/if}
 </div>
 
 <style>
@@ -61,7 +44,7 @@
     height: 3.5rem;
     min-width: 15rem;
   }
-  input {
+  textarea {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -72,13 +55,14 @@
     border-radius: var(--m3-textfield-outlined-shape);
     background-color: transparent;
     color: rgb(var(--m3-scheme-on-surface));
+    resize: none;
   }
   label {
     position: absolute;
     left: 0.75rem;
     top: 1rem;
     color: rgb(var(--error, var(--m3-scheme-on-surface-variant)));
-    background-color: rgb(var(--m3-util-background, var(--m3-scheme-surface)));
+    background-color: rgb(var(--m3-util-background, var(--m3-scheme-surface-container)));
     padding: 0 0.25rem;
     pointer-events: none;
     transition:
@@ -125,69 +109,42 @@
     transition: all 200ms;
   }
 
-  input:focus ~ label,
-  input:not(:placeholder-shown) ~ label {
+  textarea:focus ~ label,
+  textarea:not(:placeholder-shown) ~ label {
     top: calc(var(--m3-font-body-small-height, 1rem) * -0.5);
     font-size: var(--m3-font-body-small-size, 0.85rem);
     line-height: var(--m3-font-body-small-height, 1rem);
     letter-spacing: var(--m3-font-body-small-tracking, 0.4);
   }
-  input:hover ~ label {
+  textarea:hover ~ label {
     color: rgb(var(--error, var(--m3-scheme-on-surface)));
   }
-  input:hover ~ .layer {
+  textarea:hover ~ .layer {
     border-color: rgb(var(--error, var(--m3-scheme-on-surface)));
   }
-  input:focus ~ label {
+  textarea:focus ~ label {
     color: rgb(var(--error, var(--m3-scheme-primary)));
   }
-  input:focus ~ .layer {
+  textarea:focus ~ .layer {
     border-color: rgb(var(--error, var(--m3-scheme-primary)));
     border-width: 0.125rem;
-  }
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  @media (hover: hover) {
-    button:hover {
-      background-color: rgb(var(--m3-scheme-on-surface-variant) / 0.08);
-    }
-  }
-  button:focus-visible,
-  button:active {
-    background-color: rgb(var(--m3-scheme-on-surface-variant) / 0.12);
-  }
-
-  .leading-icon > input {
-    padding-left: 3.25rem;
-  }
-  .leading-icon > input:not(:focus):placeholder-shown ~ label {
-    left: 3rem;
-  }
-  .trailing-icon > input {
-    padding-right: 3.25rem;
   }
 
   .error {
     --error: var(--m3-scheme-error);
   }
-  .error > input:hover ~ label,
-  .error > input:hover ~ .layer {
+  .error > textarea:hover ~ label,
+  .error > textarea:hover ~ .layer {
     --error: var(--m3-scheme-on-error-container);
   }
 
-  input:disabled {
+  textarea:disabled {
     color: rgb(var(--m3-scheme-on-surface) / 0.38);
   }
-  input:disabled ~ label {
+  textarea:disabled ~ label {
     color: rgb(var(--m3-scheme-on-surface) / 0.38);
   }
-  input:disabled ~ .layer {
+  textarea:disabled ~ .layer {
     border-color: rgb(var(--m3-scheme-on-surface) / 0.38);
-  }
-  input:disabled ~ :global(svg) {
-    color: rgb(var(--m3-scheme-on-surface) / 0.38);
   }
 </style>

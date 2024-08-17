@@ -1,8 +1,12 @@
 <script lang="ts">
+  import { Icon } from "@component-utils";
+  import { scrollShadow } from "@directives";
+  import { Close, Save } from "@icons";
+  import { Button } from "@interactables";
+  import { Card } from "@layout";
+  import type { EntryState, EntryUnion } from "@types";
   import type { Writable } from "svelte/store";
-  import type { EntryState, EntryUnion } from "../../../lib/types/ConfigTypes";
   import { canSave, showConfirmDeleteModal } from "../../../stores";
-  import Button from "../../old-interactables/Button.svelte";
   
   export let saveChanges: () => Promise<void>;
   export let emptyMessage: string;
@@ -11,31 +15,40 @@
 </script>
 
 <div class="editor-template">
-	<div class="header">
-    <h1>{$curretStore.original !== "" ? `Editing: ${$curretStore.original}` : emptyMessage}</h1>
-    <div class="btn-cont" class:hide={$curretStore.original === ""}>
-      {#if $canSave}
-        <Button label="Save" width="90px" height="30px" highlight onClick={saveChanges} />
-        <div style="height: 1px; width: 10px" />
-      {/if}
-      <Button label="Delete" width="90px" height="30px" warn onClick={() => $showConfirmDeleteModal = true} />
+  <Card type="filled" extraOptions={{ style: "width: 100%;" }}>
+    <div class="header">
+      <h1 style:margin="0px">{$curretStore.original !== "" ? `Editing: ${$curretStore.original}` : emptyMessage}</h1>
+      <div class="btn-cont" class:hide={$curretStore.original === ""}>
+        {#if $canSave}
+          <Button type="text" iconType="full" on:click={saveChanges}>
+            <Icon icon={Save} />
+          </Button>
+        {/if}
+        <Button type="text" iconType="full" on:click={() => $showConfirmDeleteModal = true}>
+          <Icon icon={Close} />
+        </Button>
+      </div>
     </div>
-  </div>
+  </Card>
   <div class="content" class:hide={$curretStore.original === ""}>
     {#if useFields}
-      <div class="fields">
-        <h3>Fields</h3>
-        <div class="scroll-container">
+      <Card type="filled" extraOptions={{ style: "height: 100%;" }}>
+        <div class="fields">
+          <h3>Fields</h3>
           <slot name="fields" />
         </div>
-      </div>
+      </Card>
     {/if}
-    <div class="editor">
-      <h3>Writeup</h3>
-      <div class="scroll-container">
-        <slot name="editor" />
+    <Card type="filled" extraOptions={{ style: "height: 100%; flex-grow: 1;" }}>
+      <div class="editor">
+        <h3>Writeup</h3>
+        <div class="scroll-wrapper">
+          <div class="scroll-container" use:scrollShadow={{ background: "--m3-scheme-surface-container" }}>
+            <slot name="editor" />
+          </div>
+        </div>
       </div>
-    </div>
+    </Card>
   </div>
 </div>
 
@@ -48,41 +61,34 @@
 		flex-direction: column;
 		align-items: center;
 
-		color: var(--font-color);
+    gap: 1rem;
 
 		position: relative;
 	}
 
 	.header {
-		width: calc(100% - 40px);
+		width: 100%;
 
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-
-    padding: 0px 20px;
-
-    margin-bottom: 10px;
-    
-    border-radius: 4px;
-    background-color: var(--foreground-dark);
 	}
 
 	.header > .btn-cont {
 		display: flex;
 		flex-direction: row;
-    justify-content: flex-end;
-    width: 290px;
+    gap: 0.5rem;
 	}
 
   .content {
     width: 100%;
-    height: calc(100% - 93px);
+    height: calc(100% - 88px);
 
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+
+    gap: 1rem;
   }
 
   .content h3 {
@@ -90,34 +96,33 @@
   }
 
   .fields {
-    padding: 7px;
-    padding-left: 10px;
+    padding: 0.5rem;
     height: calc(100% - 14px);
-    margin-right: 10px;
-
-    border-radius: 4px;
-    background-color: var(--foreground-dark);
   }
 
   .editor {
     padding: 7px;
     padding-left: 10px;
     height: calc(100% - 14px);
-
-    flex-grow: 1;
     
     border-radius: 4px;
     background-color: var(--foreground-dark);
   }
 
+  .scroll-wrapper {
+    height: 100%;
+    flex-grow: 1;
+
+    position: relative;
+  }
+
   .scroll-container {
-    padding-right: 7px;
     height: calc(100% - 25px);
     overflow-y: scroll;
     overflow-x: hidden;
   }
 
   .hide {
-    display: none !important;
+    display: none;
   }
 </style>

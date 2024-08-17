@@ -1,22 +1,10 @@
 <script lang="ts">
 	import type { OutputData } from "@editorjs/editorjs";
 
-	import type { ProjectEntry } from "../../../lib/types/ConfigTypes";
-	import {
-	    getKeyFromName,
-	    updateSettings,
-	    writeConfig,
-	} from "../../../lib/utils/Utils";
-	import {
-	    canSave,
-	    config,
-	    currentProject,
-	    projectsList
-	} from "../../../stores";
-	import ImagePreview from "../../old-interactables/ImagePreview.svelte";
-	import TagsInput from "../../old-interactables/tags/TagsInput.svelte";
-	import TextArea from "../../old-interactables/TextArea.svelte";
-	import TextInput from "../../old-interactables/TextInput.svelte";
+	import { ImageField, TagsField, TextArea, TextField } from "@interactables";
+	import type { ProjectEntry } from "@types";
+	import { getKeyFromName, updateSettings, writeConfig } from "@utils";
+	import { canSave, config, currentProject, projectsList } from "../../../stores";
 	import EditorJs from "../EditorJS.svelte";
 	import EditorTemplate from "./EditorTemplate.svelte";
 
@@ -79,43 +67,60 @@
 </script>
 
 <EditorTemplate saveChanges={saveChanges} curretStore={currentProject} emptyMessage="Select a Project to get started">
-  <div slot="fields">
-    <TextInput
-      label={"Name"}
-      placeholder={"The project name"}
+  <div slot="fields" class="fields">
+    <TextField
+      name={"Name"}
+      extraWrapperOptions={{
+        style: "width: 100%;"
+      }}
       bind:value={name}
-      onChange={allowSave}
+      on:change={allowSave}
     />
 
-    <ImagePreview
-      label={"Project Image"}
-      placeholder={"The project image"}
+    <ImageField
+      name={"Project Image"}
       bind:value={image}
       onChange={allowSave}
     />
 
-    <TextInput
-      label={"Link"}
-      placeholder={"A link to the project"}
+    <TextField
+      name={"Link"}
+      extraWrapperOptions={{
+        style: "width: 100%;"
+      }}
       bind:value={link}
-      onChange={allowSave}
-      width={200}
+      on:change={allowSave}
     />
     
-    <TagsInput
-      label="Tech"
+    <TagsField
+      name="Tech Used"
       bind:value={tech}
-      onChange={allowSave}
+      on:change={allowSave}
     />
   </div>
   <div slot="editor">
     <TextArea
-      label={"Short Description"}
-      placeholder="A short description of the project"
+      name={"Short Description"}
+      extraWrapperOptions={{
+        style: "width: calc(100% - 0.5rem); height: 100px; margin-top: 0.5rem; margin-right: 0.5rem;"
+      }}
       bind:value={description}
-      onChange={allowSave}
+      on:change={allowSave}
     />
 
     <EditorJs onChange={allowSave} bind:content={content} />
   </div>
 </EditorTemplate>
+
+<style>
+  .fields {
+    width: 100%;
+
+    padding-top: 0.5rem;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.5rem;
+  }
+</style>

@@ -9,9 +9,11 @@
 </script>
 
 <div class="layout">
-  <Button type="text" iconType="full" on:click={() => $showSideNav = true}>
-    <Icon icon={Settings} />
-  </Button>
+  <div class="left-container">
+    <Button type="text" iconType="full" on:click={() => $showSideNav = true}>
+      <Icon icon={Settings} />
+    </Button>
+  </div>
 	<div class="editor-container styled-scrollbar">
 		{#key $selectedKey}
       <svelte:component this={editor} />
@@ -29,12 +31,15 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
-		align-items: center;
 
     position: relative;
 
 		overflow: hidden;
 	}
+
+  .left-container {
+    margin-top: 1.25rem;
+  }
 
 	.layout > .editor-container {
 		height: 100%;

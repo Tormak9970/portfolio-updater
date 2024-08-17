@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { showUnsavedChangesModal } from "../../stores";
-  import ModalBody from "./ModalBody.svelte";
-  import Button from "../old-interactables/Button.svelte";
+  import { ModalBody } from "@component-utils";
+  import { Button } from "@interactables";
   import { exit } from "@tauri-apps/api/process";
+  import { showUnsavedChangesModal } from "../../stores";
 
   async function onConfirm() {
     await exit(0);
@@ -15,7 +15,7 @@
   }
 </script>
 
-<ModalBody title={"Are you sure you want to delete this?"} canClose={false}>
+<ModalBody headline={"You have unsaved changes!"} open canClose={false}>
   <div class="content">
     <div class="info">
       <div class="type-cont">
@@ -26,16 +26,20 @@
       </div>
       <div class="message">You have unsaved changes! Are you sure you want to exit?</div>
     </div>
-    <div class="buttons">
-      <Button label={"Yes"} onClick={onConfirm} width={"47.5%"} />
-      <Button label={"No"} onClick={closeModal} width={"47.5%"} />
+  </div>
+  <div class="actions" slot="buttons">
+    <div class="left">
+      <Button type="text" on:click={onConfirm}>Yes</Button>
+    </div>
+    <div class="right">
+      <Button type="text" on:click={closeModal}>No</Button>
     </div>
   </div>
 </ModalBody>
 
 <style>
   .content {
-    max-width: 400px;
+    max-width: 300px;
   }
 
   .info {
@@ -51,15 +55,11 @@
     margin-left: 15px;
   }
 
-  .buttons {
-    margin-top: 14px;
-    margin-bottom: 7px;
-    margin-left: 7px;
-    margin-right: 7px;
-    width: calc(100% - 14px);
+  .actions {
+    width: 100%;
     display: flex;
-    justify-content: space-around;
-    justify-self: flex-end;
+    align-items: center;
+    justify-content: space-between;
   }
 </style>
 

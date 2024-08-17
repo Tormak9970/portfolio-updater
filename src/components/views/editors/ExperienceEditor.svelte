@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { ExperienceEntry } from "../../../lib/types/ConfigTypes";
-  import { genExperienceKey, updateSettings, writeConfig } from "../../../lib/utils/Utils";
+  import { TextField } from "@interactables";
+  import type { ExperienceEntry } from "@types";
+  import { genExperienceKey, updateSettings, writeConfig } from "@utils";
   import { canSave, config, currentExperience, experienceList } from "../../../stores";
-  import Duration from "../../old-interactables/Duration.svelte";
-  import TextArea from "../../old-interactables/TextArea.svelte";
-  import TextInput from "../../old-interactables/TextInput.svelte";
+  import Duration from "../../interactables/Duration.svelte";
+  import TextArea from "../../interactables/TextArea.svelte";
   import EditorTemplate from "./EditorTemplate.svelte";
 
   let company = $currentExperience.data.company;
@@ -65,42 +65,60 @@
 </script>
 
 <EditorTemplate saveChanges={saveChanges} emptyMessage="Select an Experience entry to get started" curretStore={currentExperience} useFields={false}>
-  <div slot="editor">
-    <TextInput
-      label={"Company"}
-      placeholder={"The company name"}
+  <div slot="editor" class="fields">
+    <TextField
+      name={"Company"}
+      extraWrapperOptions={{
+        style: "width: 300px;"
+      }}
       bind:value={company}
-      onChange={allowSave}
+      on:change={allowSave}
     />
 
-    <TextInput
-      label={"Position"}
-      placeholder={"The position name"}
-      width={200}
+    <TextField
+      name={"Position"}
+      extraWrapperOptions={{
+        style: "width: 300px;"
+      }}
       bind:value={position}
-      onChange={allowSave}
+      on:change={allowSave}
     />
 
-    <TextInput
-      label={"Link"}
-      placeholder={"A link to the company's website"}
-      width={300}
+    <TextField
+      name={"Link"}
+      extraWrapperOptions={{
+        style: "width: 300px;"
+      }}
       bind:value={companyLink}
-      onChange={allowSave}
+      on:change={allowSave}
     />
 
     <Duration
-      label="Duration"
       bind:value={duration}
       singleYear={singleYear}
       onChange={allowSave}
     />
 
     <TextArea
-      label={"Description"}
-      placeholder=""
+      name={"Description"}
+      extraWrapperOptions={{
+        style: "width: 100%; height: 100px"
+      }}
       bind:value={description}
-      onChange={allowSave}
+      on:change={allowSave}
     />
   </div>
 </EditorTemplate>
+
+<style>
+  .fields {
+    width: 100%;
+
+    padding-top: 0.5rem;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.5rem;
+  }
+</style>

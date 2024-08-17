@@ -108,7 +108,7 @@
   });
 </script>
 
-<SideSheet width={400} on:close={() => $showSideNav = false}>
+<SideSheet width={400} padding="0rem 1rem 1rem 1rem" on:close={() => $showSideNav = false}>
   <div class="options">
     <div class="category-select" style:--m3-util-background="var(--m3-scheme-surface-container-low)">
       <Select name="Category" options={options} bind:value={dropdownValue} />
@@ -140,6 +140,7 @@
 
 <style>
   .options {
+    padding-top: 1rem;
     width: 100%;
 
     display: flex;
@@ -160,7 +161,7 @@
 
   .entries-positioner {
     width: 100%;
-    height: calc(100% - 40px);
+    height: calc(100% - 56px);
     position: relative;
 
     overflow: hidden;
@@ -177,8 +178,9 @@
     overflow-x: none;
   }
   .dnd-zone {
+    padding-top: 0.5rem;
     width: 100%;
-    min-height: 60px;
+    min-height: 50px;
     
     overflow-x: none;
   }
@@ -186,5 +188,15 @@
   .entry-wrapper {
     margin-bottom: 7px;
     overflow: hidden;
+
+    border-radius: 10px;
   }
+
+  :global(#dnd-action-dragged-el) {
+    outline: none;
+    box-shadow:
+      0px 2px 4px -1px rgb(var(--m3-scheme-shadow) / 0.2),
+      0px 4px 5px 0px rgb(var(--m3-scheme-shadow) / 0.14),
+      0px 1px 10px 0px rgb(var(--m3-scheme-shadow) / 0.12);
+	}
 </style>
