@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { config, experienceList, projectsList, selectedCategory, showConfirmDeleteModal, showSetup, showSideNav, showUnsavedChangesModal } from "../stores";
+	import { config, experienceList, projectsList, selectedCategory, selectedKey, showConfirmDeleteModal, showSetup, showSideNav, showUnsavedChangesModal } from "../stores";
 
 	import Setup from "./views/Setup.svelte";
 
@@ -14,27 +14,12 @@
   import SideNav from "./modals/SideNav.svelte";
   import ExperienceEditor from "./views/editors/ExperienceEditor.svelte";
   import ProjectEditor from "./views/editors/ProjectEditor.svelte";
-  import Layout from "./views/Layout.svelte";
   
   overrideSvelteDndKey("key");
 
-  const configs = {
-    Projects: {
-      list: projectsList,
-      field: "projects",
-      editor: ProjectEditor
-    },
-    Experience: {
-      list: experienceList,
-      field: "experience",
-      editor: ExperienceEditor
-    }
-  }
-
-  $: currentConfig = configs[$selectedCategory];
-  $: list = currentConfig.list;
-  $: editor = currentConfig.editor;
-  $: field = currentConfig.field as LowercaseCategory;
+  $: list = $selectedCategory === "Projects" ? projectsList : experienceList;
+  $: editor = $selectedCategory === "Projects" ? ProjectEditor : ExperienceEditor;
+  $: field = $selectedCategory.toLowerCase() as "projects" | "experience";
 
   function handleListUpdate() {
     if ($list.length === 0) {
@@ -73,7 +58,11 @@
   {#if $showSetup}
     <Setup />
   {:else}
-    <Layout editor={editor} />
+    <div class="layout">
+      {#key $selectedKey}
+        <svelte:component this={editor} />
+      {/key}
+    </div>
   {/if}
 </div>
 
@@ -86,5 +75,20 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		align-items: center;
+	}
+
+  .layout {
+		width: calc(100% - 20px);
+		height: 100%;
+
+    margin: 10px;
+
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+
+    position: relative;
+
+		overflow: hidden;
 	}
 </style>

@@ -1,26 +1,15 @@
 <script lang="ts">
   import { ModalBody } from "@component-utils";
   import { Button } from "@interactables";
-  import { updateSettings, writeConfig } from "@utils";
+  import { DEFAULT_SETTINGS, updateSettings, writeConfig } from "@utils";
   import { config, currentExperience, currentProject, experienceList, projectsList, selectedCategory, showConfirmDeleteModal } from "../../stores";
   
   async function onConfirm() {
     switch ($selectedCategory) {
       case "Projects":
+      // @ts-expect-error lowercase selected category always indexes $config
         delete $config[$selectedCategory.toLowerCase()][$currentProject.key];
-        $currentProject = {
-          original: "",
-          key: "",
-          data: {
-            index: 0,
-            name: "",
-            description: "",
-            content: {},
-            link: "",
-            image: "",
-            tech: []
-          },
-        };
+        $currentProject = structuredClone(DEFAULT_SETTINGS.currentProject);
         await updateSettings({ prop: "currentProject", data: $currentProject });
         $projectsList = Object.entries($config.projects).map(([key, data]) => {
           return {
@@ -30,19 +19,9 @@
         });
         break;
       case "Experience":
+        // @ts-expect-error lowercase selected category always indexes $config
         delete $config[$selectedCategory.toLowerCase()][$currentExperience.key];
-        $currentExperience = {
-          original: "",
-          key: "",
-          data: {
-            index: 0,
-            company: "",
-            position: "",
-            description: "",
-            duration: "",
-            companyLink: ""
-          },
-        };
+        $currentExperience = structuredClone(DEFAULT_SETTINGS.currentExperience);
         await updateSettings({ prop: "currentExperience", data: $currentExperience });
         $experienceList = Object.entries($config.experience).map(([key, data]) => {
           return {

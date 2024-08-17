@@ -5,16 +5,10 @@
   import { currentExperience, currentProject, selectedCategory, selectedKey } from "../../stores";
 
   export let data: any;
-  export let field: LowercaseCategory;
   export let key: string;
 
-  const fieldStateLUT = {
-    "projects": "currentProject",
-    "experience": "currentExperience",
-  }
-
   async function setState() {
-    const lutEntry = fieldStateLUT[field];
+    let settingsField: string;
 
     const newData = {
       "original": "",
@@ -26,15 +20,17 @@
       case "Projects":
         newData.original = data.name;
         $currentProject = newData;
+        settingsField = "currentProject";
         break;
       case "Experience":
         newData.original = data.position;
         $currentExperience = newData;
+        settingsField = "currentExperience";
         break;
     }
 
     $selectedKey = key;
-    await updateSettings({ prop: lutEntry, data: newData });
+    await updateSettings({ prop: settingsField, data: newData });
   }
 </script>
 

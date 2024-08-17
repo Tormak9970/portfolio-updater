@@ -1,5 +1,7 @@
 import type { OutputData } from "@editorjs/editorjs";
 
+export type PortfolioCategory = "Projects" | "Experience";
+
 export type ProjectEntry = {
   index: number,
   name: string,
@@ -16,7 +18,8 @@ export type ExperienceEntry = {
   duration: string,
   position: string,
   companyLink: string,
-  description: string
+  description: string,
+  content: OutputData | any,
 }
 
 export type EntryUnion = ProjectEntry | ExperienceEntry;

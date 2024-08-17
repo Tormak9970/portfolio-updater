@@ -4,7 +4,7 @@
   import { Add } from "@icons";
   import { Button, Select } from "@interactables";
   import { SideSheet } from "@layout";
-  import type { EntryData, EntryUnion } from "@types";
+  import type { EntryData, EntryUnion, PortfolioCategory } from "@types";
   import { updateSettings, writeConfig } from "@utils";
   import { afterUpdate } from "svelte";
   import { dndzone } from "svelte-dnd-action";
@@ -27,7 +27,7 @@
   ];
   let dropdownValue = $selectedCategory;
 
-  $: field = $selectedCategory.toLowerCase() as LowercaseCategory;
+  $: field = $selectedCategory.toLowerCase();
 
   function handleDndConsider(e: any) {
     data = e.detail.items;
@@ -44,6 +44,7 @@
       newData[entry.key] = entry.data;
     }
 
+    // @ts-expect-error field always indexes $config
     $config[field] = newData;
     writeConfig(JSON.stringify($config, null, '\t'));
   }
@@ -81,7 +82,8 @@
           "image": "",
           "duration": "",
           "companyLink": "",
-          "description": ""
+          "description": "",
+          "content": {}
         }
         $currentExperience = {
           "original": "New Experience",
@@ -129,7 +131,7 @@
         >
           {#each data as entry (entry.key)}
             <div class="entry-wrapper" animate:flip={{ duration: animateDurationMS }}>
-              <Entry data={entry.data} key={entry.key} field={field} />
+              <Entry data={entry.data} key={entry.key} />
             </div>
           {/each}
         </div>

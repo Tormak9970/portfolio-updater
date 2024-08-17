@@ -1,6 +1,3 @@
-type PortfolioCategory = "Projects" | "Experience";
-type LowercaseCategory = "projects" | "experience";
-
 type ShowErrorOptions = {
   message: string;
   faster?: boolean;

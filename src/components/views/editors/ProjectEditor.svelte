@@ -5,7 +5,7 @@
 	import type { ProjectEntry } from "@types";
 	import { getKeyFromName, updateSettings, writeConfig } from "@utils";
 	import { canSave, config, currentProject, projectsList } from "../../../stores";
-	import EditorJs from "../EditorJS.svelte";
+	import EditorJs from "./EditorJS.svelte";
 	import EditorTemplate from "./EditorTemplate.svelte";
 
   let image = $currentProject.data.image;

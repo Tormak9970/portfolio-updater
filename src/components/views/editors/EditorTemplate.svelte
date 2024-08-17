@@ -1,12 +1,12 @@
 <script lang="ts">
   import { Icon } from "@component-utils";
   import { scrollShadow } from "@directives";
-  import { Close, Save } from "@icons";
+  import { Close, Save, Settings } from "@icons";
   import { Button } from "@interactables";
   import { Card } from "@layout";
   import type { EntryState, EntryUnion } from "@types";
   import type { Writable } from "svelte/store";
-  import { canSave, showConfirmDeleteModal } from "../../../stores";
+  import { canSave, showConfirmDeleteModal, showSideNav } from "../../../stores";
   
   export let saveChanges: () => Promise<void>;
   export let emptyMessage: string;
@@ -17,7 +17,12 @@
 <div class="editor-template">
   <Card type="filled" extraOptions={{ style: "width: 100%;" }}>
     <div class="header">
-      <h1 style:margin="0px">{$curretStore.original !== "" ? `Editing: ${$curretStore.original}` : emptyMessage}</h1>
+      <div class="title">
+        <Button type="text" iconType="full" on:click={() => $showSideNav = true}>
+          <Icon icon={Settings} />
+        </Button>
+        <h1 style:margin="0px">{$curretStore.original !== "" ? `Editing: ${$curretStore.original}` : emptyMessage}</h1>
+      </div>
       <div class="btn-cont" class:hide={$curretStore.original === ""}>
         {#if $canSave}
           <Button type="text" iconType="full" on:click={saveChanges}>
@@ -80,6 +85,12 @@
 		flex-direction: row;
     gap: 0.5rem;
 	}
+
+  .title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
   .content {
     width: 100%;

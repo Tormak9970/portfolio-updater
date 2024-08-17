@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import type { Config, EntryState, ExperienceEntry, ProjectEntry } from "./lib/types/ConfigTypes";
+import type { Config, EntryState, ExperienceEntry, PortfolioCategory, ProjectEntry } from "./lib/types/ConfigTypes";
 
 export const showInfoSnackbar = writable<(data: ShowInfoOptions) => void>();
 export const showErrorSnackbar = writable<(data: ShowInfoOptions) => void>();
@@ -36,12 +36,13 @@ export const currentExperience = writable<EntryState<ExperienceEntry>>({
     "position": "",
     "companyLink": "",
     "duration": "",
-    "description": ""
+    "description": "",
+    "content": {}
   }
 });
 
-export const projectsList = writable([]);
-export const experienceList = writable([]);
+export const projectsList = writable<{ key: string, data: ProjectEntry }[]>([]);
+export const experienceList = writable<{ key: string, data: ExperienceEntry }[]>([]);
 
 export const showUnsavedChangesModal = writable(false);
 export const showConfirmDeleteModal = writable(false);

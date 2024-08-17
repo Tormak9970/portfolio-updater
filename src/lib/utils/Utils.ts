@@ -1,6 +1,6 @@
 import { fs, path, tauri } from "@tauri-apps/api";
 
-const DEFAULT_SETTINGS = {
+export const DEFAULT_SETTINGS = {
   "configPath": "",
   "selectedCategory": "Projects",
   "currentProject": {
@@ -26,7 +26,8 @@ const DEFAULT_SETTINGS = {
       "position": "",
       "duration": "",
       "companyLink": "",
-      "description": ""
+      "description": "",
+      "content": {}
     }
   }
 }
