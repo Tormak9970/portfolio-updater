@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { LogLevels, type OutputData } from "@editorjs/editorjs";
+  import { type OutputData } from "@editorjs/editorjs";
   import Embed from "@editorjs/embed";
   import Header from "@editorjs/header";
   import ImageTool from "@editorjs/image";
@@ -18,7 +18,7 @@
   let hasReadiedOnce = false;
 
   const { editor, editorStore, data: editorData, isReady } = createEditor({
-    logLevel: LogLevels.WARN,
+    logLevel: "WARN",
     tools: {
       header: {
         // @ts-expect-error The type is correct
